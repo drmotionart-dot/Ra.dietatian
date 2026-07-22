@@ -65,7 +65,6 @@ export default function BodyPage() {
     weight: latest?.weightKg || 70,
     height: userHeight,
     bodyFatPercent: latest?.bodyFatPercent || 20,
-    muscleMass: 30,
     waist: latest?.waistCm || 80,
     hip: latest?.hipCm || 95,
     bicep: latest?.bicepCm || 30,

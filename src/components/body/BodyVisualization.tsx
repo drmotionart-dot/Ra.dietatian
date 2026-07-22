@@ -12,7 +12,6 @@ interface BodyMetrics {
   weight: number;
   height: number;
   bodyFatPercent: number;
-  muscleMass: number;
   waist: number;
   hip: number;
   bicep: number;
@@ -137,7 +136,7 @@ const calculateBodyScale = (metrics: BodyMetrics) => {
 };
 
 export default function BodyVisualization({ 
-  metrics = { weight: 70, height: 175, bodyFatPercent: 20, muscleMass: 30, waist: 80, hip: 95, bicep: 30, chest: 100, thigh: 50, neck: 38 },
+  metrics = { weight: 70, height: 175, bodyFatPercent: 20, waist: 80, hip: 95, bicep: 30, chest: 100, thigh: 50, neck: 38 },
   showRealistic = false,
   sex = "male"
 }: BodyVisualizationProps) {

@@ -51,7 +51,6 @@ export default function DashboardPage() {
     weight: measurement?.weightKg || 70,
     height: data?.user?.heightCm || 170,
     bodyFatPercent: measurement?.bodyFatPercent || 20,
-    muscleMass: 35,
     waist: measurement?.waistCm || 80,
     hip: measurement?.hipCm || 95,
     bicep: measurement?.bicepCm || 30,

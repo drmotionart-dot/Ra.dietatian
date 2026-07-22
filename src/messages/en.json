@@ -460,7 +460,8 @@
     "noDataYet": "No data yet. Start logging to see analytics.",
     "greatOnTrack": "Great! You're on track",
     "tryToStickCloser": "Try to stick closer to your target",
-    "noWeightData": "No weight data yet. Log measurements in Body page."
+    "noWeightData": "No weight data yet. Log measurements in Body page.",
+    "noMealData": "No meal data yet. Start logging meals to see macro distribution."
   },
   "recipes": {
     "recipes": "Recipes",

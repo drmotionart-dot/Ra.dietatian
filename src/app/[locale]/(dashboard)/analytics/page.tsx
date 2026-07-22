@@ -94,11 +94,7 @@ export default function AnalyticsPage() {
           { name: t("meals.fatLabel"), value: Math.round((totalFat / total) * 100), color: "#EF4444" },
         ]);
       } else {
-        setMacroData([
-          { name: t("meals.proteinLabel"), value: 30, color: "#3B82F6" },
-          { name: t("meals.carbsLabel"), value: 45, color: "#EAB308" },
-          { name: t("meals.fatLabel"), value: 25, color: "#EF4444" },
-        ]);
+        setMacroData([]);
       }
     });
   }, [dateRange]);
@@ -207,16 +203,22 @@ export default function AnalyticsPage() {
             </CardHeader>
             <CardContent>
               <div className="h-48">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie data={macroData} cx="50%" cy="50%" innerRadius={40} outerRadius={80} paddingAngle={5} dataKey="value">
-                      {macroData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} />
-                      ))}
-                    </Pie>
-                    <Tooltip />
-                  </PieChart>
-                </ResponsiveContainer>
+                {macroData.length > 0 ? (
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie data={macroData} cx="50%" cy="50%" innerRadius={40} outerRadius={80} paddingAngle={5} dataKey="value">
+                        {macroData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.color} />
+                        ))}
+                      </Pie>
+                      <Tooltip />
+                    </PieChart>
+                  </ResponsiveContainer>
+                ) : (
+                  <div className="h-full flex items-center justify-center text-muted-foreground text-sm">
+                    {t("analytics.noMealData")}
+                  </div>
+                )}
               </div>
               <div className="flex justify-center gap-4 mt-4">
                 {macroData.map((macro, index) => (
