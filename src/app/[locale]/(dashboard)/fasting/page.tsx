@@ -15,6 +15,8 @@ interface FastingPrefs {
   sunnahAyyamAlBeed: boolean;
   sunnahSixDaysShawwal: boolean;
   city: string;
+  suhoorTime?: string;
+  iftarTime?: string;
 }
 
 interface FastingStats {
@@ -38,14 +40,21 @@ const defaultPrefs: FastingPrefs = {
   sunnahAyyamAlBeed: false,
   sunnahSixDaysShawwal: false,
   city: "Cairo",
+  suhoorTime: "03:30",
+  iftarTime: "19:00",
 };
 
-function getFastingTimes() {
+function parseTime(timeStr: string): { hours: number; minutes: number } {
+  const [h, m] = timeStr.split(":").map(Number);
+  return { hours: h, minutes: m };
+}
+
+function getFastingTimes(suhoorStr: string, iftarStr: string) {
   const now = new Date();
   const hours = now.getHours();
   const minutes = now.getMinutes();
-  const suhoorH = 3, suhoorM = 30;
-  const iftarH = 19, iftarM = 0;
+  const { hours: suhoorH, minutes: suhoorM } = parseTime(suhoorStr);
+  const { hours: iftarH, minutes: iftarM } = parseTime(iftarStr);
   const isFasting = (hours > suhoorH || (hours === suhoorH && minutes >= suhoorM)) &&
     (hours < iftarH || (hours === iftarH && minutes < iftarM));
 
@@ -64,7 +73,7 @@ function getFastingTimes() {
   const remainM = Math.floor((diff % 3600000) / 60000);
   const nextMeal: "suhoor" | "iftar" = isFasting ? "iftar" : "suhoor";
 
-  return { isFasting, fastingHours, fastingMinutes, remainH, remainM, nextMeal, suhoorTime: `${String(suhoorH).padStart(2, "0")}:${String(suhoorM).padStart(2, "0")}`, iftarTime: `${String(iftarH).padStart(2, "0")}:${String(iftarM).padStart(2, "0")}` };
+  return { isFasting, fastingHours, fastingMinutes, remainH, remainM, nextMeal, suhoorTime: suhoorStr, iftarTime: iftarStr };
 }
 
 export default function FastingPage() {
@@ -72,7 +81,7 @@ export default function FastingPage() {
   const [prefs, setPrefs] = useState<FastingPrefs>(defaultPrefs);
   const [stats, setStats] = useState<FastingStats>({ totalDays: 0, completedDays: 0, streak: 0 });
   const [logs, setLogs] = useState<FastingLogEntry[]>([]);
-  const [times, setTimes] = useState(getFastingTimes());
+  const [times, setTimes] = useState(getFastingTimes(defaultPrefs.suhoorTime!, defaultPrefs.iftarTime!));
 
   useEffect(() => {
     fetch("/api/fasting")
@@ -85,7 +94,12 @@ export default function FastingPage() {
             sunnahAyyamAlBeed: d.preferences.sunnahAyyamAlBeed ?? false,
             sunnahSixDaysShawwal: d.preferences.sunnahSixDaysShawwal ?? false,
             city: d.preferences.city ?? "Cairo",
+            suhoorTime: d.preferences.suhoorTime ?? "03:30",
+            iftarTime: d.preferences.iftarTime ?? "19:00",
           });
+          const suhoor = d.preferences.suhoorTime ?? "03:30";
+          const iftar = d.preferences.iftarTime ?? "19:00";
+          setTimes(getFastingTimes(suhoor, iftar));
         }
         if (d.stats) setStats(d.stats);
         if (d.logs) setLogs(d.logs);
@@ -94,9 +108,9 @@ export default function FastingPage() {
   }, []);
 
   useEffect(() => {
-    const interval = setInterval(() => setTimes(getFastingTimes()), 60000);
+    const interval = setInterval(() => setTimes(getFastingTimes(prefs.suhoorTime || "03:30", prefs.iftarTime || "19:00")), 60000);
     return () => clearInterval(interval);
-  }, []);
+  }, [prefs.suhoorTime, prefs.iftarTime]);
 
   const updatePref = (key: keyof FastingPrefs, value: boolean | string) => {
     const updated = { ...prefs, [key]: value };
@@ -148,19 +162,35 @@ export default function FastingPage() {
       <div className="grid grid-cols-2 gap-4">
         <Card>
           <CardContent className="pt-6">
-            <div className="text-center">
-              <Clock className="h-6 w-6 mx-auto text-blue-500 mb-2" />
-              <div className="text-lg font-bold">{times.suhoorTime}</div>
-              <div className="text-sm text-muted-foreground">{t("fasting.suhoorTime")}</div>
+            <div className="text-center space-y-2">
+              <Clock className="h-6 w-6 mx-auto text-blue-500" />
+              <Label className="text-xs text-muted-foreground">{t("fasting.suhoorTime")}</Label>
+              <input
+                type="time"
+                value={prefs.suhoorTime || "03:30"}
+                onChange={(e) => {
+                  updatePref("suhoorTime", e.target.value);
+                  setTimes(getFastingTimes(e.target.value, prefs.iftarTime || "19:00"));
+                }}
+                className="w-full text-center text-lg font-bold bg-transparent border rounded-md p-1"
+              />
             </div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="pt-6">
-            <div className="text-center">
-              <Clock className="h-6 w-6 mx-auto text-orange-500 mb-2" />
-              <div className="text-lg font-bold">{times.iftarTime}</div>
-              <div className="text-sm text-muted-foreground">{t("fasting.iftarTime")}</div>
+            <div className="text-center space-y-2">
+              <Clock className="h-6 w-6 mx-auto text-orange-500" />
+              <Label className="text-xs text-muted-foreground">{t("fasting.iftarTime")}</Label>
+              <input
+                type="time"
+                value={prefs.iftarTime || "19:00"}
+                onChange={(e) => {
+                  updatePref("iftarTime", e.target.value);
+                  setTimes(getFastingTimes(prefs.suhoorTime || "03:30", e.target.value));
+                }}
+                className="w-full text-center text-lg font-bold bg-transparent border rounded-md p-1"
+              />
             </div>
           </CardContent>
         </Card>

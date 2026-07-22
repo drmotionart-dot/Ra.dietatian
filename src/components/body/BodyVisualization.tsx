@@ -24,6 +24,7 @@ interface BodyMetrics {
 interface BodyVisualizationProps {
   metrics?: BodyMetrics;
   showRealistic?: boolean;
+  sex?: "male" | "female";
 }
 
 // SVG Body paths for cartoon style
@@ -64,10 +65,52 @@ const cartoonBodyPaths = {
     rightLeg: "M135,320 Q150,360 155,400 Q158,440 148,465 Q135,478 122,465 Q118,440 125,400 Q130,360 135,320",
     head: "M100,65 Q72,65 62,95 Q52,128 68,152 Q85,165 100,165 Q115,165 132,152 Q148,128 138,95 Q128,65 100,65",
   },
+  // Underweight female
+  underweightFemale: {
+    torso: "M100,120 Q82,120 78,148 Q74,176 80,200 Q86,218 100,224 Q114,218 120,200 Q126,176 122,148 Q118,120 100,120",
+    leftArm: "M78,130 Q64,140 60,168 Q56,196 60,224 Q64,234 68,224 Q72,196 74,168 Q78,148 78,130",
+    rightArm: "M122,130 Q136,140 140,168 Q144,196 140,224 Q136,234 132,224 Q128,196 126,168 Q122,148 122,130",
+    leftLeg: "M86,224 Q82,256 80,288 Q78,320 82,352 Q86,362 90,352 Q92,320 88,288 Q86,256 86,224",
+    rightLeg: "M114,224 Q118,256 120,288 Q122,320 118,352 Q114,362 110,352 Q108,320 112,288 Q114,256 114,224",
+    head: "M100,82 Q86,82 82,100 Q78,118 86,128 Q94,134 100,134 Q106,134 114,128 Q122,118 118,100 Q114,82 100,82",
+  },
+  // Normal female
+  normalFemale: {
+    torso: "M100,118 Q78,118 72,155 Q66,192 74,218 Q82,238 100,244 Q118,238 126,218 Q134,192 128,155 Q122,118 100,118",
+    leftArm: "M72,128 Q56,142 50,175 Q44,208 50,240 Q56,250 62,240 Q66,208 68,175 Q74,142 72,128",
+    rightArm: "M128,128 Q144,142 150,175 Q156,208 150,240 Q144,250 138,240 Q134,208 132,175 Q126,142 128,128",
+    leftLeg: "M82,244 Q76,278 74,312 Q72,346 78,374 Q84,384 90,374 Q92,346 86,312 Q84,278 82,244",
+    rightLeg: "M118,244 Q124,278 126,312 Q128,346 122,374 Q116,384 110,374 Q108,346 114,312 Q116,278 118,244",
+    head: "M100,78 Q84,78 78,98 Q72,118 82,132 Q92,140 100,140 Q108,140 118,132 Q128,118 122,98 Q116,78 100,78",
+  },
+  // Overweight female
+  overweightFemale: {
+    torso: "M100,114 Q68,114 58,158 Q48,202 60,238 Q72,264 100,274 Q128,264 140,238 Q152,202 142,158 Q132,114 100,114",
+    leftArm: "M58,124 Q40,144 32,182 Q24,220 32,258 Q42,272 52,258 Q56,220 56,182 Q60,144 58,124",
+    rightArm: "M142,124 Q160,144 168,182 Q176,220 168,258 Q158,272 148,258 Q144,220 144,182 Q140,144 142,124",
+    leftLeg: "M72,274 Q62,310 58,346 Q56,382 62,408 Q72,420 82,408 Q84,382 78,346 Q74,310 72,274",
+    rightLeg: "M128,274 Q138,310 142,346 Q144,382 138,408 Q128,420 118,408 Q116,382 122,346 Q126,310 128,274",
+    head: "M100,72 Q80,72 72,96 Q64,124 76,142 Q88,152 100,152 Q112,152 124,142 Q136,124 128,96 Q120,72 100,72",
+  },
+  // Obese female
+  obeseFemale: {
+    torso: "M100,108 Q58,108 44,162 Q30,216 48,262 Q66,298 100,308 Q134,298 152,262 Q170,216 156,162 Q142,108 100,108",
+    leftArm: "M44,118 Q24,142 14,190 Q4,238 14,286 Q28,306 42,286 Q46,238 44,190 Q46,142 44,118",
+    rightArm: "M156,118 Q176,142 186,190 Q196,238 186,286 Q172,306 158,286 Q154,238 156,190 Q154,142 156,118",
+    leftLeg: "M62,308 Q48,348 42,388 Q38,428 50,454 Q62,466 76,454 Q80,428 72,388 Q66,348 62,308",
+    rightLeg: "M138,308 Q152,348 158,388 Q162,428 150,454 Q138,466 124,454 Q120,428 128,388 Q134,348 138,308",
+    head: "M100,66 Q74,66 64,94 Q54,126 70,148 Q86,160 100,160 Q114,160 130,148 Q146,126 136,94 Q126,66 100,66",
+  },
 };
 
-// Get body type based on BMI
-const getBodyType = (bmi: number): keyof typeof cartoonBodyPaths => {
+// Get body type based on BMI and sex
+const getBodyType = (bmi: number, sex: "male" | "female"): keyof typeof cartoonBodyPaths => {
+  if (sex === "female") {
+    if (bmi < 18.5) return "underweightFemale";
+    if (bmi < 25) return "normalFemale";
+    if (bmi < 30) return "overweightFemale";
+    return "obeseFemale";
+  }
   if (bmi < 18.5) return "underweightMale";
   if (bmi < 25) return "normalMale";
   if (bmi < 30) return "overweightMale";
@@ -95,14 +138,15 @@ const calculateBodyScale = (metrics: BodyMetrics) => {
 
 export default function BodyVisualization({ 
   metrics = { weight: 70, height: 175, bodyFatPercent: 20, muscleMass: 30, waist: 80, hip: 95, bicep: 30, chest: 100, thigh: 50, neck: 38 },
-  showRealistic = false 
+  showRealistic = false,
+  sex = "male"
 }: BodyVisualizationProps) {
   const t = useTranslations();
   const [view, setView] = useState<"front" | "back">("front");
   const [isRealistic, setIsRealistic] = useState(showRealistic);
   
   const bmi = calculateBMI(metrics.weight, metrics.height);
-  const bodyType = getBodyType(bmi);
+  const bodyType = getBodyType(bmi, sex);
   const bodyScale = calculateBodyScale(metrics);
   
   // Get current body paths

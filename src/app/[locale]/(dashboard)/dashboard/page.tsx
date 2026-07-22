@@ -82,7 +82,7 @@ export default function DashboardPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <BodyVisualization metrics={metrics} />
+            <BodyVisualization metrics={metrics} sex={(data?.user?.sex as "male" | "female") || "male"} />
           </CardContent>
         </Card>
 

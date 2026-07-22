@@ -17,6 +17,8 @@ const FastingPreferenceSchema = new Schema(
     longitude: Number,
     calcMethod: { type: Number, default: 5 },
     hijriAdjustment: { type: Number, default: 0 },
+    suhoorTime: { type: String, default: "03:30" },
+    iftarTime: { type: String, default: "19:00" },
   },
   { timestamps: { createdAt: false, updatedAt: true }, collection: "fasting_preferences" }
 );

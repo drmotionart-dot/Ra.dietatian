@@ -29,6 +29,7 @@ export default function BodyPage() {
   const [showForm, setShowForm] = useState(false);
   const [measurements, setMeasurements] = useState<Measurement[]>([]);
   const [userHeight, setUserHeight] = useState<number>(170);
+  const [userSex, setUserSex] = useState<"male" | "female">("male");
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState({
     weightKg: "",
@@ -50,6 +51,9 @@ export default function BodyPage() {
         setMeasurements(bmData.measurements || []);
         if (dashData.user?.heightCm) {
           setUserHeight(dashData.user.heightCm);
+        }
+        if (dashData.user?.sex) {
+          setUserSex(dashData.user.sex as "male" | "female");
         }
       })
       .catch(console.error);
@@ -166,7 +170,7 @@ export default function BodyPage() {
         </Card>
       )}
 
-      <BodyVisualization metrics={bodyMetrics} />
+      <BodyVisualization metrics={bodyMetrics} sex={userSex} />
 
       <Card>
         <CardHeader>

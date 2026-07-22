@@ -371,7 +371,7 @@ export default function MeasurementTutorial() {
                   disabled={currentStep === measurement.stepsAr.length - 1}
                 >
                   التالي
-                  <ArrowRight className="h-4 w-4 mr-2" />
+                  <ArrowRight className="h-4 w-4 me-2" />
                 </Button>
               </div>
             </div>
