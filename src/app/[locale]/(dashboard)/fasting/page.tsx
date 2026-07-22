@@ -253,6 +253,79 @@ export default function FastingPage() {
         </CardContent>
       </Card>
 
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Calendar className="h-5 w-5" />
+            {t("fasting.logToday")}
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="flex gap-3">
+            <Button
+              className="flex-1"
+              onClick={async () => {
+                await fetch("/api/fasting", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ type: "log", fastingType: "ramadan", completed: true }),
+                });
+                const r = await fetch("/api/fasting");
+                const d = await r.json();
+                if (d.logs) setLogs(d.logs);
+                if (d.stats) setStats(d.stats);
+              }}
+            >
+              {t("fasting.logCompleted")}
+            </Button>
+            <Button
+              variant="outline"
+              className="flex-1"
+              onClick={async () => {
+                await fetch("/api/fasting", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ type: "log", fastingType: "ramadan", completed: false }),
+                });
+                const r = await fetch("/api/fasting");
+                const d = await r.json();
+                if (d.logs) setLogs(d.logs);
+                if (d.stats) setStats(d.stats);
+              }}
+            >
+              {t("fasting.logMissed")}
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Clock className="h-5 w-5" />
+            {t("fasting.history")}
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          {logs.length === 0 ? (
+            <p className="text-sm text-muted-foreground text-center py-4">{t("fasting.noHistory")}</p>
+          ) : (
+            <div className="space-y-2">
+              {logs.slice(0, 14).map((log) => (
+                <div key={log._id} className="flex items-center justify-between py-2 border-b last:border-0">
+                  <span className="text-sm">
+                    {new Date(log.date).toLocaleDateString("en-EG", { weekday: "short", month: "short", day: "numeric" })}
+                  </span>
+                  <span className={`text-sm font-medium ${log.completed ? "text-green-600" : "text-red-500"}`}>
+                    {log.completed ? t("fasting.dayCompleted") : t("fasting.dayMissed")}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
       <Card className="border-yellow-200 bg-yellow-50 dark:border-yellow-800 dark:bg-yellow-950">
         <CardContent className="pt-6">
           <p className="text-sm text-yellow-800 dark:text-yellow-200">

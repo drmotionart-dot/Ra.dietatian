@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import {
@@ -48,8 +49,12 @@ export default function NotificationsPage() {
   const t = useTranslations();
   const [prefs, setPrefs] = useState<NotifPrefs>(defaults);
   const [saving, setSaving] = useState(false);
+  const [permission, setPermission] = useState<NotificationPermission>("default");
 
   useEffect(() => {
+    if ("Notification" in window) {
+      setPermission(Notification.permission);
+    }
     fetch("/api/notifications")
       .then((r) => r.json())
       .then((d) => {
@@ -151,6 +156,43 @@ export default function NotificationsPage() {
           </div>
         </CardContent>
       </Card>
+
+      {"Notification" in window && (
+        <Card>
+          <CardContent className="pt-6 space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="font-medium">{t("notifications.permissionStatus")}</p>
+                <p className="text-sm text-muted-foreground">
+                  {permission === "granted" ? t("notifications.granted") : permission === "denied" ? t("notifications.denied") : t("notifications.default")}
+                </p>
+              </div>
+              <Button
+                variant={permission === "granted" ? "outline" : "default"}
+                size="sm"
+                disabled={permission === "denied"}
+                onClick={async () => {
+                  const p = await Notification.requestPermission();
+                  setPermission(p);
+                }}
+              >
+                {t("notifications.requestPermission")}
+              </Button>
+            </div>
+            {permission === "granted" && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  new Notification("FitTracker", { body: t("notifications.testSent"), icon: "/favicon.ico" });
+                }}
+              >
+                {t("notifications.sendTest")}
+              </Button>
+            )}
+          </CardContent>
+        </Card>
+      )}
 
       <div className="space-y-4">
         {settings.map((s) => (

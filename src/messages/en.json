@@ -528,6 +528,13 @@
     "completed": "Completed",
     "missed": "Missed",
     "exempt": "Exempt",
+    "logToday": "Log Today's Fast",
+    "logCompleted": "Fast logged as completed",
+    "logMissed": "Fast logged as missed",
+    "history": "Fasting History",
+    "noHistory": "No fasting history yet",
+    "dayCompleted": "Completed",
+    "dayMissed": "Missed",
     "disclaimer": "Ramadan fasting is a religious worship. This app tracks your fasting for educational purposes only. Consult your doctor before fasting, especially if pregnant, nursing, or with any medical condition."
   },
   "notifications": {
@@ -564,7 +571,15 @@
     "measurementMonthly": "First day of each month",
     "timeMeals": "08:00, 12:30, 19:00",
     "timeExercise": "18:00",
-    "timeWeight": "07:00"
+    "timeWeight": "07:00",
+    "permissionStatus": "Permission Status",
+    "granted": "Granted",
+    "denied": "Denied",
+    "default": "Not set",
+    "requestPermission": "Enable Browser Notifications",
+    "sendTest": "Send Test Notification",
+    "testSent": "Test notification sent!",
+    "testFailed": "Failed to send test notification"
   },
   "settings": {
     "settings": "Settings",

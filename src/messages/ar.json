@@ -528,6 +528,13 @@
     "completed": "مكتمل",
     "missed": "فائت",
     "exempt": "معفى",
+    "logToday": "سجّل صيام اليوم",
+    "logCompleted": "تم تسجيل الصيام كمكتمل",
+    "logMissed": "تم تسجيل الصيام كفائت",
+    "history": "سجل الصيام",
+    "noHistory": "لا يوجد سجل صيام بعد",
+    "dayCompleted": "مكتمل",
+    "dayMissed": "فائت",
     "disclaimer": "الصيام في رمضان عبادة دينية. هذا التطبيق يتتبع صيامك لأغراض تعليمية فقط. استشر طبيبك قبل الصيام، خاصة إذا كنت حاملًا أو مرضعًا أو مصابًا بأي حالة طبية."
   },
   "notifications": {
@@ -564,7 +571,15 @@
     "measurementMonthly": "أول يوم في كل شهر",
     "timeMeals": "08:00, 12:30, 19:00",
     "timeExercise": "18:00",
-    "timeWeight": "07:00"
+    "timeWeight": "07:00",
+    "permissionStatus": "حالة الإذن",
+    "granted": "ممنوح",
+    "denied": "مرفوض",
+    "default": "غير محدد",
+    "requestPermission": "تفعيل إشعارات المتصفح",
+    "sendTest": "إرسال إشعار تجريبي",
+    "testSent": "تم إرسال الإشعار التجريبي!",
+    "testFailed": "فشل في إرسال الإشعار التجريبي"
   },
   "settings": {
     "settings": "الإعدادات",
