@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from "next";
 import { Cairo } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
-import { hasLocale } from "next-intl";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Providers from "@/components/providers";
 import "../globals.css";
@@ -27,7 +26,7 @@ export async function generateStaticParams() {
   return [{ locale: "en" }, { locale: "ar" }];
 }
 
-export default async function RootLayout({
+export default async function LocaleLayout({
   children,
   params,
 }: {
@@ -43,7 +42,7 @@ export default async function RootLayout({
       <body className="font-cairo antialiased">
         <Providers>
           <TooltipProvider>
-            <NextIntlClientProvider messages={messages}>
+            <NextIntlClientProvider messages={messages} locale={locale}>
               {children}
             </NextIntlClientProvider>
           </TooltipProvider>

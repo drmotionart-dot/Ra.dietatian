@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -350,7 +350,7 @@ export default function BodyVisualization({
         <Card>
           <CardContent className="pt-6">
             <div className="text-center">
-              <div className="text-lg font-bold">{metrics.weight} kg</div>
+              <div className="text-lg font-bold">{metrics.weight} {t("units.kg")}</div>
               <div className="text-xs text-muted-foreground">{t("body.weight")}</div>
             </div>
           </CardContent>
@@ -366,7 +366,7 @@ export default function BodyVisualization({
         <Card>
           <CardContent className="pt-6">
             <div className="text-center">
-              <div className="text-lg font-bold">{metrics.waist} cm</div>
+              <div className="text-lg font-bold">{metrics.waist} {t("units.cm")}</div>
               <div className="text-xs text-muted-foreground">{t("body.waist")}</div>
             </div>
           </CardContent>
@@ -374,7 +374,7 @@ export default function BodyVisualization({
         <Card>
           <CardContent className="pt-6">
             <div className="text-center">
-              <div className="text-lg font-bold">{metrics.hip} cm</div>
+              <div className="text-lg font-bold">{metrics.hip} {t("units.cm")}</div>
               <div className="text-xs text-muted-foreground">{t("body.hip")}</div>
             </div>
           </CardContent>

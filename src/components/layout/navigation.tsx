@@ -7,13 +7,10 @@ import { cn } from "@/lib/utils";
 import { 
   LayoutDashboard, 
   UtensilsCrossed, 
-  Dumbbell, 
   Moon, 
-  User,
   Settings,
   BarChart3,
   Heart,
-  Apple,
   Ruler,
   Bell
 } from "lucide-react";
