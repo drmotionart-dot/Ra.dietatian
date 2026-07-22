@@ -106,7 +106,7 @@ export default function MeasurementTutorial() {
                 disabled={currentStep === steps.length - 1}
               >
                 {t("common.next")}
-                <ArrowRight className="h-4 w-4 me-2" />
+                <ArrowRight className="h-4 w-4 me-2 rtl:scale-x-[-1]" />
               </Button>
             </div>
           </div>
