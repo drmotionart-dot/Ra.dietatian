@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,6 +13,8 @@ import Link from "next/link";
 export default function LoginPage() {
   const t = useTranslations();
   const router = useRouter();
+  const params = useParams();
+  const locale = params.locale as string;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -33,7 +35,7 @@ export default function LoginPage() {
       if (result?.error) {
         setError(t("auth.invalidCredentials"));
       } else {
-        router.push("/dashboard");
+        router.push(`/${locale}/dashboard`);
       }
     } catch (err) {
       setError(t("common.error"));
@@ -82,7 +84,7 @@ export default function LoginPage() {
 
           <p className="text-center text-sm text-muted-foreground">
             {t("auth.dontHaveAccount")}{" "}
-            <Link href="/register" className="text-primary hover:underline">
+            <Link href={`/${locale}/register`} className="text-primary hover:underline">
               {t("auth.register")}
             </Link>
           </p>

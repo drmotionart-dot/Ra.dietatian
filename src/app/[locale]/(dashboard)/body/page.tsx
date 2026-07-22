@@ -62,15 +62,15 @@ export default function BodyPage() {
   const latest = measurements[0];
 
   const bodyMetrics = {
-    weight: latest?.weightKg || 70,
+    weight: latest?.weightKg || 0,
     height: userHeight,
-    bodyFatPercent: latest?.bodyFatPercent || 20,
-    waist: latest?.waistCm || 80,
-    hip: latest?.hipCm || 95,
-    bicep: latest?.bicepCm || 30,
-    chest: latest?.chestCm || 100,
-    thigh: latest?.thighCm || 50,
-    neck: latest?.neckCm || 38,
+    bodyFatPercent: latest?.bodyFatPercent || 0,
+    waist: latest?.waistCm || 0,
+    hip: latest?.hipCm || 0,
+    bicep: latest?.bicepCm || 0,
+    chest: latest?.chestCm || 0,
+    thigh: latest?.thighCm || 0,
+    neck: latest?.neckCm || 0,
   };
 
   const handleSubmit = async (e: React.FormEvent) => {

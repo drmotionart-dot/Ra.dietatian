@@ -48,36 +48,60 @@ export async function POST(req: Request) {
     const body = await req.json();
 
     if (body.type === "preferences") {
-      const { type: _, ...prefs } = body;
+      const allowed = [
+        "ramadanEnabled", "sunnahMondayThursday", "sunnahAyyamAlBeed",
+        "sunnahSixDaysShawwal", "city", "suhoorTime", "iftarTime",
+      ];
+      const updates: Record<string, unknown> = {};
+      for (const key of allowed) {
+        if (key in body) updates[key] = body[key];
+      }
       const updated = await FastingPreference.findOneAndUpdate(
         { userId: session.user.id },
-        { $set: prefs },
+        { $set: updates },
         { new: true, upsert: true }
       ).lean();
       return NextResponse.json({ preferences: updated });
     }
 
     if (body.type === "log") {
+      const dateQuery = (() => {
+        const d = body.date ? new Date(body.date) : new Date();
+        if (isNaN(d.getTime())) return null;
+        const start = new Date(d); start.setHours(0, 0, 0, 0);
+        const end = new Date(d); end.setHours(23, 59, 59, 999);
+        return { $gte: start, $lt: end };
+      })();
+      if (!dateQuery) {
+        return NextResponse.json({ error: "Invalid date" }, { status: 400 });
+      }
+
       const existing = await FastingLog.findOne({
         userId: session.user.id,
-        date: {
-          $gte: new Date(new Date(body.date || Date.now()).setHours(0, 0, 0, 0)),
-          $lt: new Date(new Date(body.date || Date.now()).setHours(23, 59, 59, 999)),
-        },
+        date: dateQuery,
       });
+
+      const logData = {
+        fastingType: body.fastingType || "ramadan",
+        completed: !!body.completed,
+        suhoorTime: body.suhoorTime,
+        iftarTime: body.iftarTime,
+      };
 
       let log;
       if (existing) {
         log = await FastingLog.findOneAndUpdate(
           { _id: existing._id },
-          { $set: body.data || body },
+          { $set: logData },
           { new: true }
         ).lean();
       } else {
+        const logDate = body.date ? new Date(body.date) : new Date();
+        logDate.setHours(0, 0, 0, 0);
         log = await FastingLog.create({
           userId: session.user.id,
-          fastingType: body.fastingType || "ramadan",
-          ...body.data,
+          date: logDate,
+          ...logData,
         });
       }
 

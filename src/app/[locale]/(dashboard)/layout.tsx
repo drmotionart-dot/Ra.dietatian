@@ -4,12 +4,15 @@ import { MainNav, DesktopSidebar } from "@/components/layout/navigation";
 
 export default async function DashboardLayout({
   children,
+  params,
 }: {
   children: React.ReactNode;
+  params: Promise<{ locale: string }>;
 }) {
   const session = await auth();
   if (!session?.user) {
-    redirect("/login");
+    const { locale } = await params;
+    redirect(`/${locale}/login`);
   }
 
   return (

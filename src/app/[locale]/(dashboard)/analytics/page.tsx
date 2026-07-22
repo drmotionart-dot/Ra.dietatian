@@ -37,8 +37,8 @@ export default function AnalyticsPage() {
 
     const targetP = fetch("/api/dashboard")
       .then((r) => r.json())
-      .then((d) => d.targets?.calories || 2000)
-      .catch(() => 2000);
+      .then((d) => d.targets?.calories || 0)
+      .catch(() => 0);
 
     for (let i = days - 1; i >= 0; i--) {
       const d = new Date();
@@ -51,13 +51,13 @@ export default function AnalyticsPage() {
         .then((r) => r.json())
         .then((data) => {
           const cal = data.totals?.calories || 0;
-          weekCalories.push({ day: dayLabel, calories: cal, target: 2000 });
+          weekCalories.push({ day: dayLabel, calories: cal, target: 0 });
           totalProtein += data.totals?.protein || 0;
           totalCarbs += data.totals?.carbs || 0;
           totalFat += data.totals?.fat || 0;
         })
         .catch(() => {
-          weekCalories.push({ day: dayLabel, calories: 0, target: 2000 });
+          weekCalories.push({ day: dayLabel, calories: 0, target: 0 });
         });
       fetches.push(p);
     }

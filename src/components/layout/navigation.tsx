@@ -15,6 +15,11 @@ import {
   Bell
 } from "lucide-react";
 
+function getLocaleFromPathname(pathname: string): string {
+  const seg = pathname.split("/")[1];
+  return seg === "ar" || seg === "en" ? seg : "en";
+}
+
 const navItems = [
   { key: "nav.dashboard", href: "/dashboard", icon: LayoutDashboard },
   { key: "nav.meals", href: "/meals", icon: UtensilsCrossed },
@@ -37,9 +42,10 @@ const sidebarItems = [
 export function MainNav() {
   const t = useTranslations();
   const pathname = usePathname();
+  const locale = getLocaleFromPathname(pathname);
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-background border-t md:hidden z-50">
+    <nav className="fixed bottom-0 inset-x-0 bg-background border-t md:hidden z-50" aria-label={t("nav.mainNavigation")}>
       <div className="flex justify-around items-center h-16">
         {navItems.map((item) => {
           const Icon = item.icon;
@@ -48,13 +54,14 @@ export function MainNav() {
           return (
             <Link
               key={item.href}
-              href={item.href}
+              href={`/${locale}${item.href}`}
               className={cn(
                 "flex flex-col items-center justify-center gap-1 px-3 py-2 text-xs transition-colors",
                 isActive 
                   ? "text-primary font-medium" 
                   : "text-muted-foreground hover:text-foreground"
               )}
+              aria-current={isActive ? "page" : undefined}
             >
               <Icon className="h-5 w-5" />
               <span>{t(item.key)}</span>
@@ -69,6 +76,7 @@ export function MainNav() {
 export function DesktopSidebar() {
   const t = useTranslations();
   const pathname = usePathname();
+  const locale = getLocaleFromPathname(pathname);
 
   return (
     <aside className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 border-s bg-background">
@@ -77,7 +85,7 @@ export function DesktopSidebar() {
           <h1 className="text-xl font-bold">{t("common.appName")}</h1>
         </div>
         <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
-          <nav className="flex-1 px-2 space-y-1">
+          <nav className="flex-1 px-2 space-y-1" aria-label={t("nav.sidebarNavigation")}>
             {sidebarItems.map((item) => {
               const Icon = item.icon;
               const isActive = pathname.includes(item.href);
@@ -85,13 +93,14 @@ export function DesktopSidebar() {
               return (
                 <Link
                   key={item.href}
-                  href={item.href}
+                  href={`/${locale}${item.href}`}
                   className={cn(
                     "flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md transition-colors",
                     isActive 
                       ? "bg-primary text-primary-foreground" 
                       : "text-muted-foreground hover:bg-muted hover:text-foreground"
                   )}
+                  aria-current={isActive ? "page" : undefined}
                 >
                   <Icon className="h-5 w-5" />
                   {t(item.key)}
@@ -101,13 +110,14 @@ export function DesktopSidebar() {
           </nav>
           <div className="px-2 space-y-1 border-t pt-4">
             <Link
-              href="/settings"
+              href={`/${locale}/settings`}
               className={cn(
                 "flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md transition-colors",
                 pathname.includes("/settings")
                   ? "bg-primary text-primary-foreground"
                   : "text-muted-foreground hover:bg-muted hover:text-foreground"
               )}
+              aria-current={pathname.includes("/settings") ? "page" : undefined}
             >
               <Settings className="h-5 w-5" />
               {t("nav.settings")}

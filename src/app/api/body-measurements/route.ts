@@ -13,7 +13,7 @@ export async function GET(req: Request) {
     await connectDB();
 
     const { searchParams } = new URL(req.url);
-    const limit = parseInt(searchParams.get("limit") || "30");
+    const limit = Math.min(parseInt(searchParams.get("limit") || "30") || 30, 100);
 
     const measurements = await BodyMeasurement.find({ userId: session.user.id })
       .sort({ date: -1 })
@@ -39,31 +39,47 @@ export async function POST(req: Request) {
     const body = await req.json();
     const { date, weightKg, bodyFatPercent, waistCm, hipCm, bicepCm, chestCm, thighCm, neckCm, notes } = body;
 
+    const hasAny = [weightKg, bodyFatPercent, waistCm, hipCm, bicepCm, chestCm, thighCm, neckCm].some(
+      (v) => v !== undefined && v !== null && v !== ""
+    );
+    if (!hasAny) {
+      return NextResponse.json({ error: "At least one measurement value is required" }, { status: 400 });
+    }
+
+    const num = (v: unknown) => {
+      const n = parseFloat(v as string);
+      return isNaN(n) ? undefined : n;
+    };
+
     const user = await User.findOne({ _id: session.user.id }).select("heightCm").lean();
+
+    const wKg = num(weightKg);
+    const wCm = num(waistCm);
+    const hCm = num(hipCm);
 
     let bmi: number | null = null;
     let waistToHipRatio: number | null = null;
 
-    if (weightKg && user?.heightCm) {
+    if (wKg && user?.heightCm) {
       const heightM = user.heightCm / 100;
-      bmi = parseFloat((weightKg / (heightM * heightM)).toFixed(1));
+      bmi = parseFloat((wKg / (heightM * heightM)).toFixed(1));
     }
 
-    if (waistCm && hipCm) {
-      waistToHipRatio = parseFloat((waistCm / hipCm).toFixed(2));
+    if (wCm && hCm) {
+      waistToHipRatio = parseFloat((wCm / hCm).toFixed(2));
     }
 
     const measurement = await BodyMeasurement.create({
       userId: session.user.id,
       date: date ? new Date(date) : new Date(),
-      weightKg,
-      bodyFatPercent,
-      waistCm,
-      hipCm,
-      bicepCm,
-      chestCm,
-      thighCm,
-      neckCm,
+      weightKg: wKg,
+      bodyFatPercent: num(bodyFatPercent),
+      waistCm: wCm,
+      hipCm: hCm,
+      bicepCm: num(bicepCm),
+      chestCm: num(chestCm),
+      thighCm: num(thighCm),
+      neckCm: num(neckCm),
       bmi,
       waistToHipRatio,
       notes,

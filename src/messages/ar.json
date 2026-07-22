@@ -61,7 +61,9 @@
     "medical": "المعلومات الطبية",
     "recipes": "الوصفات",
     "body": "الجسم",
-    "notifications": "الإشعارات"
+    "notifications": "الإشعارات",
+    "mainNavigation": "التنقل الرئيسي",
+    "sidebarNavigation": "التنقل الجانبي"
   },
   "auth": {
     "login": "تسجيل الدخول",

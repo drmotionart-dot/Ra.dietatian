@@ -9,16 +9,17 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const query = searchParams.get("q") || "";
     const category = searchParams.get("category");
-    const limit = parseInt(searchParams.get("limit") || "50");
-    const offset = parseInt(searchParams.get("offset") || "0");
+    const limit = Math.min(parseInt(searchParams.get("limit") || "50") || 50, 200);
+    const offset = Math.max(parseInt(searchParams.get("offset") || "0") || 0, 0);
 
     const filter: Record<string, unknown> = {};
 
     if (query) {
+      const safe = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
       filter.$or = [
-        { name: { $regex: query, $options: "i" } },
-        { nameAr: { $regex: query, $options: "i" } },
-        { brand: { $regex: query, $options: "i" } },
+        { name: { $regex: safe, $options: "i" } },
+        { nameAr: { $regex: safe, $options: "i" } },
+        { brand: { $regex: safe, $options: "i" } },
       ];
     }
 

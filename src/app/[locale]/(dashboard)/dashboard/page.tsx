@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
+import { useParams } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
@@ -30,6 +31,8 @@ interface DashboardData {
 
 export default function DashboardPage() {
   const t = useTranslations();
+  const params = useParams();
+  const locale = params.locale as string;
   const [data, setData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -41,26 +44,31 @@ export default function DashboardPage() {
       .finally(() => setLoading(false));
   }, []);
 
-  const targets = data?.targets || { calories: 2000, protein: 120, carbs: 250, fat: 65 };
+  const targets = data?.targets || { calories: 0, protein: 0, carbs: 0, fat: 0 };
   const consumed = data?.consumed || { calories: 0, protein: 0, carbs: 0, fat: 0 };
   const remaining = data?.remaining || { calories: targets.calories, protein: targets.protein, carbs: targets.carbs, fat: targets.fat };
-  const calorieProgress = Math.min((consumed.calories / targets.calories) * 100, 100);
+  const calorieProgress = targets.calories > 0 ? Math.min((consumed.calories / targets.calories) * 100, 100) : 0;
 
   const measurement = data?.latestMeasurement;
   const metrics = {
-    weight: measurement?.weightKg || 70,
-    height: data?.user?.heightCm || 170,
-    bodyFatPercent: measurement?.bodyFatPercent || 20,
-    waist: measurement?.waistCm || 80,
-    hip: measurement?.hipCm || 95,
-    bicep: measurement?.bicepCm || 30,
-    chest: measurement?.chestCm || 95,
-    thigh: measurement?.thighCm || 55,
-    neck: measurement?.neckCm || 38,
+    weight: measurement?.weightKg || 0,
+    height: data?.user?.heightCm || 0,
+    bodyFatPercent: measurement?.bodyFatPercent || 0,
+    waist: measurement?.waistCm || 0,
+    hip: measurement?.hipCm || 0,
+    bicep: measurement?.bicepCm || 0,
+    chest: measurement?.chestCm || 0,
+    thigh: measurement?.thighCm || 0,
+    neck: measurement?.neckCm || 0,
   };
 
   return (
     <div className="container mx-auto p-4 space-y-6">
+      {loading ? (
+        <div className="flex items-center justify-center py-20">
+          <div className="text-muted-foreground">{t("common.loading")}</div>
+        </div>
+      ) : (<>
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">{t("dashboard.welcome")}</h1>
@@ -90,7 +98,7 @@ export default function DashboardPage() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Target className="h-5 w-5" />
-                {t("meals.caloriesRemaining")}
+                {t("dashboard.caloriesRemaining")}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -172,25 +180,25 @@ export default function DashboardPage() {
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <Link href="/meals">
+            <Link href={`/${locale}/meals`}>
               <Button className="h-20 w-full flex flex-col gap-2" variant="outline">
                 <Utensils className="h-6 w-6" />
                 <span>{t("dashboard.logMeal")}</span>
               </Button>
             </Link>
-            <Link href="/body">
+            <Link href={`/${locale}/body`}>
               <Button className="h-20 w-full flex flex-col gap-2" variant="outline">
                 <TrendingUp className="h-6 w-6" />
                 <span>{t("dashboard.logWeight")}</span>
               </Button>
             </Link>
-            <Link href="/fasting">
+            <Link href={`/${locale}/fasting`}>
               <Button className="h-20 w-full flex flex-col gap-2" variant="outline">
                 <Moon className="h-6 w-6" />
                 <span>{t("fasting.fasting")}</span>
               </Button>
             </Link>
-            <Link href="/recipes">
+            <Link href={`/${locale}/recipes`}>
               <Button className="h-20 w-full flex flex-col gap-2" variant="outline">
                 <ChefHat className="h-6 w-6" />
                 <span>{t("recipes.recipes")}</span>
@@ -226,6 +234,7 @@ export default function DashboardPage() {
           )}
         </CardContent>
       </Card>
+      </>)}
     </div>
   );
 }

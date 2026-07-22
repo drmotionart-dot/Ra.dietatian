@@ -61,7 +61,9 @@
     "medical": "Medical",
     "recipes": "Recipes",
     "body": "Body",
-    "notifications": "Notifications"
+    "notifications": "Notifications",
+    "mainNavigation": "Main navigation",
+    "sidebarNavigation": "Sidebar navigation"
   },
   "auth": {
     "login": "Login",

@@ -27,9 +27,10 @@ export async function GET(req: Request) {
 
     const filter: Record<string, unknown> = {};
     if (query) {
+      const safe = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
       filter.$or = [
-        { foodId: { $regex: query, $options: "i" } },
-        { foodCategory: { $regex: query, $options: "i" } },
+        { foodId: { $regex: safe, $options: "i" } },
+        { foodCategory: { $regex: safe, $options: "i" } },
       ];
     }
     if (category) {

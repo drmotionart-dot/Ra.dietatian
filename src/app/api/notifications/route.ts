@@ -34,9 +34,20 @@ export async function PUT(req: Request) {
     await connectDB();
     const body = await req.json();
 
+    const allowed = [
+      "mealRemindersEnabled", "waterRemindersEnabled", "waterIntervalMinutes",
+      "exerciseRemindersEnabled", "weightRemindersEnabled", "weightFrequency",
+      "fastingRemindersEnabled", "milestoneCelebrations",
+      "measurementRemindersEnabled", "measurementFrequency",
+    ];
+    const updates: Record<string, unknown> = {};
+    for (const key of allowed) {
+      if (key in body) updates[key] = body[key];
+    }
+
     const prefs = await NotificationPreference.findOneAndUpdate(
       { userId: session.user.id },
-      { $set: body },
+      { $set: updates },
       { new: true, upsert: true }
     ).lean();
 

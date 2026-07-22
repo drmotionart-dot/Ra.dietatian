@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -12,6 +12,8 @@ import Link from "next/link";
 export default function RegisterPage() {
   const t = useTranslations();
   const router = useRouter();
+  const params = useParams();
+  const locale = params.locale as string;
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -56,7 +58,7 @@ export default function RegisterPage() {
         return;
       }
 
-      router.push("/login");
+      router.push(`/${locale}/login`);
     } catch (err) {
       setError(t("common.error"));
     } finally {
@@ -125,7 +127,7 @@ export default function RegisterPage() {
 
           <p className="text-center text-sm text-muted-foreground">
             {t("auth.alreadyHaveAccount")}{" "}
-            <Link href="/login" className="text-primary hover:underline">
+            <Link href={`/${locale}/login`} className="text-primary hover:underline">
               {t("auth.login")}
             </Link>
           </p>
