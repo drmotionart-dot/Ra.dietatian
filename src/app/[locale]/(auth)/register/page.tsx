@@ -52,13 +52,13 @@ export default function RegisterPage() {
       const data = await response.json();
 
       if (!response.ok) {
-        setError(data.error || "Registration failed");
+        setError(data.error || t("auth.registrationFailed"));
         return;
       }
 
       router.push("/login");
     } catch (err) {
-      setError("Something went wrong");
+      setError(t("common.error"));
     } finally {
       setLoading(false);
     }
@@ -74,13 +74,13 @@ export default function RegisterPage() {
         <CardContent className="space-y-4">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="name">{t("auth.email").split(" ")[0]}</Label>
+              <Label htmlFor="name">{t("auth.name")}</Label>
               <Input
                 id="name"
                 type="text"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                placeholder="John Doe"
+                placeholder={t("auth.namePlaceholder")}
                 required
               />
             </div>
@@ -91,7 +91,7 @@ export default function RegisterPage() {
                 type="email"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                placeholder="you@example.com"
+                placeholder={t("auth.emailPlaceholder")}
                 required
               />
             </div>

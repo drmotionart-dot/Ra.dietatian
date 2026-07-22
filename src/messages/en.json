@@ -67,6 +67,7 @@
     "login": "Login",
     "register": "Register",
     "logout": "Logout",
+    "name": "Name",
     "email": "Email",
     "password": "Password",
     "confirmPassword": "Confirm Password",
@@ -85,7 +86,11 @@
     "loginTitle": "Welcome to FitTracker",
     "loginSubtitle": "Track your nutrition and reach your goals",
     "registerTitle": "Create your account",
-    "registerSubtitle": "Start your fitness journey today"
+    "registerSubtitle": "Start your fitness journey today",
+    "invalidCredentials": "Invalid email or password",
+    "registrationFailed": "Registration failed. Please try again.",
+    "emailPlaceholder": "you@example.com",
+    "namePlaceholder": "John Doe"
   },
   "dashboard": {
     "welcome": "Welcome",
@@ -267,7 +272,166 @@
     "overweight": "Overweight",
     "obese": "Obese",
     "noMeasurements": "No measurements logged",
-    "addFirstMeasurement": "Add your first measurement to track progress"
+    "addFirstMeasurement": "Add your first measurement to track progress",
+    "bmiLabel": "BMI:",
+    "weightLabel": "Weight:",
+    "fatLabel": "Fat:",
+    "waistLabel": "Waist:",
+    "hipLabel": "Hip:",
+    "chestLabel": "Chest:",
+    "bicepLabel": "Bicep:",
+    "thighLabel": "Thigh:",
+    "neckLabel": "Neck:",
+    "waistToHipRatioLabel": "W/H:",
+    "steps": "Steps:",
+    "commonMistakes": "Common Mistakes:",
+    "tipsForConsistentResults": "Tips for consistent results:",
+    "measurements": {
+      "waist": {
+        "title": "Waist Circumference",
+        "description": "Measure at the narrowest point between rib cage and iliac crest",
+        "anatomicalPoint": "Midpoint between 10th rib and iliac crest",
+        "steps": [
+          "Stand upright with feet shoulder-width apart",
+          "Wrap the tape measure around the narrowest part of your torso",
+          "Keep the tape parallel to the floor",
+          "Breathe out normally and read the measurement",
+          "The tape should be snug but not compressing the skin",
+          "Take 2-3 measurements and use the average"
+        ],
+        "mistakes": [
+          "Measuring over clothing instead of on bare skin",
+          "Pulling the tape too tight",
+          "Measuring at the wrong point (too high or too low)",
+          "Not breathing out before reading"
+        ],
+        "tips": [
+          "Measure in the morning before eating",
+          "Use the same tape measure each time",
+          "Record the date for tracking progress"
+        ]
+      },
+      "hip": {
+        "title": "Hip Circumference",
+        "description": "Measure at the widest point of the buttocks",
+        "anatomicalPoint": "Widest point of the buttocks, level with greater trochanter",
+        "steps": [
+          "Stand with feet together",
+          "Wrap the tape around the widest part of your hips/buttocks",
+          "Keep the tape parallel to the floor",
+          "Ensure the tape is level all the way around",
+          "Read the measurement at the end of a normal exhale",
+          "Take 2-3 measurements for accuracy"
+        ],
+        "mistakes": [
+          "Measuring too high (at the waist instead)",
+          "Letting the tape drop in the back",
+          "Pulling too tight and compressing tissue",
+          "Standing in an asymmetrical position"
+        ],
+        "tips": [
+          "Wear form-fitting clothing or measure on bare skin",
+          "Stand in front of a mirror to check tape position",
+          "Measure at the same time of day consistently"
+        ]
+      },
+      "bicep": {
+        "title": "Bicep Circumference",
+        "description": "Measure at the midpoint of the upper arm, fully flexed",
+        "anatomicalPoint": "Midpoint between acromion process and olecranon",
+        "steps": [
+          "Flex your bicep by making a fist and bending your arm",
+          "Find the midpoint between your shoulder and elbow",
+          "Wrap the tape around the thickest part of the bicep",
+          "Keep the tape snug but not tight",
+          "Read the measurement on the tape",
+          "Repeat 2-3 times for accuracy"
+        ],
+        "mistakes": [
+          "Measuring with arm relaxed instead of flexed",
+          "Measuring at the wrong point (too close to elbow or shoulder)",
+          "Pulling the tape too tight",
+          "Compressing the muscle"
+        ],
+        "tips": [
+          "Measure both arms and record the larger value",
+          "Flex at the same angle each time",
+          "Track monthly to see muscle growth"
+        ]
+      },
+      "chest": {
+        "title": "Chest Circumference",
+        "description": "Measure at the widest point of the chest, level with the nipple line",
+        "anatomicalPoint": "Level with the nipple line, across the scapulae",
+        "steps": [
+          "Stand upright with arms relaxed at your sides",
+          "Wrap the tape around the widest part of your chest",
+          "Pass the tape under the armpits and across the shoulder blades",
+          "Keep the tape parallel to the floor",
+          "Breathe out normally and read the measurement",
+          "Take 2-3 measurements for consistency"
+        ],
+        "mistakes": [
+          "Measuring too high (across shoulders instead of chest)",
+          "Puffing out the chest during measurement",
+          "Letting the tape sag in the back",
+          "Pulling too tight"
+        ],
+        "tips": [
+          "For women, measure at the fullest point of the bust",
+          "Keep arms relaxed — do not flex",
+          "Measure before exercise for consistency"
+        ]
+      },
+      "thigh": {
+        "title": "Thigh Circumference",
+        "description": "Measure at the midpoint of the thigh, between hip and knee",
+        "anatomicalPoint": "Midpoint between greater trochanter and lateral femoral condyle",
+        "steps": [
+          "Stand with weight evenly distributed on both legs",
+          "Find the midpoint between your hip bone and knee",
+          "Wrap the tape around the thigh at this midpoint",
+          "Keep the tape level and parallel to the floor",
+          "Read the measurement without compressing the skin",
+          "Take 2-3 measurements for accuracy"
+        ],
+        "mistakes": [
+          "Measuring too high near the groin",
+          "Measuring too low near the knee",
+          "Squeezing the tape too tight",
+          "Standing with weight on only one leg"
+        ],
+        "tips": [
+          "Measure both thighs and record the larger value",
+          "Track monthly for muscle growth or fat loss",
+          "Keep consistent tension on the tape"
+        ]
+      },
+      "neck": {
+        "title": "Neck Circumference",
+        "description": "Measure just below the laryngeal prominence (Adam's apple)",
+        "anatomicalPoint": "Just below the cricoid cartilage, above the clavicle",
+        "steps": [
+          "Stand upright and look straight ahead",
+          "Locate your Adam's apple (laryngeal prominence)",
+          "Wrap the tape just below this point",
+          "Keep the tape level and snug",
+          "Read the measurement at the end of a normal exhale",
+          "Take 2-3 measurements"
+        ],
+        "mistakes": [
+          "Measuring too high (at the chin level)",
+          "Measuring too low (at the collarbone)",
+          "Tilting the head up or down",
+          "Pulling the tape too tight"
+        ],
+        "tips": [
+          "Keep your head in a neutral position",
+          "This measurement is used for body fat estimation",
+          "Track monthly for neck-to-waist ratio"
+        ]
+      }
+    }
   },
   "analytics": {
     "analytics": "Analytics",

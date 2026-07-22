@@ -173,7 +173,7 @@ export default function MealsPage() {
                       <div className="flex-1">
                         <div className="font-medium">{food.nameAr || food.name}</div>
                         <div className="text-sm text-muted-foreground">
-                          {food.nutrientProfile?.calories || 0} kcal | P: {food.nutrientProfile?.protein || 0}g | C: {food.nutrientProfile?.carbs || 0}g | F: {food.nutrientProfile?.fat || 0}g
+                          {food.nutrientProfile?.calories || 0} {t("units.kcal")} | {t("dashboard.proteinAbbr")}: {food.nutrientProfile?.protein || 0}g | {t("dashboard.carbsAbbr")}: {food.nutrientProfile?.carbs || 0}g | {t("dashboard.fatAbbr")}: {food.nutrientProfile?.fat || 0}g
                         </div>
                       </div>
                       <Button size="sm" variant="ghost" onClick={() => addFoodToMeal(food)}>
@@ -202,7 +202,7 @@ export default function MealsPage() {
                       <div className="flex-1">
                         <div className="font-medium">{item.name}</div>
                         <div className="text-sm text-muted-foreground">
-                          {item.quantity}{item.unit} | {item.calories} kcal
+                          {item.quantity}{item.unit} | {item.calories} {t("units.kcal")}
                         </div>
                       </div>
                       <Button size="sm" variant="ghost" onClick={() => removeFoodFromMeal(item.id)}>
@@ -213,7 +213,7 @@ export default function MealsPage() {
                   <div className="pt-4 border-t">
                     <div className="flex justify-between font-medium">
                       <span>{t("meals.totalCalories")}</span>
-                      <span>{mealTotals.calories} kcal</span>
+                      <span>{mealTotals.calories} {t("units.kcal")}</span>
                     </div>
                     <div className="flex justify-between text-sm text-muted-foreground">
                       <span>{t("meals.proteinLabel")}: {mealTotals.protein.toFixed(1)}g</span>
@@ -222,7 +222,7 @@ export default function MealsPage() {
                     </div>
                     <Button className="w-full mt-4" onClick={saveMeal} disabled={saving}>
                       <Save className="h-4 w-4 me-2" />
-                      {saving ? "Saving..." : t("common.save")}
+                      {saving ? t("common.loading") : t("common.save")}
                     </Button>
                   </div>
                 </>

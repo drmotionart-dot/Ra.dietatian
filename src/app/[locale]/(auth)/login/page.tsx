@@ -31,12 +31,12 @@ export default function LoginPage() {
       });
 
       if (result?.error) {
-        setError("Invalid email or password");
+        setError(t("auth.invalidCredentials"));
       } else {
         router.push("/dashboard");
       }
     } catch (err) {
-      setError("Something went wrong");
+      setError(t("common.error"));
     } finally {
       setLoading(false);
     }
@@ -58,7 +58,7 @@ export default function LoginPage() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@example.com"
+                placeholder={t("auth.emailPlaceholder")}
                 required
               />
             </div>

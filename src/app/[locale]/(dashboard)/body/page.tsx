@@ -162,7 +162,7 @@ export default function BodyPage() {
                 </div>
               </div>
               <div className="flex gap-2">
-                <Button type="submit" disabled={saving}>{saving ? "Saving..." : t("common.save")}</Button>
+                <Button type="submit" disabled={saving}>{saving ? t("common.loading") : t("common.save")}</Button>
                 <Button type="button" variant="outline" onClick={() => setShowForm(false)}>{t("common.cancel")}</Button>
               </div>
             </form>
@@ -188,18 +188,18 @@ export default function BodyPage() {
                 <div key={m._id} className="p-3 rounded-lg border">
                   <div className="flex items-center justify-between mb-2">
                     <div className="font-medium">{new Date(m.date).toLocaleDateString()}</div>
-                    {m.bmi && <span className="text-sm text-muted-foreground">BMI: {m.bmi}</span>}
+                    {m.bmi && <span className="text-sm text-muted-foreground">{t("body.bmiLabel")} {m.bmi}</span>}
                   </div>
                   <div className="grid grid-cols-3 gap-2 text-sm text-muted-foreground">
-                    {m.weightKg && <div>Weight: {m.weightKg} kg</div>}
-                    {m.bodyFatPercent && <div>Fat: {m.bodyFatPercent}%</div>}
-                    {m.waistCm && <div>Waist: {m.waistCm} cm</div>}
-                    {m.hipCm && <div>Hip: {m.hipCm} cm</div>}
-                    {m.chestCm && <div>Chest: {m.chestCm} cm</div>}
-                    {m.bicepCm && <div>Bicep: {m.bicepCm} cm</div>}
-                    {m.thighCm && <div>Thigh: {m.thighCm} cm</div>}
-                    {m.neckCm && <div>Neck: {m.neckCm} cm</div>}
-                    {m.waistToHipRatio && <div>W/H: {m.waistToHipRatio}</div>}
+                    {m.weightKg && <div>{t("body.weightLabel")} {m.weightKg} {t("units.kg")}</div>}
+                    {m.bodyFatPercent && <div>{t("body.fatLabel")} {m.bodyFatPercent}%</div>}
+                    {m.waistCm && <div>{t("body.waistLabel")} {m.waistCm} {t("units.cm")}</div>}
+                    {m.hipCm && <div>{t("body.hipLabel")} {m.hipCm} {t("units.cm")}</div>}
+                    {m.chestCm && <div>{t("body.chestLabel")} {m.chestCm} {t("units.cm")}</div>}
+                    {m.bicepCm && <div>{t("body.bicepLabel")} {m.bicepCm} {t("units.cm")}</div>}
+                    {m.thighCm && <div>{t("body.thighLabel")} {m.thighCm} {t("units.cm")}</div>}
+                    {m.neckCm && <div>{t("body.neckLabel")} {m.neckCm} {t("units.cm")}</div>}
+                    {m.waistToHipRatio && <div>{t("body.waistToHipRatioLabel")} {m.waistToHipRatio}</div>}
                   </div>
                 </div>
               ))}

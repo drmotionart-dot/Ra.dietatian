@@ -323,11 +323,11 @@ export default function BodyVisualization({
                 >
                   {/* Waist measurement */}
                   <line x1="20" y1="180" x2="40" y2="180" stroke="#666" strokeWidth="1" strokeDasharray="4" />
-                  <text x="10" y="185" fontSize="8" fill="#666">{metrics.waist}cm</text>
+                  <text x="10" y="185" fontSize="8" fill="#666">{metrics.waist}{t("units.cm")}</text>
                   
                   {/* Chest measurement */}
                   <line x1="160" y1="150" x2="180" y2="150" stroke="#666" strokeWidth="1" strokeDasharray="4" />
-                  <text x="165" y="145" fontSize="8" fill="#666">{metrics.chest}cm</text>
+                  <text x="165" y="145" fontSize="8" fill="#666">{metrics.chest}{t("units.cm")}</text>
                 </motion.g>
               )}
             </svg>

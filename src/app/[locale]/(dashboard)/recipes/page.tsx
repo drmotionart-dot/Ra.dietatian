@@ -104,15 +104,15 @@ export default function RecipesPage() {
             <form onSubmit={handleCreate} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label>Name (English)</Label>
+                  <Label>{t("recipes.nameEnglish")}</Label>
                   <Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
                 </div>
                 <div className="space-y-2">
-                  <Label>{t("settings.language") === "العربية" ? "الاسم بالعربي" : "Name (Arabic)"}</Label>
+                  <Label>{t("recipes.nameArabic")}</Label>
                   <Input value={form.nameAr} onChange={(e) => setForm({ ...form, nameAr: e.target.value })} />
                 </div>
                 <div className="space-y-2">
-                  <Label>Category</Label>
+                  <Label>{t("recipes.category")}</Label>
                   <select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} className="w-full border rounded-md p-2 bg-background">
                     <option value="breakfast">{t("meals.breakfast")}</option>
                     <option value="main">{t("recipes.recipes")}</option>
@@ -120,7 +120,7 @@ export default function RecipesPage() {
                   </select>
                 </div>
                 <div className="space-y-2">
-                  <Label>Difficulty</Label>
+                  <Label>{t("recipes.difficulty")}</Label>
                   <select value={form.difficulty} onChange={(e) => setForm({ ...form, difficulty: e.target.value })} className="w-full border rounded-md p-2 bg-background">
                     <option value="easy">{t("recipes.easy")}</option>
                     <option value="medium">{t("recipes.medium")}</option>
@@ -128,15 +128,15 @@ export default function RecipesPage() {
                   </select>
                 </div>
                 <div className="space-y-2">
-                  <Label>Prep (min)</Label>
+                  <Label>{t("recipes.prepTime")}</Label>
                   <Input type="number" value={form.prepTimeMinutes} onChange={(e) => setForm({ ...form, prepTimeMinutes: parseInt(e.target.value) || 0 })} />
                 </div>
                 <div className="space-y-2">
-                  <Label>Cook (min)</Label>
+                  <Label>{t("recipes.cookTime")}</Label>
                   <Input type="number" value={form.cookTimeMinutes} onChange={(e) => setForm({ ...form, cookTimeMinutes: parseInt(e.target.value) || 0 })} />
                 </div>
                 <div className="space-y-2">
-                  <Label>Servings</Label>
+                  <Label>{t("recipes.servings")}</Label>
                   <Input type="number" value={form.servingsCount} onChange={(e) => setForm({ ...form, servingsCount: parseInt(e.target.value) || 1 })} />
                 </div>
               </div>
@@ -176,7 +176,7 @@ export default function RecipesPage() {
                       </div>
                       <div className="flex gap-2">
                         <Badge className={getDifficultyColor(recipe.difficulty)}>
-                          {recipe.difficulty}
+                          {t(`recipes.${recipe.difficulty}`)}
                         </Badge>
                         <Button variant="ghost" size="sm" onClick={() => handleDelete(recipe._id)}>
                           <Trash2 className="h-4 w-4 text-destructive" />
@@ -186,7 +186,7 @@ export default function RecipesPage() {
                     <div className="flex items-center gap-4 text-sm text-muted-foreground">
                       <div className="flex items-center gap-1">
                         <Clock className="h-4 w-4" />
-                        <span>{(recipe.prepTimeMinutes || 0) + (recipe.cookTimeMinutes || 0)} min</span>
+                        <span>{(recipe.prepTimeMinutes || 0) + (recipe.cookTimeMinutes || 0)} {t("recipes.minutes")}</span>
                       </div>
                       <div className="flex items-center gap-1">
                         <Users className="h-4 w-4" />
@@ -197,19 +197,19 @@ export default function RecipesPage() {
                       <div className="grid grid-cols-4 gap-2 text-center text-sm">
                         <div>
                           <div className="font-bold text-primary">{recipe.nutritionPerServing.calories || 0}</div>
-                          <div className="text-muted-foreground">kcal</div>
+                          <div className="text-muted-foreground">{t("units.kcal")}</div>
                         </div>
                         <div>
                           <div className="font-bold text-blue-500">{recipe.nutritionPerServing.protein || 0}g</div>
-                          <div className="text-muted-foreground">P</div>
+                          <div className="text-muted-foreground">{t("dashboard.proteinAbbr")}</div>
                         </div>
                         <div>
                           <div className="font-bold text-yellow-500">{recipe.nutritionPerServing.carbs || 0}g</div>
-                          <div className="text-muted-foreground">C</div>
+                          <div className="text-muted-foreground">{t("dashboard.carbsAbbr")}</div>
                         </div>
                         <div>
                           <div className="font-bold text-red-500">{recipe.nutritionPerServing.fat || 0}g</div>
-                          <div className="text-muted-foreground">F</div>
+                          <div className="text-muted-foreground">{t("dashboard.fatAbbr")}</div>
                         </div>
                       </div>
                     )}

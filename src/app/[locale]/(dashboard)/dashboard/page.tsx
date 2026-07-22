@@ -215,7 +215,7 @@ export default function DashboardPage() {
               {data.todayMeals.map((meal, i) => (
                 <div key={i} className="flex items-center justify-between p-3 rounded-lg border">
                   <div>
-                    <div className="font-medium capitalize">{meal.mealType}</div>
+                    <div className="font-medium">{t(`mealTypes.${meal.mealType}`)}</div>
                     <div className="text-sm text-muted-foreground">
                       {t("dashboard.proteinAbbr")}: {meal.totalProtein}g | {t("dashboard.carbsAbbr")}: {meal.totalCarbs}g | {t("dashboard.fatAbbr")}: {meal.totalFat}g
                     </div>

@@ -113,7 +113,7 @@ export default function SettingsPage() {
               <div className="flex justify-between"><span className="text-muted-foreground">{t("settings.name")}</span><span>{profile.name}</span></div>
               <div className="flex justify-between"><span className="text-muted-foreground">{t("settings.email")}</span><span>{profile.email}</span></div>
               <div className="flex justify-between"><span className="text-muted-foreground">{t("settings.sex")}</span><span>{profile.sex || "—"}</span></div>
-              <div className="flex justify-between"><span className="text-muted-foreground">{t("settings.height")}</span><span>{profile.heightCm} cm</span></div>
+              <div className="flex justify-between"><span className="text-muted-foreground">{t("settings.height")}</span><span>{profile.heightCm} {t("units.cm")}</span></div>
               <div className="flex justify-between"><span className="text-muted-foreground">{t("settings.goal")}</span><span>{profile.goal}</span></div>
             </div>
           )}
@@ -133,7 +133,7 @@ export default function SettingsPage() {
                 </select>
               </div>
               <div className="space-y-2">
-                <Label>{t("settings.height")} (cm)</Label>
+                <Label>{t("settings.height")} ({t("units.cm")})</Label>
                 <Input type="number" value={form.heightCm} onChange={(e) => setForm({ ...form, heightCm: parseFloat(e.target.value) || 0 })} />
               </div>
               <div className="space-y-2">
@@ -145,7 +145,7 @@ export default function SettingsPage() {
                 </select>
               </div>
               <div className="space-y-2">
-                <Label>{t("settings.targetWeight")} (kg)</Label>
+                <Label>{t("settings.targetWeight")} ({t("units.kg")})</Label>
                 <Input type="number" value={form.targetWeightKg} onChange={(e) => setForm({ ...form, targetWeightKg: parseFloat(e.target.value) || 0 })} />
               </div>
             </div>
