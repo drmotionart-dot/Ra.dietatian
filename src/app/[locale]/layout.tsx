@@ -4,6 +4,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import Providers from "@/components/providers";
 import "../globals.css";
 
 const cairo = Cairo({
@@ -40,11 +41,13 @@ export default async function RootLayout({
   return (
     <html lang={locale} dir={dir} className={cairo.variable}>
       <body className="font-cairo antialiased">
-        <TooltipProvider>
-          <NextIntlClientProvider messages={messages}>
-            {children}
-          </NextIntlClientProvider>
-        </TooltipProvider>
+        <Providers>
+          <TooltipProvider>
+            <NextIntlClientProvider messages={messages}>
+              {children}
+            </NextIntlClientProvider>
+          </TooltipProvider>
+        </Providers>
       </body>
     </html>
   );

@@ -79,33 +79,16 @@ export async function POST(req: Request) {
     }
 
     const logDate = date ? new Date(date) : new Date();
+    if (isNaN(logDate.getTime())) {
+      return NextResponse.json({ error: "Invalid date" }, { status: 400 });
+    }
 
-    const totals = items.reduce(
-      (acc: Record<string, number>, item: Record<string, number>) => ({
-        calories: acc.calories + (item.calories || 0),
-        protein: acc.protein + (item.protein || 0),
-        carbs: acc.carbs + (item.carbs || 0),
-        fat: acc.fat + (item.fat || 0),
-        fiber: acc.fiber + (item.fiber || 0),
-      }),
-      { calories: 0, protein: 0, carbs: 0, fat: 0, fiber: 0 }
-    );
+    const startOfDay = new Date(logDate);
+    startOfDay.setHours(0, 0, 0, 0);
+    const endOfDay = new Date(logDate);
+    endOfDay.setHours(23, 59, 59, 999);
 
-    const mealLog = await MealLog.create({
-      userId: session.user.id,
-      date: logDate,
-      mealType,
-      totalCalories: totals.calories,
-      totalProtein: totals.protein,
-      totalCarbs: totals.carbs,
-      totalFat: totals.fat,
-      totalFiber: totals.fiber,
-    });
-
-    const mealLogId = mealLog._id.toString();
-
-    const logItems = items.map((item: Record<string, unknown>) => ({
-      mealLogId,
+    const newItems = items.map((item: Record<string, unknown>) => ({
       refType: (item.refType as string) || "food",
       refId: item.refId as string,
       foodId: item.foodId as string | undefined,
@@ -119,11 +102,50 @@ export async function POST(req: Request) {
       fiber: (item.fiber as number) || 0,
     }));
 
+    const newTotals = newItems.reduce(
+      (acc: Record<string, number>, item: Record<string, number>) => ({
+        calories: acc.calories + (item.calories || 0),
+        protein: acc.protein + (item.protein || 0),
+        carbs: acc.carbs + (item.carbs || 0),
+        fat: acc.fat + (item.fat || 0),
+        fiber: acc.fiber + (item.fiber || 0),
+      }),
+      { calories: 0, protein: 0, carbs: 0, fat: 0, fiber: 0 }
+    );
+
+    let mealLog = await MealLog.findOne({
+      userId: session.user.id,
+      date: { $gte: startOfDay, $lte: endOfDay },
+      mealType,
+    });
+
+    if (mealLog) {
+      mealLog.totalCalories += newTotals.calories;
+      mealLog.totalProtein += newTotals.protein;
+      mealLog.totalCarbs += newTotals.carbs;
+      mealLog.totalFat += newTotals.fat;
+      mealLog.totalFiber += newTotals.fiber;
+      await mealLog.save();
+    } else {
+      mealLog = await MealLog.create({
+        userId: session.user.id,
+        date: logDate,
+        mealType,
+        totalCalories: newTotals.calories,
+        totalProtein: newTotals.protein,
+        totalCarbs: newTotals.carbs,
+        totalFat: newTotals.fat,
+        totalFiber: newTotals.fiber,
+      });
+    }
+
+    const mealLogId = mealLog._id.toString();
+    const logItems = newItems.map((item: Record<string, unknown>) => ({ ...item, mealLogId }));
     await MealLogItem.insertMany(logItems);
 
-    const createdItems = await MealLogItem.find({ mealLogId }).lean();
+    const allItems = await MealLogItem.find({ mealLogId }).lean();
 
-    return NextResponse.json({ mealLog: { ...mealLog.toObject(), items: createdItems } }, { status: 201 });
+    return NextResponse.json({ mealLog: { ...mealLog.toObject(), items: allItems } }, { status: 201 });
   } catch (error) {
     console.error("Create meal log error:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });

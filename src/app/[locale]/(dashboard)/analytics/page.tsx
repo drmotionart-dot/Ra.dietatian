@@ -35,11 +35,16 @@ export default function AnalyticsPage() {
     let totalCarbs = 0;
     let totalFat = 0;
 
+    const targetP = fetch("/api/dashboard")
+      .then((r) => r.json())
+      .then((d) => d.targets?.calories || 2000)
+      .catch(() => 2000);
+
     for (let i = days - 1; i >= 0; i--) {
       const d = new Date();
       d.setDate(d.getDate() - i);
       const dateStr = d.toISOString().split("T")[0];
-      const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+      const dayNames = [t("days.sun"), t("days.mon"), t("days.tue"), t("days.wed"), t("days.thu"), t("days.fri"), t("days.sat")];
       const dayLabel = dayNames[d.getDay()];
 
       const p = fetch(`/api/meals?date=${dateStr}`)
@@ -70,9 +75,12 @@ export default function AnalyticsPage() {
       .catch(() => {});
     fetches.push(weightP);
 
-    Promise.all(fetches).then(() => {
+    Promise.all([targetP, ...fetches]).then(([calorieTarget]) => {
+      weekCalories.forEach((day) => {
+        day.target = calorieTarget;
+      });
       weekCalories.sort((a, b) => {
-        const order = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+        const order = [t("days.sun"), t("days.mon"), t("days.tue"), t("days.wed"), t("days.thu"), t("days.fri"), t("days.sat")];
         return order.indexOf(a.day) - order.indexOf(b.day);
       });
       setWeeklyData(weekCalories);
@@ -81,15 +89,15 @@ export default function AnalyticsPage() {
       const total = totalProtein + totalCarbs + totalFat;
       if (total > 0) {
         setMacroData([
-          { name: "Protein", value: Math.round((totalProtein / total) * 100), color: "#3B82F6" },
-          { name: "Carbs", value: Math.round((totalCarbs / total) * 100), color: "#EAB308" },
-          { name: "Fat", value: Math.round((totalFat / total) * 100), color: "#EF4444" },
+          { name: t("meals.proteinLabel"), value: Math.round((totalProtein / total) * 100), color: "#3B82F6" },
+          { name: t("meals.carbsLabel"), value: Math.round((totalCarbs / total) * 100), color: "#EAB308" },
+          { name: t("meals.fatLabel"), value: Math.round((totalFat / total) * 100), color: "#EF4444" },
         ]);
       } else {
         setMacroData([
-          { name: "Protein", value: 30, color: "#3B82F6" },
-          { name: "Carbs", value: 45, color: "#EAB308" },
-          { name: "Fat", value: 25, color: "#EF4444" },
+          { name: t("meals.proteinLabel"), value: 30, color: "#3B82F6" },
+          { name: t("meals.carbsLabel"), value: 45, color: "#EAB308" },
+          { name: t("meals.fatLabel"), value: 25, color: "#EF4444" },
         ]);
       }
     });
@@ -124,7 +132,7 @@ export default function AnalyticsPage() {
             </div>
             <h3 className="mt-4 text-lg font-medium">{t("analytics.adherenceScore")}</h3>
             <p className="text-sm text-muted-foreground">
-              {adherenceScore >= 80 ? "Great! You're on track" : "Try to stick closer to your target"}
+              {adherenceScore >= 80 ? t("analytics.greatOnTrack") : t("analytics.tryToStickCloser")}
             </p>
           </div>
         </CardContent>
@@ -174,7 +182,7 @@ export default function AnalyticsPage() {
               <div className="h-64">
                 {weightData.length === 0 ? (
                   <div className="flex items-center justify-center h-full text-muted-foreground">
-                    No weight data yet. Log measurements in Body page.
+                    {t("analytics.noWeightData")}
                   </div>
                 ) : (
                   <ResponsiveContainer width="100%" height="100%">

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import { Food } from "@/models";
+import { auth } from "@/lib/auth";
 
 export async function GET(req: Request) {
   try {
@@ -39,6 +40,11 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   try {
+    const session = await auth();
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     await connectDB();
     const body = await req.json();
     const { name, nameAr, brand, category, servingSize, servingUnit, servingDescription, barcode, nutrientProfile } = body;

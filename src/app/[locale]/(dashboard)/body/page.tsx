@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Ruler, Plus, TrendingUp } from "lucide-react";
+import BodyVisualization from "@/components/body/BodyVisualization";
 
 interface Measurement {
   _id: string;
@@ -27,6 +28,7 @@ export default function BodyPage() {
   const t = useTranslations();
   const [showForm, setShowForm] = useState(false);
   const [measurements, setMeasurements] = useState<Measurement[]>([]);
+  const [userHeight, setUserHeight] = useState<number>(170);
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState({
     weightKg: "",
@@ -40,11 +42,33 @@ export default function BodyPage() {
   });
 
   useEffect(() => {
-    fetch("/api/body-measurements")
-      .then((r) => r.json())
-      .then((d) => setMeasurements(d.measurements || []))
+    Promise.all([
+      fetch("/api/body-measurements").then((r) => r.json()),
+      fetch("/api/dashboard").then((r) => r.json()),
+    ])
+      .then(([bmData, dashData]) => {
+        setMeasurements(bmData.measurements || []);
+        if (dashData.user?.heightCm) {
+          setUserHeight(dashData.user.heightCm);
+        }
+      })
       .catch(console.error);
   }, []);
+
+  const latest = measurements[0];
+
+  const bodyMetrics = {
+    weight: latest?.weightKg || 70,
+    height: userHeight,
+    bodyFatPercent: latest?.bodyFatPercent || 20,
+    muscleMass: 30,
+    waist: latest?.waistCm || 80,
+    hip: latest?.hipCm || 95,
+    bicep: latest?.bicepCm || 30,
+    chest: latest?.chestCm || 100,
+    thigh: latest?.thighCm || 50,
+    neck: latest?.neckCm || 38,
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -84,7 +108,7 @@ export default function BodyPage() {
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">{t("body.bodyMeasurements")}</h1>
         <Button onClick={() => setShowForm(!showForm)}>
-          <Plus className="h-4 w-4 mr-2" />
+          <Plus className="h-4 w-4 me-2" />
           {t("body.addMeasurement")}
         </Button>
       </div>
@@ -141,6 +165,8 @@ export default function BodyPage() {
           </CardContent>
         </Card>
       )}
+
+      <BodyVisualization metrics={bodyMetrics} />
 
       <Card>
         <CardHeader>

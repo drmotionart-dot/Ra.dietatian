@@ -133,7 +133,7 @@ export default function BodyVisualization({
           size="sm"
           onClick={() => setIsRealistic(!isRealistic)}
         >
-          {isRealistic ? <EyeOff className="h-4 w-4 mr-2" /> : <Eye className="h-4 w-4 mr-2" />}
+          {isRealistic ? <EyeOff className="h-4 w-4 me-2" /> : <Eye className="h-4 w-4 me-2" />}
           {isRealistic ? t("body.cartoonView") : t("body.realisticView")}
         </Button>
       </div>
@@ -162,8 +162,8 @@ export default function BodyVisualization({
                 {/* Left Leg */}
                 <motion.path
                   d={currentPaths.leftLeg}
-                  fill="#F5D0A9"
-                  stroke="#E8B88A"
+                  fill={isRealistic ? "url(#skinRealistic)" : "#F5D0A9"}
+                  stroke={isRealistic ? "#C4956A" : "#E8B88A"}
                   strokeWidth="2"
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: 1 }}
@@ -173,8 +173,8 @@ export default function BodyVisualization({
                 {/* Right Leg */}
                 <motion.path
                   d={currentPaths.rightLeg}
-                  fill="#F5D0A9"
-                  stroke="#E8B88A"
+                  fill={isRealistic ? "url(#skinRealistic)" : "#F5D0A9"}
+                  stroke={isRealistic ? "#C4956A" : "#E8B88A"}
                   strokeWidth="2"
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: 1 }}
@@ -184,8 +184,8 @@ export default function BodyVisualization({
                 {/* Left Arm */}
                 <motion.path
                   d={currentPaths.leftArm}
-                  fill="#F5D0A9"
-                  stroke="#E8B88A"
+                  fill={isRealistic ? "url(#skinRealistic)" : "#F5D0A9"}
+                  stroke={isRealistic ? "#C4956A" : "#E8B88A"}
                   strokeWidth="2"
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: 1 }}
@@ -195,8 +195,8 @@ export default function BodyVisualization({
                 {/* Right Arm */}
                 <motion.path
                   d={currentPaths.rightArm}
-                  fill="#F5D0A9"
-                  stroke="#E8B88A"
+                  fill={isRealistic ? "url(#skinRealistic)" : "#F5D0A9"}
+                  stroke={isRealistic ? "#C4956A" : "#E8B88A"}
                   strokeWidth="2"
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: 1 }}
@@ -206,8 +206,8 @@ export default function BodyVisualization({
                 {/* Torso */}
                 <motion.path
                   d={currentPaths.torso}
-                  fill="#F5D0A9"
-                  stroke="#E8B88A"
+                  fill={isRealistic ? "url(#skinRealistic)" : "#F5D0A9"}
+                  stroke={isRealistic ? "#C4956A" : "#E8B88A"}
                   strokeWidth="2"
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: 1 }}
@@ -217,8 +217,8 @@ export default function BodyVisualization({
                 {/* Head */}
                 <motion.path
                   d={currentPaths.head}
-                  fill="#F5D0A9"
-                  stroke="#E8B88A"
+                  fill={isRealistic ? "url(#skinRealistic)" : "#F5D0A9"}
+                  stroke={isRealistic ? "#C4956A" : "#E8B88A"}
                   strokeWidth="2"
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: 1 }}
@@ -258,6 +258,17 @@ export default function BodyVisualization({
                   />
                 )}
               </motion.g>
+
+              {/* Realistic mode: gradient definitions for skin shading */}
+              {isRealistic && (
+                <defs>
+                  <linearGradient id="skinRealistic" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#F5D0A9" />
+                    <stop offset="50%" stopColor="#E8C49A" />
+                    <stop offset="100%" stopColor="#D4A574" />
+                  </linearGradient>
+                </defs>
+              )}
               
               {/* Measurement labels */}
               {view === "front" && (

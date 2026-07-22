@@ -10,6 +10,7 @@ import BodyVisualization from "@/components/body/BodyVisualization";
 import Link from "next/link";
 
 interface DashboardData {
+  user?: { heightCm?: number; sex?: string };
   targets: { calories: number; protein: number; carbs: number; fat: number };
   consumed: { calories: number; protein: number; carbs: number; fat: number };
   remaining: { calories: number; protein: number; carbs: number; fat: number };
@@ -48,7 +49,7 @@ export default function DashboardPage() {
   const measurement = data?.latestMeasurement;
   const metrics = {
     weight: measurement?.weightKg || 70,
-    height: 175,
+    height: data?.user?.heightCm || 170,
     bodyFatPercent: measurement?.bodyFatPercent || 20,
     muscleMass: 35,
     waist: measurement?.waistCm || 80,
@@ -99,13 +100,13 @@ export default function DashboardPage() {
                   {remaining.calories}
                 </div>
                 <div className="text-sm text-muted-foreground">
-                  {consumed.calories} kcal / {targets.calories} kcal
+                  {consumed.calories} {t("units.kcal")} / {targets.calories} {t("units.kcal")}
                 </div>
               </div>
               <Progress value={calorieProgress} className="h-3" />
               <div className="flex justify-between text-sm text-muted-foreground">
-                <span>{consumed.calories} kcal eaten</span>
-                <span>{targets.calories} kcal target</span>
+                <span>{consumed.calories} {t("units.kcal")} {t("dashboard.eaten")}</span>
+                <span>{targets.calories} {t("units.kcal")} {t("dashboard.target")}</span>
               </div>
             </CardContent>
           </Card>
@@ -216,10 +217,10 @@ export default function DashboardPage() {
                   <div>
                     <div className="font-medium capitalize">{meal.mealType}</div>
                     <div className="text-sm text-muted-foreground">
-                      P: {meal.totalProtein}g | C: {meal.totalCarbs}g | F: {meal.totalFat}g
+                      {t("dashboard.proteinAbbr")}: {meal.totalProtein}g | {t("dashboard.carbsAbbr")}: {meal.totalCarbs}g | {t("dashboard.fatAbbr")}: {meal.totalFat}g
                     </div>
                   </div>
-                  <div className="font-semibold">{meal.totalCalories} kcal</div>
+                  <div className="font-semibold">{meal.totalCalories} {t("units.kcal")}</div>
                 </div>
               ))}
             </div>

@@ -141,12 +141,12 @@ export default function MealsPage() {
           <Card>
             <CardContent className="pt-6">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Search className="absolute start-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
                   placeholder={t("meals.searchFood")}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10"
+                  className="ps-10"
                 />
               </div>
             </CardContent>
@@ -221,7 +221,7 @@ export default function MealsPage() {
                       <span>{t("meals.fatLabel")}: {mealTotals.fat.toFixed(1)}g</span>
                     </div>
                     <Button className="w-full mt-4" onClick={saveMeal} disabled={saving}>
-                      <Save className="h-4 w-4 mr-2" />
+                      <Save className="h-4 w-4 me-2" />
                       {saving ? "Saving..." : t("common.save")}
                     </Button>
                   </div>

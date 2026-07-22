@@ -104,7 +104,12 @@
     "daysStreak": "{count} day streak",
     "overGoal": "Over goal",
     "underGoal": "Under goal",
-    "onTrack": "On track"
+    "onTrack": "On track",
+    "eaten": "eaten",
+    "target": "target",
+    "proteinAbbr": "P",
+    "carbsAbbr": "C",
+    "fatAbbr": "F"
   },
   "meals": {
     "mealLogger": "Meal Logger",
@@ -226,7 +231,12 @@
     "lowIn": "Low in {nutrient}",
     "source": "Source",
     "lastReviewed": "Last Reviewed",
-    "reviewedBy": "Reviewed by"
+    "reviewedBy": "Reviewed by",
+    "searchFood": "Search food...",
+    "noData": "No medical knowledge entries yet. Add foods to the database to see nutritional info.",
+    "selectFood": "Select a food to view details.",
+    "noBenefits": "No benefits data available.",
+    "noConsiderations": "No considerations data available."
   },
   "body": {
     "bodyMeasurements": "Body Measurements",
@@ -283,7 +293,10 @@
     "mealDistribution": "Meal Distribution",
     "weeklyOverview": "Weekly Overview",
     "monthlyOverview": "Monthly Overview",
-    "noDataYet": "No data yet. Start logging to see analytics."
+    "noDataYet": "No data yet. Start logging to see analytics.",
+    "greatOnTrack": "Great! You're on track",
+    "tryToStickCloser": "Try to stick closer to your target",
+    "noWeightData": "No weight data yet. Log measurements in Body page."
   },
   "recipes": {
     "recipes": "Recipes",
@@ -306,15 +319,25 @@
     "addIngredient": "Add Ingredient",
     "addInstruction": "Add Instruction",
     "noRecipes": "No recipes yet",
-    "createFirstRecipe": "Create your first recipe to get started"
+    "createFirstRecipe": "Create your first recipe to get started",
+    "nameEnglish": "Name (English)",
+    "nameArabic": "Name (Arabic)",
+    "category": "Category",
+    "prepMinutes": "Prep (min)",
+    "cookMinutes": "Cook (min)",
+    "minutes": "min",
+    "perServing": "per serving"
   },
   "fasting": {
     "fastingMode": "Fasting Mode",
     "ramadanMode": "Ramadan Mode",
     "sunnahFasting": "Sunnah Fasting",
     "mondayThursday": "Monday & Thursday",
+    "mondayThursdayDesc": "Monday and Thursday",
     "ayyamAlBeed": "Ayyam al-Beed",
+    "ayyamAlBeedDesc": "White Days (13th, 14th, 15th of each Hijri month)",
     "sixDaysShawwal": "6 Days of Shawwal",
+    "sixDaysShawwalDesc": "Six days from Shawwal after Eid al-Fitr",
     "dayOfArafah": "Day of Arafah",
     "dayOfAshura": "Day of Ashura",
     "suhoorTime": "Suhoor Time",
@@ -332,13 +355,15 @@
     "disableSunnahFasting": "Disable Sunnah Fasting",
     "hours": "{count} hours",
     "minutes": "{count} minutes",
+    "elapsed": "Elapsed {hours} hours and {minutes} minutes",
     "fasting": "Fasting",
     "eating": "Eating",
     "nextMeal": "Next Meal",
     "countdown": "Countdown",
     "completed": "Completed",
     "missed": "Missed",
-    "exempt": "Exempt"
+    "exempt": "Exempt",
+    "disclaimer": "Ramadan fasting is a religious worship. This app tracks your fasting for educational purposes only. Consult your doctor before fasting, especially if pregnant, nursing, or with any medical condition."
   },
   "notifications": {
     "notifications": "Notifications",
@@ -358,7 +383,23 @@
     "disableNotifications": "Disable Notifications",
     "noNotifications": "No notifications yet",
     "permissionDenied": "Notification permission denied",
-    "permissionGranted": "Notification permission granted"
+    "permissionGranted": "Notification permission granted",
+    "activeCount": "{active} of {total} active",
+    "enabled": "Notifications enabled",
+    "disabled": "Notifications disabled",
+    "mealReminderDesc": "Remind you to log meals",
+    "waterReminderDesc": "Remind you to drink water",
+    "waterInterval": "Every {minutes} minutes",
+    "exerciseReminderDesc": "Remind you to exercise",
+    "weightReminderDesc": "Remind you to log your weight",
+    "weightWeekly": "Weekly",
+    "fastingReminderDesc": "Remind you of Suhoor and Iftar times",
+    "milestoneDesc": "Celebrate when you reach milestones",
+    "measurementReminderDesc": "Remind you to take body measurements",
+    "measurementMonthly": "First day of each month",
+    "timeMeals": "08:00, 12:30, 19:00",
+    "timeExercise": "18:00",
+    "timeWeight": "07:00"
   },
   "settings": {
     "settings": "Settings",
@@ -381,7 +422,19 @@
     "notifications": "Notifications",
     "fastingSettings": "Fasting Settings",
     "bodySettings": "Body Settings",
-    "mealSettings": "Meal Settings"
+    "mealSettings": "Meal Settings",
+    "editProfile": "Edit Profile",
+    "name": "Name",
+    "email": "Email",
+    "sex": "Sex",
+    "height": "Height",
+    "goal": "Goal",
+    "targetWeight": "Target Weight",
+    "maintain": "Maintain",
+    "loseWeight": "Lose Weight",
+    "gainWeight": "Gain Weight",
+    "male": "Male",
+    "female": "Female"
   },
   "onboarding": {
     "welcome": "Welcome to FitTracker",
@@ -464,5 +517,29 @@
     "lb": "lb",
     "oz": "oz",
     "percent": "%"
+  },
+  "days": {
+    "sun": "Sun",
+    "mon": "Mon",
+    "tue": "Tue",
+    "wed": "Wed",
+    "thu": "Thu",
+    "fri": "Fri",
+    "sat": "Sat",
+    "sunday": "Sunday",
+    "monday": "Monday",
+    "tuesday": "Tuesday",
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "friday": "Friday",
+    "saturday": "Saturday"
+  },
+  "mealTypes": {
+    "breakfast": "Breakfast",
+    "lunch": "Lunch",
+    "dinner": "Dinner",
+    "snack": "Snack",
+    "suhoor": "Suhoor",
+    "iftar": "Iftar"
   }
 }

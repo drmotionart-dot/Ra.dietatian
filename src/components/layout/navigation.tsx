@@ -74,7 +74,7 @@ export function DesktopSidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 border-r bg-background">
+    <aside className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 border-s bg-background">
       <div className="flex flex-col flex-1 min-h-0">
         <div className="flex items-center h-16 flex-shrink-0 px-4 border-b">
           <h1 className="text-xl font-bold">{t("common.appName")}</h1>
