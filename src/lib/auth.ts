@@ -59,13 +59,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
   ],
   callbacks: {
-    async jwt({ token, user, account }) {
+    async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
-      }
-      if (token.id) {
         await connectDB();
-        const dbUser = await User.findById(token.id).lean<{ isOnboarded?: boolean; tier?: string }>();
+        const dbUser = await User.findById(user.id).lean<{ isOnboarded?: boolean; tier?: string }>();
         token.isOnboarded = dbUser?.isOnboarded ?? false;
         token.tier = dbUser?.tier ?? "free";
       }
