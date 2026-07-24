@@ -138,7 +138,7 @@ export default function NotificationsPage() {
           <h1 className="text-2xl font-bold">{t("notifications.notificationSettings")}</h1>
         </div>
         <span className="text-sm text-muted-foreground">
-          {t("notifications.activeCount", { active: enabledCount, total: settings.length })}
+          {`${enabledCount} / ${settings.length}`}
         </span>
       </div>
 

@@ -48,7 +48,7 @@ export async function PUT(req: Request) {
     const prefs = await NotificationPreference.findOneAndUpdate(
       { userId: session.user.id },
       { $set: updates },
-      { new: true, upsert: true }
+      { new: true, upsert: true, setDefaultsOnInsert: true }
     ).lean();
 
     return NextResponse.json({ preferences: prefs });

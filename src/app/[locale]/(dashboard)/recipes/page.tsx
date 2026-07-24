@@ -76,10 +76,10 @@ export default function RecipesPage() {
 
   const getDifficultyColor = (d?: string) => {
     switch (d) {
-      case "easy": return "bg-green-100 text-green-800";
-      case "medium": return "bg-yellow-100 text-yellow-800";
-      case "hard": return "bg-red-100 text-red-800";
-      default: return "bg-gray-100 text-gray-800";
+      case "easy": return "bg-primary/10 text-primary";
+      case "medium": return "bg-muted text-muted-foreground";
+      case "hard": return "bg-accent/10 text-accent";
+      default: return "bg-muted text-muted-foreground";
     }
   };
 
@@ -105,11 +105,11 @@ export default function RecipesPage() {
             <form onSubmit={handleCreate} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label>{t("recipes.nameEnglish")}</Label>
+                   <Label>{t("food.foodName")}</Label>
                   <Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
                 </div>
                 <div className="space-y-2">
-                  <Label>{t("recipes.nameArabic")}</Label>
+                   <Label>{t("food.foodNameArabic")}</Label>
                   <Input value={form.nameAr} onChange={(e) => setForm({ ...form, nameAr: e.target.value })} />
                 </div>
                 <div className="space-y-2">
@@ -223,15 +223,15 @@ export default function RecipesPage() {
                           <div className="text-muted-foreground">{t("units.kcal")}</div>
                         </div>
                         <div>
-                          <div className="font-bold text-blue-500">{recipe.nutritionPerServing.protein || 0}g</div>
+                          <div className="font-bold text-primary">{recipe.nutritionPerServing.protein || 0}g</div>
                           <div className="text-muted-foreground">{t("dashboard.proteinAbbr")}</div>
                         </div>
                         <div>
-                          <div className="font-bold text-yellow-500">{recipe.nutritionPerServing.carbs || 0}g</div>
+                          <div className="font-bold text-muted-foreground">{recipe.nutritionPerServing.carbs || 0}g</div>
                           <div className="text-muted-foreground">{t("dashboard.carbsAbbr")}</div>
                         </div>
                         <div>
-                          <div className="font-bold text-red-500">{recipe.nutritionPerServing.fat || 0}g</div>
+                          <div className="font-bold text-accent">{recipe.nutritionPerServing.fat || 0}g</div>
                           <div className="text-muted-foreground">{t("dashboard.fatAbbr")}</div>
                         </div>
                       </div>

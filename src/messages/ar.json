@@ -411,6 +411,8 @@
     "searchRecipes": "بحث عن وصفات",
     "createRecipe": "إنشاء وصفة",
     "recipeName": "اسم الوصفة",
+    "nameEnglish": "الاسم (إنجليزي)",
+    "nameArabic": "الاسم (عربي)",
     "ingredients": "المكونات",
     "instructions": "التعليمات",
     "prepTime": "وقت التحضير",
@@ -495,7 +497,8 @@
     "requestPermission": "تفعيل إشعارات المتصفح",
     "sendTest": "إرسال إشعار تجريبي",
     "testSent": "تم إرسال الإشعار التجريبي!",
-    "testFailed": "فشل في إرسال الإشعار التجريبي"
+    "testFailed": "فشل في إرسال الإشعار التجريبي",
+    "activeCount": "{active} من {total} مفعّل"
   },
   "settings": {
     "settings": "الإعدادات",
@@ -517,7 +520,6 @@
     "gainWeight": "زيادة الوزن",
     "male": "ذكر",
     "female": "أنثى",
-    "maintain": "الحفاظ على الوزن",
     "lose": "إنقاص الوزن",
     "gain": "زيادة الوزن",
     "activityLevel": "مستوى النشاط",

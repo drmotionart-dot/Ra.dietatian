@@ -188,7 +188,20 @@ export async function POST(req: Request) {
     }
 
     const mealLogId = mealLog._id.toString();
-    const logItems = newItems.map((item: Record<string, unknown>) => ({ ...item, mealLogId }));
+    const logItems = newItems.map((item: Record<string, unknown>) => ({
+      mealLogId,
+      refType: item.refType || "food",
+      refId: item.refId,
+      foodId: item.foodId,
+      quantity: item.quantity || 100,
+      unit: item.unit || "g",
+      servingWeight: item.servingWeight,
+      calories: item.calories || 0,
+      protein: item.protein || 0,
+      carbs: item.carbs || 0,
+      fat: item.fat || 0,
+      fiber: item.fiber || 0,
+    }));
     await MealLogItem.insertMany(logItems);
 
     const allItems = await MealLogItem.find({ mealLogId }).lean();

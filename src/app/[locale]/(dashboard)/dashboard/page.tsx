@@ -6,7 +6,7 @@ import { useParams } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { Flame, Target, TrendingUp, Utensils, Scale, Moon, ChefHat, Heart } from "lucide-react";
+import { Flame, Target, TrendingUp, Utensils, Scale, Moon, ChefHat } from "lucide-react";
 import BodyVisualization from "@/components/body/BodyVisualization";
 import Link from "next/link";
 

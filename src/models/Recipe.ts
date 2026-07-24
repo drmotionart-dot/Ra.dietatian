@@ -28,7 +28,7 @@ const RecipeSchema = new Schema(
     tipsAr: [String],
     prepTimeMinutes: Number,
     cookTimeMinutes: Number,
-    difficulty: String,
+    difficulty: { type: String, enum: ["easy", "medium", "hard"] },
     nutritionPerServing: {
       type: {
         calories: { type: Number, default: 0 },

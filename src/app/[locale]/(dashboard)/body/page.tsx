@@ -128,35 +128,35 @@ export default function BodyPage() {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="weight">{t("body.weight")} (kg)</Label>
+                   <Label htmlFor="weight">{t("body.weight")} ({t("units.kg")})</Label>
                   <Input id="weight" type="number" step="0.1" value={form.weightKg} onChange={(e) => setForm({ ...form, weightKg: e.target.value })} placeholder="70" />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="bodyFat">{t("body.bodyFat")} (%)</Label>
+                   <Label htmlFor="bodyFat">{t("body.bodyFat")} ({t("units.percent")})</Label>
                   <Input id="bodyFat" type="number" step="0.1" value={form.bodyFatPercent} onChange={(e) => setForm({ ...form, bodyFatPercent: e.target.value })} placeholder="20" />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="waist">{t("body.waist")} (cm)</Label>
+                   <Label htmlFor="waist">{t("body.waist")} ({t("units.cm")})</Label>
                   <Input id="waist" type="number" step="0.1" value={form.waistCm} onChange={(e) => setForm({ ...form, waistCm: e.target.value })} placeholder="80" />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="hip">{t("body.hip")} (cm)</Label>
+                   <Label htmlFor="hip">{t("body.hip")} ({t("units.cm")})</Label>
                   <Input id="hip" type="number" step="0.1" value={form.hipCm} onChange={(e) => setForm({ ...form, hipCm: e.target.value })} placeholder="95" />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="bicep">{t("body.bicep")} (cm)</Label>
+                   <Label htmlFor="bicep">{t("body.bicep")} ({t("units.cm")})</Label>
                   <Input id="bicep" type="number" step="0.1" value={form.bicepCm} onChange={(e) => setForm({ ...form, bicepCm: e.target.value })} placeholder="32" />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="chest">{t("body.chest")} (cm)</Label>
+                   <Label htmlFor="chest">{t("body.chest")} ({t("units.cm")})</Label>
                   <Input id="chest" type="number" step="0.1" value={form.chestCm} onChange={(e) => setForm({ ...form, chestCm: e.target.value })} placeholder="100" />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="thigh">{t("body.thigh")} (cm)</Label>
+                   <Label htmlFor="thigh">{t("body.thigh")} ({t("units.cm")})</Label>
                   <Input id="thigh" type="number" step="0.1" value={form.thighCm} onChange={(e) => setForm({ ...form, thighCm: e.target.value })} placeholder="55" />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="neck">{t("body.neck")} (cm)</Label>
+                   <Label htmlFor="neck">{t("body.neck")} ({t("units.cm")})</Label>
                   <Input id="neck" type="number" step="0.1" value={form.neckCm} onChange={(e) => setForm({ ...form, neckCm: e.target.value })} placeholder="38" />
                 </div>
               </div>
@@ -187,18 +187,18 @@ export default function BodyPage() {
                 <div key={m._id} className="p-3 rounded-lg border">
                   <div className="flex items-center justify-between mb-2">
                     <div className="font-medium">{new Date(m.date).toLocaleDateString()}</div>
-                    {m.bmi && <span className="text-sm text-muted-foreground">{t("body.bmiLabel")} {m.bmi}</span>}
+                     {m.bmi && <span className="text-sm text-muted-foreground">{t("body.bmi")} {m.bmi}</span>}
                   </div>
                   <div className="grid grid-cols-3 gap-2 text-sm text-muted-foreground">
-                    {m.weightKg && <div>{t("body.weightLabel")} {m.weightKg} {t("units.kg")}</div>}
-                    {m.bodyFatPercent && <div>{t("body.fatLabel")} {m.bodyFatPercent}%</div>}
-                    {m.waistCm && <div>{t("body.waistLabel")} {m.waistCm} {t("units.cm")}</div>}
-                    {m.hipCm && <div>{t("body.hipLabel")} {m.hipCm} {t("units.cm")}</div>}
-                    {m.chestCm && <div>{t("body.chestLabel")} {m.chestCm} {t("units.cm")}</div>}
-                    {m.bicepCm && <div>{t("body.bicepLabel")} {m.bicepCm} {t("units.cm")}</div>}
-                    {m.thighCm && <div>{t("body.thighLabel")} {m.thighCm} {t("units.cm")}</div>}
-                    {m.neckCm && <div>{t("body.neckLabel")} {m.neckCm} {t("units.cm")}</div>}
-                    {m.waistToHipRatio && <div>{t("body.waistToHipRatioLabel")} {m.waistToHipRatio}</div>}
+                     {m.weightKg && <div>{t("body.weight")} {m.weightKg} {t("units.kg")}</div>}
+                    {m.bodyFatPercent && <div>{t("body.bodyFat")} {m.bodyFatPercent} {t("units.percent")}</div>}
+                    {m.waistCm && <div>{t("body.waist")} {m.waistCm} {t("units.cm")}</div>}
+                    {m.hipCm && <div>{t("body.hip")} {m.hipCm} {t("units.cm")}</div>}
+                    {m.chestCm && <div>{t("body.chest")} {m.chestCm} {t("units.cm")}</div>}
+                    {m.bicepCm && <div>{t("body.bicep")} {m.bicepCm} {t("units.cm")}</div>}
+                    {m.thighCm && <div>{t("body.thigh")} {m.thighCm} {t("units.cm")}</div>}
+                    {m.neckCm && <div>{t("body.neck")} {m.neckCm} {t("units.cm")}</div>}
+                    {m.waistToHipRatio && <div>{t("body.waistToHipRatio")} {m.waistToHipRatio}</div>}
                   </div>
                 </div>
               ))}

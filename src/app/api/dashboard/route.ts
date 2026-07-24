@@ -27,12 +27,11 @@ export async function GET() {
     let carbsTarget = 275;
     let fatTarget = 78;
 
-    if (user?.heightCm && user?.activityLevel && user?.sex) {
-      const latestMeasurement = await BodyMeasurement.findOne({ userId })
-        .sort({ date: -1 })
-        .select("weightKg")
-        .lean();
+    const latestMeasurement = await BodyMeasurement.findOne({ userId })
+      .sort({ date: -1 })
+      .lean();
 
+    if (user?.heightCm && user?.activityLevel && user?.sex) {
       if (latestMeasurement?.weightKg) {
         const age = user.dateOfBirth
           ? Math.floor((Date.now() - new Date(user.dateOfBirth).getTime()) / (365.25 * 24 * 60 * 60 * 1000))
@@ -73,10 +72,6 @@ export async function GET() {
       }),
       { calories: 0, protein: 0, carbs: 0, fat: 0 }
     );
-
-    const latestMeasurement = await BodyMeasurement.findOne({ userId })
-      .sort({ date: -1 })
-      .lean();
 
     const recentMeals = await MealLog.find({ userId })
       .sort({ date: -1 })

@@ -113,11 +113,11 @@ export default function MedicalPage() {
             </CardContent>
           </Card>
 
-          <Card className="border-yellow-200 bg-yellow-50 dark:border-yellow-800 dark:bg-yellow-950">
+          <Card className="border-primary/20 bg-primary/5">
             <CardContent className="pt-6">
               <div className="flex gap-3">
-                <AlertTriangle className="h-5 w-5 text-yellow-600 flex-shrink-0" />
-                <p className="text-sm text-yellow-800 dark:text-yellow-200">
+                <AlertTriangle className="h-5 w-5 text-primary flex-shrink-0" />
+                <p className="text-sm text-foreground">
                   {selected.disclaimerAr || t("medical.disclaimer")}
                 </p>
               </div>
@@ -163,11 +163,11 @@ export default function MedicalPage() {
                       <div className="mt-4 pt-4 border-t space-y-4">
                         {nutrient.benefitsAr && nutrient.benefitsAr.length > 0 && (
                           <div>
-                            <h4 className="font-medium text-green-600 dark:text-green-400 mb-2">{t("medical.benefits")}</h4>
+                            <h4 className="font-medium text-primary mb-2">{t("medical.benefits")}</h4>
                             <ul className="space-y-2">
                               {nutrient.benefitsAr.map((b, i) => (
                                 <li key={i} className="flex items-start gap-2 text-sm">
-                                  <span className="text-green-500 mt-1">•</span>
+                                  <span className="text-primary mt-1">•</span>
                                   {b}
                                 </li>
                               ))}
@@ -176,11 +176,11 @@ export default function MedicalPage() {
                         )}
                         {nutrient.considerationsAr && nutrient.considerationsAr.length > 0 && (
                           <div>
-                            <h4 className="font-medium text-orange-600 dark:text-orange-400 mb-2">{t("medical.considerations")}</h4>
+                            <h4 className="font-medium text-accent mb-2">{t("medical.considerations")}</h4>
                             <ul className="space-y-2">
                               {nutrient.considerationsAr.map((c, i) => (
                                 <li key={i} className="flex items-start gap-2 text-sm">
-                                  <span className="text-orange-500 mt-1">•</span>
+                                  <span className="text-accent mt-1">•</span>
                                   {c}
                                 </li>
                               ))}
@@ -218,7 +218,7 @@ export default function MedicalPage() {
                   <ul className="space-y-3">
                     {(selected.cons || []).map((con, index) => (
                       <li key={index} className="flex items-start gap-3">
-                        <AlertTriangle className="h-4 w-4 text-orange-500 mt-1 flex-shrink-0" />
+                        <AlertTriangle className="h-4 w-4 text-accent mt-1 flex-shrink-0" />
                         <span>{con.textAr || con.text}</span>
                       </li>
                     ))}

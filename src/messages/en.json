@@ -411,6 +411,8 @@
     "searchRecipes": "Search Recipes",
     "createRecipe": "Create Recipe",
     "recipeName": "Recipe Name",
+    "nameEnglish": "Name (English)",
+    "nameArabic": "Name (Arabic)",
     "ingredients": "Ingredients",
     "instructions": "Instructions",
     "prepTime": "Prep Time",
@@ -495,7 +497,8 @@
     "requestPermission": "Enable Browser Notifications",
     "sendTest": "Send Test Notification",
     "testSent": "Test notification sent!",
-    "testFailed": "Failed to send test notification"
+    "testFailed": "Failed to send test notification",
+    "activeCount": "{active} of {total} active"
   },
   "settings": {
     "settings": "Settings",
@@ -517,7 +520,6 @@
     "gainWeight": "Gain Weight",
     "male": "Male",
     "female": "Female",
-    "maintain": "Maintain Weight",
     "lose": "Lose Weight",
     "gain": "Gain Weight",
     "activityLevel": "Activity Level",

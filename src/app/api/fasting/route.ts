@@ -59,7 +59,7 @@ export async function POST(req: Request) {
       const updated = await FastingPreference.findOneAndUpdate(
         { userId: session.user.id },
         { $set: updates },
-        { new: true, upsert: true }
+        { new: true, upsert: true, setDefaultsOnInsert: true }
       ).lean();
       return NextResponse.json({ preferences: updated });
     }

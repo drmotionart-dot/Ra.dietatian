@@ -7,7 +7,7 @@ const FastingLogSchema = new Schema(
     hijriYear: Number,
     hijriMonth: Number,
     hijriDay: Number,
-    fastingType: { type: String, required: true },
+    fastingType: { type: String, required: true, enum: ["ramadan", "sunnah", "voluntary"] },
     suhoorTime: String,
     iftarTime: String,
     fajrTime: String,

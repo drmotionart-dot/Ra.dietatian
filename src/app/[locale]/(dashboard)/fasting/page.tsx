@@ -163,7 +163,7 @@ export default function FastingPage() {
         <Card>
           <CardContent className="pt-6">
             <div className="text-center space-y-2">
-              <Clock className="h-6 w-6 mx-auto text-blue-500" />
+              <Clock className="h-6 w-6 mx-auto text-primary" />
               <Label className="text-xs text-muted-foreground">{t("fasting.suhoorTime")}</Label>
               <input
                 type="time"
@@ -180,7 +180,7 @@ export default function FastingPage() {
         <Card>
           <CardContent className="pt-6">
             <div className="text-center space-y-2">
-              <Clock className="h-6 w-6 mx-auto text-orange-500" />
+              <Clock className="h-6 w-6 mx-auto text-primary" />
               <Label className="text-xs text-muted-foreground">{t("fasting.iftarTime")}</Label>
               <input
                 type="time"
@@ -323,7 +323,7 @@ export default function FastingPage() {
                   <span className="text-sm">
                     {new Date(log.date).toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" })}
                   </span>
-                  <span className={`text-sm font-medium ${log.completed ? "text-green-600" : "text-red-500"}`}>
+                  <span className={`text-sm font-medium ${log.completed ? "text-primary" : "text-destructive"}`}>
                     {log.completed ? t("fasting.dayCompleted") : t("fasting.dayMissed")}
                   </span>
                 </div>
@@ -333,9 +333,9 @@ export default function FastingPage() {
         </CardContent>
       </Card>
 
-      <Card className="border-yellow-200 bg-yellow-50 dark:border-yellow-800 dark:bg-yellow-950">
+      <Card className="border-primary/20 bg-primary/5">
         <CardContent className="pt-6">
-          <p className="text-sm text-yellow-800 dark:text-yellow-200">
+          <p className="text-sm text-primary">
             {t("fasting.disclaimer")}
           </p>
         </CardContent>

@@ -231,7 +231,7 @@ export default function MealsPage() {
                             }}
                             className="w-20 text-center border rounded p-1 text-sm"
                           />
-                          <span className="text-xs text-muted-foreground">g</span>
+                          <span className="text-xs text-muted-foreground">{t("units.g")}</span>
                           <Button size="sm" variant="ghost" onClick={() => removeFoodFromMeal(item.id)}>
                             <Trash2 className="h-4 w-4 text-destructive" />
                           </Button>
