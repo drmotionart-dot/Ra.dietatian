@@ -68,8 +68,15 @@ export async function POST(req: Request) {
       weightKg: weightKg,
       activityLevel: body.activityLevel,
       goal: body.goal,
+      waterGoalMl: Math.round(weightKg! * (body.activityLevel >= 1.725 ? 35 : body.activityLevel >= 1.55 ? 33 : 30)),
     };
     if (targetWeightKg) update.targetWeightKg = targetWeightKg;
+    if (Array.isArray(body.dietaryPreferences)) update.dietaryPreferences = body.dietaryPreferences;
+    if (Array.isArray(body.interests)) update.interests = body.interests;
+    if (body.fastingCity) {
+      update.fastingCity = body.fastingCity;
+      update.fastingCountry = "Egypt";
+    }
 
     await User.findByIdAndUpdate(session.user.id, update);
 

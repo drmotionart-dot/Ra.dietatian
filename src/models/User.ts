@@ -22,6 +22,8 @@ const UserSchema = new Schema(
     fastingCountry: { type: String, default: "Egypt" },
     suhoorTime: { type: String, default: "03:30" },
     iftarTime: { type: String, default: "19:00" },
+    dietaryPreferences: [{ type: String }],
+    interests: [{ type: String }],
   },
   { timestamps: true, collection: "users" }
 );

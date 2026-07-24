@@ -611,10 +611,35 @@
     "gainWeight": "زيادة الوزن",
     "calculateTargets": "احسب أهدافي",
     "startTracking": "ابدأ التتبع",
-    "step1": "الخطوة 1 من 4",
-    "step2": "الخطوة 2 من 4",
-    "step3": "الخطوة 3 من 4",
-    "step4": "الخطوة 4 من 4"
+    "dietaryPreferences": "التفضيلات الغذائية",
+    "dietaryHint": "اختر ما يناسبك",
+    "interests": "الاهتمامات",
+    "interestsHint": "ما الذي تركز عليه؟",
+    "location": "الموقع",
+    "city": "المدينة",
+    "cityHint": "يُستخدم لضبط أوقات الصيام بدقة",
+    "diet": {
+      "highProtein": "بروتين عالي",
+      "lowCarb": "كربوهيدرات قليلة",
+      "vegetarian": "نباتي",
+      "vegan": "فيغان",
+      "keto": "كيتو",
+      "halal": "حلال",
+      "egyptianCuisine": "المطبخ المصري",
+      "mediterranean": "متوسطي",
+      "glutenFree": "خالٍ من الغلوتين",
+      "dairyFree": "خالٍ من الألبان"
+    },
+    "interest": {
+      "weightLoss": "إنقاص الوزن",
+      "muscleGain": "بناء العضلات",
+      "generalHealth": "صحة عامة",
+      "ramadanFasting": "صيام رمضان",
+      "sportsPerformance": "الأداء الرياضي",
+      "bodybuilding": "كمال الأجسام",
+      "endurance": "التحمل",
+      "flexibility": "المرونة"
+    }
   },
   "validation": {
     "required": "هذا الحقل مطلوب",

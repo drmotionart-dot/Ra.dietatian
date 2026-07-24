@@ -12,6 +12,22 @@ import { cn } from "@/lib/utils";
 const ACTIVITY_LEVELS = [1.2, 1.375, 1.55, 1.725, 1.9];
 const GOALS = ["maintain", "lose", "gain"] as const;
 
+const DIETARY_OPTIONS = [
+  "highProtein", "lowCarb", "vegetarian", "vegan", "keto", "halal",
+  "egyptianCuisine", "mediterranean", "glutenFree", "dairyFree",
+];
+
+const INTEREST_OPTIONS = [
+  "weightLoss", "muscleGain", "generalHealth", "ramadanFasting",
+  "sportsPerformance", "bodybuilding", "endurance", "flexibility",
+];
+
+const EGYPTIAN_CITIES = [
+  "Cairo", "Alexandria", "Giza", "Luxor", "Aswan", "Port Said",
+  "Suez", "Mansoura", "Tanta", "Ismailia", "Zagazig", "Damanhur",
+  "Minya", "Assiut", "Sohag", "Qena", "Hurghada", "Sharm El Sheikh",
+];
+
 export default function OnboardingPage() {
   const t = useTranslations();
   const router = useRouter();
@@ -28,9 +44,12 @@ export default function OnboardingPage() {
     activityLevel: 1.55,
     goal: "maintain" as string,
     targetWeightKg: "",
+    dietaryPreferences: [] as string[],
+    interests: [] as string[],
+    fastingCity: "Cairo",
   });
 
-  const totalSteps = 4;
+  const totalSteps = 7;
 
   const handleComplete = async () => {
     setLoading(true);
@@ -43,7 +62,7 @@ export default function OnboardingPage() {
       });
       const data = await res.json();
       if (res.ok) {
-        router.push(`/${locale}/dashboard`);
+        router.push("/" + locale + "/dashboard");
       } else {
         setError(data.error || t("common.error"));
       }
@@ -62,6 +81,39 @@ export default function OnboardingPage() {
     t("onboarding.extremelyActive"),
   ];
 
+  const stepTitles: Record<number, string> = {
+    1: t("onboarding.profileSetup"),
+    2: t("onboarding.weight") + " & " + t("onboarding.height"),
+    3: t("onboarding.activityLevel"),
+    4: t("onboarding.goal"),
+    5: t("onboarding.dietaryPreferences") || "Dietary Preferences",
+    6: t("onboarding.interests") || "Interests",
+    7: t("onboarding.location") || "Location",
+  };
+
+  const toggleArrayItem = (field: "dietaryPreferences" | "interests", value: string) => {
+    setForm((prev) => {
+      const arr = prev[field];
+      return {
+        ...prev,
+        [field]: arr.includes(value) ? arr.filter((v) => v !== value) : [...arr, value],
+      };
+    });
+  };
+
+  const validateStep = (s: number): boolean => {
+    if (s === 1 && (!form.dateOfBirth || parseInt(form.dateOfBirth) < 10 || parseInt(form.dateOfBirth) > 120)) {
+      setError(t("onboarding.age") + " (10-120)");
+      return false;
+    }
+    if (s === 2 && (!form.heightCm || !form.weightKg)) {
+      setError(t("onboarding.height") + " & " + t("onboarding.weight") + " required");
+      return false;
+    }
+    setError("");
+    return true;
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md">
@@ -72,17 +124,12 @@ export default function OnboardingPage() {
                 key={i}
                 className={cn(
                   "h-1.5 rounded-full transition-all",
-                  i < step ? "bg-primary w-8" : "bg-muted w-4"
+                  i < step ? "bg-primary w-6" : "bg-muted w-3"
                 )}
               />
             ))}
           </div>
-          <CardTitle className="text-xl">
-            {step === 1 && t("onboarding.profileSetup")}
-            {step === 2 && t("onboarding.weight") + " & " + t("onboarding.height")}
-            {step === 3 && t("onboarding.activityLevel")}
-            {step === 4 && t("onboarding.goal")}
-          </CardTitle>
+          <CardTitle className="text-xl">{stepTitles[step]}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
           {step === 1 && (
@@ -168,7 +215,7 @@ export default function OnboardingPage() {
                     onClick={() => setForm({ ...form, goal: g })}
                     className="h-12"
                   >
-                    {t(`onboarding.${g === "maintain" ? "maintainWeight" : g === "lose" ? "loseWeight" : "gainWeight"}`)}
+                    {t("onboarding." + (g === "maintain" ? "maintainWeight" : g === "lose" ? "loseWeight" : "gainWeight"))}
                   </Button>
                 ))}
               </div>
@@ -188,6 +235,62 @@ export default function OnboardingPage() {
             </div>
           )}
 
+          {step === 5 && (
+            <div className="space-y-3">
+              <p className="text-sm text-muted-foreground">{t("onboarding.dietaryHint") || "Select all that apply"}</p>
+              <div className="flex flex-wrap gap-2">
+                {DIETARY_OPTIONS.map((opt) => (
+                  <Button
+                    key={opt}
+                    variant={form.dietaryPreferences.includes(opt) ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => toggleArrayItem("dietaryPreferences", opt)}
+                    className="h-9"
+                  >
+                    {t("onboarding.diet." + opt) || opt}
+                  </Button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {step === 6 && (
+            <div className="space-y-3">
+              <p className="text-sm text-muted-foreground">{t("onboarding.interestsHint") || "What are you focused on?"}</p>
+              <div className="flex flex-wrap gap-2">
+                {INTEREST_OPTIONS.map((opt) => (
+                  <Button
+                    key={opt}
+                    variant={form.interests.includes(opt) ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => toggleArrayItem("interests", opt)}
+                    className="h-9"
+                  >
+                    {t("onboarding.interest." + opt) || opt}
+                  </Button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {step === 7 && (
+            <div className="space-y-3">
+              <Label>{t("onboarding.city") || "City"}</Label>
+              <select
+                value={form.fastingCity}
+                onChange={(e) => setForm({ ...form, fastingCity: e.target.value })}
+                className="w-full border rounded-md p-2 bg-background"
+              >
+                {EGYPTIAN_CITIES.map((city) => (
+                  <option key={city} value={city}>{city}</option>
+                ))}
+              </select>
+              <p className="text-xs text-muted-foreground">
+                {t("onboarding.cityHint") || "Used to set accurate fasting times"}
+              </p>
+            </div>
+          )}
+
           <div className="flex gap-3 pt-2">
             {step > 1 && (
               <Button variant="outline" onClick={() => setStep(step - 1)} className="flex-1">
@@ -195,18 +298,7 @@ export default function OnboardingPage() {
               </Button>
             )}
             {step < totalSteps ? (
-              <Button onClick={() => {
-                if (step === 1 && (!form.dateOfBirth || parseInt(form.dateOfBirth) < 10 || parseInt(form.dateOfBirth) > 120)) {
-                  setError(t("onboarding.age") + " (10-120)");
-                  return;
-                }
-                if (step === 2 && (!form.heightCm || !form.weightKg)) {
-                  setError(t("onboarding.height") + " & " + t("onboarding.weight") + " required");
-                  return;
-                }
-                setError("");
-                setStep(step + 1);
-              }} className="flex-1">
+              <Button onClick={() => { if (validateStep(step)) setStep(step + 1); }} className="flex-1">
                 {t("common.next")}
               </Button>
             ) : (

@@ -611,10 +611,35 @@
     "gainWeight": "Gain Weight",
     "calculateTargets": "Calculate My Targets",
     "startTracking": "Start Tracking",
-    "step1": "Step 1 of 4",
-    "step2": "Step 2 of 4",
-    "step3": "Step 3 of 4",
-    "step4": "Step 4 of 4"
+    "dietaryPreferences": "Dietary Preferences",
+    "dietaryHint": "Select all that apply",
+    "interests": "Interests",
+    "interestsHint": "What are you focused on?",
+    "location": "Location",
+    "city": "City",
+    "cityHint": "Used to set accurate fasting times",
+    "diet": {
+      "highProtein": "High Protein",
+      "lowCarb": "Low Carb",
+      "vegetarian": "Vegetarian",
+      "vegan": "Vegan",
+      "keto": "Keto",
+      "halal": "Halal",
+      "egyptianCuisine": "Egyptian Cuisine",
+      "mediterranean": "Mediterranean",
+      "glutenFree": "Gluten Free",
+      "dairyFree": "Dairy Free"
+    },
+    "interest": {
+      "weightLoss": "Weight Loss",
+      "muscleGain": "Muscle Gain",
+      "generalHealth": "General Health",
+      "ramadanFasting": "Ramadan Fasting",
+      "sportsPerformance": "Sports Performance",
+      "bodybuilding": "Bodybuilding",
+      "endurance": "Endurance",
+      "flexibility": "Flexibility"
+    }
   },
   "validation": {
     "required": "This field is required",
