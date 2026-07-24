@@ -52,17 +52,39 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, account }) {
       if (user) {
         token.id = user.id;
+      }
+      if (account?.provider === "google" && token.id) {
+        await connectDB();
+        const dbUser = await User.findById(token.id).lean<{ isOnboarded?: boolean }>();
+        token.isOnboarded = dbUser?.isOnboarded ?? false;
       }
       return token;
     },
     async session({ session, token }) {
       if (session.user) {
         session.user.id = token.id as string;
+        (session.user as Record<string, unknown>).isOnboarded = token.isOnboarded;
       }
       return session;
+    },
+    async signIn({ user, account }) {
+      if (account?.provider === "google" && user?.email) {
+        await connectDB();
+        let dbUser = await User.findOne({ email: user.email });
+        if (!dbUser) {
+          dbUser = await User.create({
+            email: user.email,
+            name: user.name || "",
+            image: user.image,
+            isOnboarded: false,
+          });
+        }
+        (user as Record<string, unknown>).id = dbUser._id.toString();
+      }
+      return true;
     },
   },
 });
