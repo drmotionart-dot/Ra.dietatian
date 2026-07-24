@@ -8,6 +8,9 @@ import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Flame, Target, TrendingUp, Utensils, Scale, Moon, ChefHat, Dumbbell, Droplets, Plus } from "lucide-react";
 import BodyVisualization from "@/components/body/BodyVisualization";
+import { CountUp } from "@/components/CountUp";
+import { ProgressRing } from "@/components/ProgressRing";
+import { PageTransition } from "@/components/PageTransition";
 import Link from "next/link";
 
 interface DashboardData {
@@ -70,6 +73,7 @@ export default function DashboardPage() {
           <div className="text-muted-foreground">{t("common.loading")}</div>
         </div>
       ) : (<>
+      <PageTransition>
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">{t("dashboard.welcome")}</h1>
@@ -77,11 +81,12 @@ export default function DashboardPage() {
         </div>
         <div className="flex items-center gap-2">
           <Flame className="h-5 w-5 text-primary" />
-          <span className="font-semibold">{data?.streak || 0} {t("dashboard.streak")}</span>
+          <span className="font-semibold"><CountUp to={data?.streak || 0} /> {t("dashboard.streak")}</span>
         </div>
       </div>
+      </PageTransition>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 stagger-enter">
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -103,17 +108,20 @@ export default function DashboardPage() {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="text-center">
-                <div className="text-4xl font-bold text-primary">
-                  {remaining.calories}
-                </div>
-                <div className="text-sm text-muted-foreground">
-                  {consumed.calories} {t("units.kcal")} / {targets.calories} {t("units.kcal")}
-                </div>
+              <div className="flex items-center justify-center">
+                <ProgressRing value={consumed.calories} max={targets.calories} size={120} strokeWidth={8} color="var(--primary)">
+                  <div className="text-center">
+                    <CountUp to={remaining.calories} className="text-2xl font-bold text-primary" />
+                    <div className="text-[10px] text-muted-foreground">{t("dashboard.remaining") || "left"}</div>
+                  </div>
+                </ProgressRing>
+              </div>
+              <div className="text-center text-sm text-muted-foreground">
+                <CountUp to={consumed.calories} className="font-semibold text-foreground" /> {t("units.kcal")} / {targets.calories} {t("units.kcal")}
               </div>
               <Progress value={calorieProgress} className="h-3" />
               <div className="flex justify-between text-sm text-muted-foreground">
-                <span>{consumed.calories} {t("units.kcal")} {t("dashboard.eaten")}</span>
+                <span><CountUp to={consumed.calories} className="font-medium text-foreground" /> {t("units.kcal")} {t("dashboard.eaten")}</span>
                 <span>{targets.calories} {t("units.kcal")} {t("dashboard.target")}</span>
               </div>
             </CardContent>
@@ -124,7 +132,7 @@ export default function DashboardPage() {
               <CardContent className="pt-6">
                 <div className="text-center">
                   <div className="text-2xl font-bold text-primary">
-                    {remaining.protein}{t("units.g")}
+                    <CountUp to={remaining.protein} />{t("units.g")}
                   </div>
                   <div className="text-xs text-muted-foreground">
                     {t("meals.proteinLabel")}
@@ -140,7 +148,7 @@ export default function DashboardPage() {
               <CardContent className="pt-6">
                 <div className="text-center">
                   <div className="text-2xl font-bold text-muted-foreground">
-                    {remaining.carbs}{t("units.g")}
+                    <CountUp to={remaining.carbs} />{t("units.g")}
                   </div>
                   <div className="text-xs text-muted-foreground">
                     {t("meals.carbsLabel")}
@@ -156,7 +164,7 @@ export default function DashboardPage() {
               <CardContent className="pt-6">
                 <div className="text-center">
                   <div className="text-2xl font-bold text-accent">
-                    {remaining.fat}{t("units.g")}
+                    <CountUp to={remaining.fat} />{t("units.g")}
                   </div>
                   <div className="text-xs text-muted-foreground">
                     {t("meals.fatLabel")}
@@ -172,6 +180,7 @@ export default function DashboardPage() {
         </div>
       </div>
 
+      <div className="space-y-6 stagger-enter">
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
@@ -183,7 +192,7 @@ export default function DashboardPage() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="text-2xl font-bold text-primary">
-                {data?.water?.totalMl || 0}
+                <CountUp to={data?.water?.totalMl || 0} />
                 <span className="text-sm font-normal text-muted-foreground">{t("units.ml")}</span>
               </div>
               <span className="text-muted-foreground">/ {(data?.water?.goalMl || 2500).toLocaleString()}{t("units.ml")}</span>
@@ -260,6 +269,7 @@ export default function DashboardPage() {
           )}
         </CardContent>
       </Card>
+      </div>
       </>)}
     </div>
   );

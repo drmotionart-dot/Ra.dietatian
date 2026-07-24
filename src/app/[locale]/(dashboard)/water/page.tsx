@@ -6,6 +6,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Droplets, Plus, Trash2 } from "lucide-react";
+import { CountUp } from "@/components/CountUp";
+import { ProgressRing } from "@/components/ProgressRing";
+import { PageTransition } from "@/components/PageTransition";
 
 interface WaterLogEntry {
   _id: string;
@@ -83,20 +86,27 @@ export default function WaterPage() {
 
   return (
     <div className="container mx-auto p-4 space-y-6">
+      <PageTransition>
       <div className="flex items-center gap-2">
         <Droplets className="h-6 w-6 text-primary" />
         <h1 className="text-2xl font-bold">{t("water.title")}</h1>
       </div>
+      </PageTransition>
 
+      <div className="space-y-6 stagger-enter">
       <Card>
         <CardContent className="pt-6">
-          <div className="text-center space-y-4">
-            <div className="text-5xl font-bold text-primary">{totalMl.toLocaleString()}</div>
+          <div className="flex flex-col items-center space-y-4">
+            <ProgressRing value={totalMl} max={goalMl} size={140} strokeWidth={10} color="var(--primary)">
+              <div className="text-center">
+                <CountUp to={totalMl} className="text-3xl font-bold text-primary" />
+                <div className="text-[10px] text-muted-foreground">{t("units.ml")}</div>
+              </div>
+            </ProgressRing>
             <div className="text-sm text-muted-foreground">
-              {t("water.of")} {goalMl.toLocaleString()} {t("units.ml")}
+              {t("water.of")} <CountUp to={goalMl} className="font-medium text-foreground" /> {t("units.ml")}
             </div>
-            <Progress value={progress} className="h-4" />
-            <div className="flex justify-between text-sm text-muted-foreground">
+            <div className="flex justify-between text-sm text-muted-foreground w-full max-w-xs">
               <span>{glasses} {t("water.glasses")}</span>
               <span>{Math.round(progress)}%</span>
             </div>
@@ -167,6 +177,7 @@ export default function WaterPage() {
           )}
         </CardContent>
       </Card>
+      </div>
     </div>
   );
 }

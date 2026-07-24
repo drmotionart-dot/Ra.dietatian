@@ -7,6 +7,9 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BarChart3, TrendingUp, Activity, Flame, Calendar } from "lucide-react";
 import { PageSkeleton } from "@/components/ui/skeleton";
+import { CountUp } from "@/components/CountUp";
+import { ProgressRing } from "@/components/ProgressRing";
+import { PageTransition } from "@/components/PageTransition";
 import {
   LineChart,
   Line,
@@ -276,6 +279,7 @@ export default function AnalyticsPage() {
 
   return (
     <div className="container mx-auto p-4 space-y-6">
+      <PageTransition>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <BarChart3 className="h-6 w-6 text-primary" />
@@ -290,13 +294,15 @@ export default function AnalyticsPage() {
           </Button>
         </div>
       </div>
+      </PageTransition>
 
+      <div className="stagger-enter">
       <Card>
         <CardContent className="pt-6">
-          <div className="text-center">
-            <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-primary/10">
-              <span className="text-3xl font-bold text-primary">{adherenceScore}{t("units.percent")}</span>
-            </div>
+          <div className="flex flex-col items-center">
+            <ProgressRing value={adherenceScore} max={100} size={100} strokeWidth={8} color="var(--primary)">
+              <CountUp to={adherenceScore} suffix="%" className="text-2xl font-bold text-primary" />
+            </ProgressRing>
             <h3 className="mt-4 text-lg font-medium">{t("analytics.adherenceScore")}</h3>
             <p className="text-sm text-muted-foreground">
               {adherenceScore >= 80 ? t("analytics.greatOnTrack") : t("analytics.tryToStickCloser")}
@@ -309,24 +315,25 @@ export default function AnalyticsPage() {
         <Card>
           <CardContent className="pt-6 text-center">
             <Flame className="h-5 w-5 mx-auto mb-1 text-primary" />
-            <div className="text-2xl font-bold text-primary">{streakInfo.current}</div>
+            <div className="text-2xl font-bold text-primary"><CountUp to={streakInfo.current} /></div>
             <div className="text-xs text-muted-foreground">{t("analytics.currentStreak") || "Current Streak"}</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="pt-6 text-center">
             <TrendingUp className="h-5 w-5 mx-auto mb-1 text-primary" />
-            <div className="text-2xl font-bold text-primary">{streakInfo.longest}</div>
+            <div className="text-2xl font-bold text-primary"><CountUp to={streakInfo.longest} /></div>
             <div className="text-xs text-muted-foreground">{t("analytics.longestStreak") || "Longest Streak"}</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="pt-6 text-center">
             <Calendar className="h-5 w-5 mx-auto mb-1 text-primary" />
-            <div className="text-2xl font-bold text-primary">{streakInfo.thisMonth}</div>
+            <div className="text-2xl font-bold text-primary"><CountUp to={streakInfo.thisMonth} /></div>
             <div className="text-xs text-muted-foreground">{t("analytics.activeDays") || "Active Days"}</div>
           </CardContent>
         </Card>
+      </div>
       </div>
 
       <Tabs defaultValue="calories">
