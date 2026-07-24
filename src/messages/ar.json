@@ -528,7 +528,12 @@
     "weightWeekly": "أسبوعياً يوم الاثنين",
     "measurementMonthly": "شهرياً في اليوم الأول",
     "enabled": "مفعّل",
-    "disabled": "معطّل"
+    "disabled": "معطّل",
+    "pushNotifications": "إشعارات الدفع",
+    "pushEnabled": "مفعّل — ستتلقى تذكيرات على هذا الجهاز",
+    "pushDisabled": "معطّل —فعّل لتلقي تذكيرات حقيقية",
+    "enable": "تفعيل",
+    "disable": "تعطيل"
   },
   "settings": {
     "settings": "الإعدادات",

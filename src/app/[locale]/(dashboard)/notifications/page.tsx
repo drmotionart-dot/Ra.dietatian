@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -31,6 +31,7 @@ interface NotifPrefs {
   milestoneCelebrations: boolean;
   measurementRemindersEnabled: boolean;
   measurementFrequency: string;
+  pushEnabled: boolean;
 }
 
 const defaults: NotifPrefs = {
@@ -44,6 +45,7 @@ const defaults: NotifPrefs = {
   milestoneCelebrations: true,
   measurementRemindersEnabled: true,
   measurementFrequency: "monthly",
+  pushEnabled: false,
 };
 
 export default function NotificationsPage() {
@@ -52,10 +54,64 @@ export default function NotificationsPage() {
   const [saving, setSaving] = useState(false);
   const [permission, setPermission] = useState<NotificationPermission>("default");
   const [loading, setLoading] = useState(true);
+  const [pushSupported, setPushSupported] = useState(false);
+  const [subscribing, setSubscribing] = useState(false);
+
+  const registerPush = useCallback(async () => {
+    if (!("serviceWorker" in navigator) || !("PushManager" in window)) return;
+    setSubscribing(true);
+    try {
+      const reg = await navigator.serviceWorker.ready;
+      const sub = await reg.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
+      });
+      const subscription = sub.toJSON();
+      await fetch("/api/notifications/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(subscription),
+      });
+      setPrefs((p) => ({ ...p, pushEnabled: true }));
+    } catch (err) {
+      console.error("Push subscribe error:", err);
+    } finally {
+      setSubscribing(false);
+    }
+  }, []);
+
+  const unregisterPush = useCallback(async () => {
+    if (!("serviceWorker" in navigator)) return;
+    try {
+      const reg = await navigator.serviceWorker.ready;
+      const sub = await reg.pushManager.getSubscription();
+      if (sub) {
+        await fetch("/api/notifications/subscribe", {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ endpoint: sub.endpoint }),
+        });
+        await sub.unsubscribe();
+      }
+      setPrefs((p) => ({ ...p, pushEnabled: false }));
+    } catch (err) {
+      console.error("Push unsubscribe error:", err);
+    }
+  }, []);
 
   useEffect(() => {
     if ("Notification" in window) {
       setPermission(Notification.permission);
+    }
+    if ("serviceWorker" in navigator && "PushManager" in window) {
+      setPushSupported(true);
+      navigator.serviceWorker.ready.then((reg) => {
+        reg.pushManager.getSubscription().then((sub) => {
+          if (sub) {
+            setPrefs((p) => ({ ...p, pushEnabled: true }));
+          }
+        });
+      });
     }
     fetch("/api/notifications")
       .then((r) => r.json())
@@ -72,6 +128,7 @@ export default function NotificationsPage() {
             milestoneCelebrations: d.preferences.milestoneCelebrations ?? true,
             measurementRemindersEnabled: d.preferences.measurementRemindersEnabled ?? true,
             measurementFrequency: d.preferences.measurementFrequency ?? "monthly",
+            pushEnabled: d.preferences.pushEnabled ?? false,
           });
         }
       })
@@ -118,6 +175,7 @@ export default function NotificationsPage() {
       milestoneCelebrations: checked,
       measurementRemindersEnabled: checked,
       measurementFrequency: prefs.measurementFrequency,
+      pushEnabled: prefs.pushEnabled,
     };
     setPrefs(updated);
     persist(updated);
@@ -162,6 +220,36 @@ export default function NotificationsPage() {
         </CardContent>
       </Card>
 
+      {pushSupported && (
+        <Card>
+          <CardContent className="pt-6 space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="font-medium">{t("notifications.pushNotifications") || "Push Notifications"}</p>
+                <p className="text-sm text-muted-foreground">
+                  {prefs.pushEnabled ? (t("notifications.pushEnabled") || "Enabled — you'll receive reminders on this device") : (t("notifications.pushDisabled") || "Disabled — enable to receive real reminders")}
+                </p>
+              </div>
+              <Button
+                variant={prefs.pushEnabled ? "outline" : "default"}
+                size="sm"
+                disabled={subscribing || permission === "denied"}
+                onClick={prefs.pushEnabled ? unregisterPush : async () => {
+                  if (permission !== "granted") {
+                    const p = await Notification.requestPermission();
+                    setPermission(p);
+                    if (p !== "granted") return;
+                  }
+                  await registerPush();
+                }}
+              >
+                {subscribing ? t("common.loading") : prefs.pushEnabled ? t("notifications.disable") || "Disable" : t("notifications.enable") || "Enable"}
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {typeof window !== "undefined" && "Notification" in window && (
         <Card>
           <CardContent className="pt-6 space-y-4">
@@ -193,7 +281,7 @@ export default function NotificationsPage() {
                 variant="outline"
                 size="sm"
                 onClick={() => {
-                  new Notification("FitTracker", { body: t("notifications.testSent"), icon: "/favicon.ico" });
+                  new Notification("RA Diaeta", { body: t("notifications.testSent"), icon: "/icons/icon-192.svg" });
                 }}
               >
                 {t("notifications.sendTest")}

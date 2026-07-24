@@ -528,7 +528,12 @@
     "weightWeekly": "Weekly on Monday",
     "measurementMonthly": "Monthly on the 1st",
     "enabled": "Enabled",
-    "disabled": "Disabled"
+    "disabled": "Disabled",
+    "pushNotifications": "Push Notifications",
+    "pushEnabled": "Enabled — you'll receive reminders on this device",
+    "pushDisabled": "Disabled — enable to receive real reminders",
+    "enable": "Enable",
+    "disable": "Disable"
   },
   "settings": {
     "settings": "Settings",

@@ -1,5 +1,17 @@
 import mongoose, { Schema } from "mongoose";
 
+const PushSubscriptionSchema = new Schema(
+  {
+    endpoint: { type: String, required: true },
+    expirationTime: Number,
+    keys: {
+      p256dh: String,
+      auth: String,
+    },
+  },
+  { _id: false, timestamps: false }
+);
+
 const NotificationPreferenceSchema = new Schema(
   {
     userId: { type: String, required: true, unique: true },
@@ -25,8 +37,8 @@ const NotificationPreferenceSchema = new Schema(
     measurementPreferredDay: { type: Number, default: 0 },
     quietHoursStart: { hour: Number, minute: Number },
     quietHoursEnd: { hour: Number, minute: Number },
-    pushToken: String,
-    pushPlatform: String,
+    pushSubscriptions: [PushSubscriptionSchema],
+    pushEnabled: { type: Boolean, default: false },
   },
   { timestamps: { createdAt: false, updatedAt: true }, collection: "notification_preferences" }
 );
