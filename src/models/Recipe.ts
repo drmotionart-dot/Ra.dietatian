@@ -29,7 +29,15 @@ const RecipeSchema = new Schema(
     prepTimeMinutes: Number,
     cookTimeMinutes: Number,
     difficulty: String,
-    nutritionPerServing: Schema.Types.Mixed,
+    nutritionPerServing: {
+      type: {
+        calories: { type: Number, default: 0 },
+        protein: { type: Number, default: 0 },
+        carbs: { type: Number, default: 0 },
+        fat: { type: Number, default: 0 },
+      },
+      default: {},
+    },
     servingsCount: { type: Number, default: 1 },
     occasions: [String],
   },

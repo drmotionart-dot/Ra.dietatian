@@ -13,7 +13,16 @@ const FoodSchema = new Schema(
     servingDescription: String,
     imageUrl: String,
     barcode: String,
-    nutrientProfile: Schema.Types.Mixed,
+    nutrientProfile: {
+      type: {
+        calories: { type: Number, default: 0 },
+        protein: { type: Number, default: 0 },
+        carbs: { type: Number, default: 0 },
+        fat: { type: Number, default: 0 },
+        fiber: { type: Number, default: 0 },
+      },
+      default: {},
+    },
     dataQuality: { type: String, default: "user-entered" },
     region: String,
   },

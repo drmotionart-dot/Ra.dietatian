@@ -107,7 +107,7 @@ export default function MedicalPage() {
           <Card>
             <CardContent className="pt-6">
               <div>
-                <h2 className="text-xl font-semibold">{selected.foodId}</h2>
+                <h2 className="text-xl font-semibold">{selected.foodId.charAt(0).toUpperCase() + selected.foodId.slice(1)}</h2>
                 <Badge variant="secondary" className="mt-2">{selected.foodCategory}</Badge>
               </div>
             </CardContent>

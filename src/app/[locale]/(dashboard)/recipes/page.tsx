@@ -23,7 +23,7 @@ interface Recipe {
   nutritionPerServing?: { calories?: number; protein?: number; carbs?: number; fat?: number };
 }
 
-const emptyForm = { name: "", nameAr: "", category: "main", cookingMethod: "", prepTimeMinutes: 0, cookTimeMinutes: 0, servingsCount: 2, difficulty: "easy" };
+const emptyForm = { name: "", nameAr: "", category: "breakfast", cookingMethod: "", prepTimeMinutes: 0, cookTimeMinutes: 0, servingsCount: 2, difficulty: "easy", nutritionPerServing: { calories: 0, protein: 0, carbs: 0, fat: 0 } };
 
 export default function RecipesPage() {
   const t = useTranslations();
@@ -69,6 +69,7 @@ export default function RecipesPage() {
   };
 
   const handleDelete = async (id: string) => {
+    if (!confirm(t("common.confirm"))) return;
     const res = await fetch(`/api/recipes?id=${id}`, { method: "DELETE" });
     if (res.ok) setRecipes(recipes.filter((r) => r._id !== id));
   };
@@ -114,9 +115,15 @@ export default function RecipesPage() {
                 <div className="space-y-2">
                   <Label>{t("recipes.category")}</Label>
                   <select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} className="w-full border rounded-md p-2 bg-background">
-                    <option value="breakfast">{t("meals.breakfast")}</option>
-                    <option value="main">{t("recipes.recipes")}</option>
-                    <option value="side">{t("recipes.ingredients")}</option>
+                    <option value="breakfast">{t("mealTypes.breakfast")}</option>
+                    <option value="lunch">{t("mealTypes.lunch")}</option>
+                    <option value="dinner">{t("mealTypes.dinner")}</option>
+                    <option value="snack">{t("mealTypes.snack")}</option>
+                    <option value="dessert">{t("recipes.dessert")}</option>
+                    <option value="appetizer">{t("recipes.appetizer")}</option>
+                    <option value="soup">{t("recipes.soup")}</option>
+                    <option value="salad">{t("recipes.salad")}</option>
+                    <option value="beverage">{t("recipes.beverage")}</option>
                   </select>
                 </div>
                 <div className="space-y-2">
@@ -139,6 +146,22 @@ export default function RecipesPage() {
                   <Label>{t("recipes.servings")}</Label>
                   <Input type="number" value={form.servingsCount} onChange={(e) => setForm({ ...form, servingsCount: parseInt(e.target.value) || 1 })} />
                 </div>
+                <div className="space-y-2">
+                  <Label>{t("food.energy")} ({t("units.kcal")})</Label>
+                  <Input type="number" value={form.nutritionPerServing?.calories || 0} onChange={(e) => setForm({ ...form, nutritionPerServing: { ...form.nutritionPerServing, calories: parseInt(e.target.value) || 0 } })} />
+                </div>
+                <div className="space-y-2">
+                  <Label>{t("food.protein")} (g)</Label>
+                  <Input type="number" value={form.nutritionPerServing?.protein || 0} onChange={(e) => setForm({ ...form, nutritionPerServing: { ...form.nutritionPerServing, protein: parseInt(e.target.value) || 0 } })} />
+                </div>
+                <div className="space-y-2">
+                  <Label>{t("food.carbohydrates")} (g)</Label>
+                  <Input type="number" value={form.nutritionPerServing?.carbs || 0} onChange={(e) => setForm({ ...form, nutritionPerServing: { ...form.nutritionPerServing, carbs: parseInt(e.target.value) || 0 } })} />
+                </div>
+                <div className="space-y-2">
+                  <Label>{t("food.totalFat")} (g)</Label>
+                  <Input type="number" value={form.nutritionPerServing?.fat || 0} onChange={(e) => setForm({ ...form, nutritionPerServing: { ...form.nutritionPerServing, fat: parseInt(e.target.value) || 0 } })} />
+                </div>
               </div>
               <Button type="submit" disabled={saving}>{saving ? t("common.loading") : t("common.save")}</Button>
             </form>
@@ -158,9 +181,9 @@ export default function RecipesPage() {
       <Tabs value={selectedCategory} onValueChange={setSelectedCategory}>
         <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="all">{t("common.all")}</TabsTrigger>
-          <TabsTrigger value="breakfast">{t("meals.breakfast")}</TabsTrigger>
-          <TabsTrigger value="main">{t("recipes.recipes")}</TabsTrigger>
-          <TabsTrigger value="side">{t("recipes.ingredients")}</TabsTrigger>
+          <TabsTrigger value="breakfast">{t("mealTypes.breakfast")}</TabsTrigger>
+          <TabsTrigger value="lunch">{t("mealTypes.lunch")}</TabsTrigger>
+          <TabsTrigger value="dinner">{t("mealTypes.dinner")}</TabsTrigger>
         </TabsList>
 
         <TabsContent value={selectedCategory} className="space-y-4">
@@ -219,7 +242,7 @@ export default function RecipesPage() {
             ))}
             {recipes.length === 0 && (
               <div className="col-span-2 text-center text-muted-foreground py-8">
-                {t("recipes.noRecipes") || "No recipes yet. Create your first recipe!"}
+                {t("recipes.noRecipes")}
               </div>
             )}
           </div>

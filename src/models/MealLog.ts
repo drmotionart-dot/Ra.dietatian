@@ -24,7 +24,7 @@ const MealLogSchema = new Schema(
   {
     userId: { type: String, required: true },
     date: { type: Date, default: Date.now },
-    mealType: { type: String, required: true },
+    mealType: { type: String, required: true, enum: ["breakfast", "lunch", "dinner", "snack"] },
     totalCalories: { type: Number, default: 0 },
     totalProtein: { type: Number, default: 0 },
     totalCarbs: { type: Number, default: 0 },

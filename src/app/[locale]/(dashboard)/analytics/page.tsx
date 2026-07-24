@@ -28,61 +28,59 @@ export default function AnalyticsPage() {
 
   useEffect(() => {
     const days = dateRange === "7d" ? 7 : 30;
-    const fetches: Promise<void>[] = [];
-    const weekCalories: { day: string; calories: number; target: number }[] = [];
-    const weekWeight: { week: string; weight: number }[] = [];
-    let totalProtein = 0;
-    let totalCarbs = 0;
-    let totalFat = 0;
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - (days - 1));
+    startDate.setHours(0, 0, 0, 0);
+    const endDate = new Date();
+    endDate.setHours(23, 59, 59, 999);
 
-    const targetP = fetch("/api/dashboard")
-      .then((r) => r.json())
-      .then((d) => d.targets?.calories || 0)
-      .catch(() => 0);
+    const startDateStr = startDate.toISOString().split("T")[0];
+    const endDateStr = endDate.toISOString().split("T")[0];
 
-    for (let i = days - 1; i >= 0; i--) {
-      const d = new Date();
-      d.setDate(d.getDate() - i);
-      const dateStr = d.toISOString().split("T")[0];
-      const dayNames = [t("days.sun"), t("days.mon"), t("days.tue"), t("days.wed"), t("days.thu"), t("days.fri"), t("days.sat")];
-      const dayLabel = dayNames[d.getDay()];
+    const dayNames = [t("days.sun"), t("days.mon"), t("days.tue"), t("days.wed"), t("days.thu"), t("days.fri"), t("days.sat")];
 
-      const p = fetch(`/api/meals?date=${dateStr}`)
-        .then((r) => r.json())
-        .then((data) => {
-          const cal = data.totals?.calories || 0;
-          weekCalories.push({ day: dayLabel, calories: cal, target: 0 });
-          totalProtein += data.totals?.protein || 0;
-          totalCarbs += data.totals?.carbs || 0;
-          totalFat += data.totals?.fat || 0;
-        })
-        .catch(() => {
-          weekCalories.push({ day: dayLabel, calories: 0, target: 0 });
-        });
-      fetches.push(p);
-    }
+    Promise.all([
+      fetch("/api/dashboard").then((r) => r.json()).then((d) => d.targets?.calories || 0).catch(() => 0),
+      fetch(`/api/meals?startDate=${startDateStr}&endDate=${endDateStr}`).then((r) => r.json()).catch(() => ({ totals: {}, mealLogs: [] })),
+      fetch("/api/body-measurements?limit=30").then((r) => r.json()).catch(() => ({ measurements: [] })),
+    ]).then(([calorieTarget, mealsData, bodyData]) => {
+      const totals = mealsData.totals || {};
+      const mealLogs = mealsData.mealLogs || [];
 
-    const weightP = fetch("/api/body-measurements?limit=30")
-      .then((r) => r.json())
-      .then((data) => {
-        const measurements = (data.measurements || []).reverse();
-        measurements.forEach((m: { date: string; weightKg?: number }, i: number) => {
-          if (m.weightKg) {
-            weekWeight.push({ week: `#${i + 1}`, weight: m.weightKg });
+      const totalProtein = totals.protein || 0;
+      const totalCarbs = totals.carbs || 0;
+      const totalFat = totals.fat || 0;
+
+      const dayCalories: Record<string, number> = {};
+      for (let i = days - 1; i >= 0; i--) {
+        const d = new Date();
+        d.setDate(d.getDate() - i);
+        const dateStr = d.toISOString().split("T")[0];
+        dayCalories[dateStr] = 0;
+      }
+
+      for (const log of mealLogs) {
+        const logDate = new Date(log.date).toISOString().split("T")[0];
+        if (logDate in dayCalories) {
+          for (const item of (log.items || [])) {
+            dayCalories[logDate] += (item as Record<string, unknown>).calories as number || 0;
           }
-        });
-      })
-      .catch(() => {});
-    fetches.push(weightP);
+        }
+      }
 
-    Promise.all([targetP, ...fetches]).then(([calorieTarget]) => {
-      weekCalories.forEach((day) => {
-        day.target = calorieTarget;
+      const weekCalories = Object.entries(dayCalories).map(([dateStr, cal]) => {
+        const d = new Date(dateStr + "T12:00:00");
+        return { day: dayNames[d.getDay()], calories: cal, target: calorieTarget };
       });
-      weekCalories.sort((a, b) => {
-        const order = [t("days.sun"), t("days.mon"), t("days.tue"), t("days.wed"), t("days.thu"), t("days.fri"), t("days.sat")];
-        return order.indexOf(a.day) - order.indexOf(b.day);
+
+      const weekWeight: { week: string; weight: number }[] = [];
+      const measurements = (bodyData.measurements || []).reverse();
+      measurements.forEach((m: { date: string; weightKg?: number }, i: number) => {
+        if (m.weightKg) {
+          weekWeight.push({ week: `#${i + 1}`, weight: m.weightKg });
+        }
       });
+
       setWeeklyData(weekCalories);
       setWeightData(weekWeight);
 

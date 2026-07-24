@@ -42,6 +42,7 @@ export default function MealsPage() {
   const [foods, setFoods] = useState<Food[]>([]);
   const [searching, setSearching] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
 
   const searchFoods = useCallback(async (q: string) => {
     if (!q || q.length < 1) {
@@ -88,6 +89,7 @@ export default function MealsPage() {
   const saveMeal = async () => {
     if (mealItems.length === 0) return;
     setSaving(true);
+    setError("");
     try {
       const items = mealItems.map((item) => ({
         refType: "food",
@@ -95,33 +97,41 @@ export default function MealsPage() {
         foodId: item.foodId,
         quantity: item.quantity,
         unit: item.unit,
-        calories: item.calories,
-        protein: item.protein,
-        carbs: item.carbs,
-        fat: item.fat,
+        calories: Math.round((item.calories * item.quantity) / 100),
+        protein: Math.round((item.protein * item.quantity) / 100),
+        carbs: Math.round((item.carbs * item.quantity) / 100),
+        fat: Math.round((item.fat * item.quantity) / 100),
       }));
 
-      await fetch("/api/meals", {
+      const res = await fetch("/api/meals", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ mealType: selectedMeal, items }),
       });
 
+      if (!res.ok) {
+        setError(t("common.error"));
+        return;
+      }
+
       setMealItems([]);
     } catch (err) {
-      console.error("Save error:", err);
+      setError(t("common.error"));
     } finally {
       setSaving(false);
     }
   };
 
   const mealTotals = mealItems.reduce(
-    (acc, item) => ({
-      calories: acc.calories + item.calories,
-      protein: acc.protein + item.protein,
-      carbs: acc.carbs + item.carbs,
-      fat: acc.fat + item.fat,
-    }),
+    (acc, item) => {
+      const qty = item.quantity / 100;
+      return {
+        calories: acc.calories + Math.round(item.calories * qty),
+        protein: acc.protein + Math.round(item.protein * qty),
+        carbs: acc.carbs + Math.round(item.carbs * qty),
+        fat: acc.fat + Math.round(item.fat * qty),
+      };
+    },
     { calories: 0, protein: 0, carbs: 0, fat: 0 }
   );
 
@@ -197,33 +207,53 @@ export default function MealsPage() {
                 </p>
               ) : (
                 <>
-                  {mealItems.map((item) => (
-                    <div key={item.id} className="flex items-center justify-between p-3 rounded-lg border">
-                      <div className="flex-1">
-                        <div className="font-medium">{item.name}</div>
-                        <div className="text-sm text-muted-foreground">
-                          {item.quantity}{item.unit} | {item.calories} {t("units.kcal")}
+                  {mealItems.map((item) => {
+                    const qty = item.quantity / 100;
+                    return (
+                      <div key={item.id} className="flex items-center justify-between p-3 rounded-lg border">
+                        <div className="flex-1">
+                          <div className="font-medium">{item.name}</div>
+                          <div className="text-sm text-muted-foreground">
+                            {Math.round(item.calories * qty)} {t("units.kcal")} | {t("dashboard.proteinAbbr")}: {Math.round(item.protein * qty)}g | {t("dashboard.carbsAbbr")}: {Math.round(item.carbs * qty)}g | {t("dashboard.fatAbbr")}: {Math.round(item.fat * qty)}g
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="number"
+                            min="1"
+                            max="10000"
+                            value={item.quantity}
+                            onChange={(e) => {
+                              const newQty = parseInt(e.target.value) || 100;
+                              setMealItems(mealItems.map((mi) =>
+                                mi.id === item.id ? { ...mi, quantity: newQty } : mi
+                              ));
+                            }}
+                            className="w-20 text-center border rounded p-1 text-sm"
+                          />
+                          <span className="text-xs text-muted-foreground">g</span>
+                          <Button size="sm" variant="ghost" onClick={() => removeFoodFromMeal(item.id)}>
+                            <Trash2 className="h-4 w-4 text-destructive" />
+                          </Button>
                         </div>
                       </div>
-                      <Button size="sm" variant="ghost" onClick={() => removeFoodFromMeal(item.id)}>
-                        <Trash2 className="h-4 w-4 text-destructive" />
-                      </Button>
-                    </div>
-                  ))}
+                    );
+                  })}
                   <div className="pt-4 border-t">
                     <div className="flex justify-between font-medium">
                       <span>{t("meals.totalCalories")}</span>
                       <span>{mealTotals.calories} {t("units.kcal")}</span>
                     </div>
                     <div className="flex justify-between text-sm text-muted-foreground">
-                      <span>{t("meals.proteinLabel")}: {mealTotals.protein.toFixed(1)}g</span>
-                      <span>{t("meals.carbsLabel")}: {mealTotals.carbs.toFixed(1)}g</span>
-                      <span>{t("meals.fatLabel")}: {mealTotals.fat.toFixed(1)}g</span>
+                      <span>{t("meals.proteinLabel")}: {mealTotals.protein}g</span>
+                      <span>{t("meals.carbsLabel")}: {mealTotals.carbs}g</span>
+                      <span>{t("meals.fatLabel")}: {mealTotals.fat}g</span>
                     </div>
                     <Button className="w-full mt-4" onClick={saveMeal} disabled={saving}>
                       <Save className="h-4 w-4 me-2" />
                       {saving ? t("common.loading") : t("common.save")}
                     </Button>
+                    {error && <p className="text-sm text-destructive mt-2 text-center">{error}</p>}
                   </div>
                 </>
               )}

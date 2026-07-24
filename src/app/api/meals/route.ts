@@ -13,6 +13,54 @@ export async function GET(req: Request) {
     await connectDB();
 
     const { searchParams } = new URL(req.url);
+
+    const startDateStr = searchParams.get("startDate");
+    const endDateStr = searchParams.get("endDate");
+
+    if (startDateStr) {
+      const startDate = new Date(startDateStr);
+      startDate.setHours(0, 0, 0, 0);
+      const endDate = endDateStr ? new Date(endDateStr) : new Date();
+      endDate.setHours(23, 59, 59, 999);
+
+      if (isNaN(startDate.getTime())) {
+        return NextResponse.json({ error: "Invalid date" }, { status: 400 });
+      }
+
+      const mealLogs = await MealLog.find({
+        userId: session.user.id,
+        date: { $gte: startDate, $lte: endDate },
+      }).sort({ date: -1 }).lean();
+
+      const items = mealLogs.length > 0
+        ? await MealLogItem.find({ mealLogId: { $in: mealLogs.map((l) => l._id) } }).lean()
+        : [];
+
+      const itemsByLog = new Map<string, typeof items>();
+      for (const item of items) {
+        const logId = item.mealLogId.toString();
+        if (!itemsByLog.has(logId)) itemsByLog.set(logId, []);
+        itemsByLog.get(logId)!.push(item);
+      }
+
+      const logsWithItems = mealLogs.map((log) => ({
+        ...log,
+        items: itemsByLog.get(log._id.toString()) || [],
+      }));
+
+      const totals = { calories: 0, protein: 0, carbs: 0, fat: 0 };
+      for (const log of logsWithItems) {
+        for (const item of log.items) {
+          totals.calories += (item as Record<string, unknown>).calories as number || 0;
+          totals.protein += (item as Record<string, unknown>).protein as number || 0;
+          totals.carbs += (item as Record<string, unknown>).carbs as number || 0;
+          totals.fat += (item as Record<string, unknown>).fat as number || 0;
+        }
+      }
+
+      return NextResponse.json({ mealLogs: logsWithItems, totals, isRange: true });
+    }
+
     const dateStr = searchParams.get("date");
     const date = dateStr ? new Date(dateStr) : new Date();
 

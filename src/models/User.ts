@@ -3,18 +3,18 @@ import mongoose, { Schema } from "mongoose";
 const UserSchema = new Schema(
   {
     email: { type: String, required: true, unique: true },
-    name: String,
+    name: { type: String, required: true },
     passwordHash: String,
     image: String,
     emailVerified: Date,
-    sex: String,
+    sex: { type: String, enum: ["male", "female", "other"], default: "male" },
     dateOfBirth: Date,
     heightCm: Number,
     activityLevel: Number,
-    goal: String,
+    goal: { type: String, enum: ["maintain", "lose", "gain"], default: "maintain" },
     targetWeightKg: Number,
     locale: { type: String, default: "ar" },
-    units: { type: String, default: "metric" },
+    units: { type: String, enum: ["metric", "imperial"], default: "metric" },
   },
   { timestamps: true, collection: "users" }
 );

@@ -30,7 +30,7 @@ export default function SettingsPage() {
 
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [editing, setEditing] = useState(false);
-  const [form, setForm] = useState({ name: "", sex: "", heightCm: 0, activityLevel: 1.2, goal: "maintain", targetWeightKg: 0 });
+  const [form, setForm] = useState({ name: "", sex: "", heightCm: 0, activityLevel: 1.55, goal: "maintain", targetWeightKg: 0, units: "metric" });
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
@@ -43,9 +43,10 @@ export default function SettingsPage() {
             name: d.user.name || "",
             sex: d.user.sex || "",
             heightCm: d.user.heightCm || 170,
-            activityLevel: d.user.activityLevel || 1.2,
+            activityLevel: d.user.activityLevel || 1.55,
             goal: d.user.goal || "maintain",
             targetWeightKg: d.user.targetWeightKg || 0,
+            units: d.user.units || "metric",
           });
         }
       })
@@ -112,9 +113,9 @@ export default function SettingsPage() {
             <div className="space-y-2 text-sm">
               <div className="flex justify-between"><span className="text-muted-foreground">{t("settings.name")}</span><span>{profile.name}</span></div>
               <div className="flex justify-between"><span className="text-muted-foreground">{t("settings.email")}</span><span>{profile.email}</span></div>
-              <div className="flex justify-between"><span className="text-muted-foreground">{t("settings.sex")}</span><span>{profile.sex || "—"}</span></div>
+              <div className="flex justify-between"><span className="text-muted-foreground">{t("settings.sex")}</span><span>{profile.sex ? t(`settings.${profile.sex}`) : "—"}</span></div>
               <div className="flex justify-between"><span className="text-muted-foreground">{t("settings.height")}</span><span>{profile.heightCm} {t("units.cm")}</span></div>
-              <div className="flex justify-between"><span className="text-muted-foreground">{t("settings.goal")}</span><span>{profile.goal}</span></div>
+              <div className="flex justify-between"><span className="text-muted-foreground">{t("settings.goal")}</span><span>{t(`settings.${profile.goal === "lose" ? "loseWeight" : profile.goal === "gain" ? "gainWeight" : "maintain"}`)}</span></div>
             </div>
           )}
 
@@ -147,6 +148,31 @@ export default function SettingsPage() {
               <div className="space-y-2">
                 <Label>{t("settings.targetWeight")} ({t("units.kg")})</Label>
                 <Input type="number" value={form.targetWeightKg} onChange={(e) => setForm({ ...form, targetWeightKg: parseFloat(e.target.value) || 0 })} />
+              </div>
+              <div className="space-y-2">
+                <Label>{t("settings.activityLevel")}</Label>
+                <select
+                  value={form.activityLevel.toString()}
+                  onChange={(e) => setForm({ ...form, activityLevel: parseFloat(e.target.value) })}
+                  className="w-full border rounded-md p-2 bg-background"
+                >
+                  <option value="1.2">{t("settings.sedentary")}</option>
+                  <option value="1.375">{t("settings.light")}</option>
+                  <option value="1.55">{t("settings.moderate")}</option>
+                  <option value="1.725">{t("settings.active")}</option>
+                  <option value="1.9">{t("settings.veryActive")}</option>
+                </select>
+              </div>
+              <div className="space-y-2">
+                <Label>{t("settings.units")}</Label>
+                <select
+                  value={form.units}
+                  onChange={(e) => setForm({ ...form, units: e.target.value })}
+                  className="w-full border rounded-md p-2 bg-background"
+                >
+                  <option value="metric">{t("settings.metric")}</option>
+                  <option value="imperial">{t("settings.imperial")}</option>
+                </select>
               </div>
             </div>
           )}

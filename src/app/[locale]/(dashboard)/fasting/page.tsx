@@ -206,6 +206,13 @@ export default function FastingPage() {
         <CardContent className="space-y-4">
           <div className="flex items-center justify-between">
             <div>
+              <Label>{t("fasting.ramadanMode")}</Label>
+              <p className="text-sm text-muted-foreground">{t("fasting.enableRamadanMode")}</p>
+            </div>
+            <Switch checked={prefs.ramadanEnabled} onCheckedChange={(c) => updatePref("ramadanEnabled", c)} />
+          </div>
+          <div className="flex items-center justify-between">
+            <div>
               <Label>{t("fasting.mondayThursday")}</Label>
               <p className="text-sm text-muted-foreground">{t("fasting.mondayThursdayDesc")}</p>
             </div>
@@ -314,7 +321,7 @@ export default function FastingPage() {
               {logs.slice(0, 14).map((log) => (
                 <div key={log._id} className="flex items-center justify-between py-2 border-b last:border-0">
                   <span className="text-sm">
-                    {new Date(log.date).toLocaleDateString("en-EG", { weekday: "short", month: "short", day: "numeric" })}
+                    {new Date(log.date).toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" })}
                   </span>
                   <span className={`text-sm font-medium ${log.completed ? "text-green-600" : "text-red-500"}`}>
                     {log.completed ? t("fasting.dayCompleted") : t("fasting.dayMissed")}
