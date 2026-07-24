@@ -23,6 +23,16 @@ export const metadata: Metadata = {
   title: "RA · Diaeta — Nutrition & Fitness",
   description: "Premium Egyptian nutrition tracking, body measurement, and wellness platform",
   manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "RA Diaeta",
+  },
+  other: {
+    "apple-mobile-web-app-capable": "yes",
+    "apple-mobile-web-app-status-bar-style": "black-translucent",
+    "apple-mobile-web-app-title": "RA Diaeta",
+  },
 };
 
 export async function generateStaticParams() {
@@ -42,6 +52,11 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} dir={dir} className={cairo.variable} suppressHydrationWarning>
+      <head>
+        <link rel="apple-touch-icon" href="/icons/icon-192.svg" />
+        <meta name="theme-color" content="#EBE2D0" media="(prefers-color-scheme: light)" />
+        <meta name="theme-color" content="#1D1712" media="(prefers-color-scheme: dark)" />
+      </head>
       <body className="font-cairo antialiased">
         <Providers>
           <TooltipProvider>

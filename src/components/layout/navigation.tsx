@@ -7,17 +7,16 @@ import { cn } from "@/lib/utils";
 import { LogoIcon } from "@/components/brand/LogoIcon";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
 import {
-  LayoutDashboard,
-  UtensilsCrossed,
-  Moon,
-  Settings,
-  BarChart3,
-  Heart,
-  Ruler,
-  Bell,
-  Dumbbell,
-  Droplets,
-} from "lucide-react";
+  HomeIcon,
+  MealsIcon,
+  TrainingIcon,
+  AnalyticsIcon,
+  ProfileIcon,
+  WaterIcon,
+  RecipesIcon,
+  StreakIcon,
+  SettingsIcon,
+} from "@/components/icons";
 
 function getLocaleFromPathname(pathname: string): string {
   const seg = pathname.split("/")[1];
@@ -25,24 +24,22 @@ function getLocaleFromPathname(pathname: string): string {
 }
 
 const navItems = [
-  { key: "nav.dashboard", href: "/dashboard", icon: LayoutDashboard },
-  { key: "nav.meals", href: "/meals", icon: UtensilsCrossed },
-  { key: "nav.body", href: "/body", icon: Ruler },
-  { key: "nav.training", href: "/training", icon: Dumbbell },
-  { key: "nav.fasting", href: "/fasting", icon: Moon },
+  { key: "nav.dashboard", href: "/dashboard", Icon: HomeIcon },
+  { key: "nav.meals", href: "/meals", Icon: MealsIcon },
+  { key: "nav.training", href: "/training", Icon: TrainingIcon },
+  { key: "nav.water", href: "/water", Icon: WaterIcon },
 ];
 
 const sidebarItems = [
-  { key: "nav.dashboard", href: "/dashboard", icon: LayoutDashboard },
-  { key: "nav.meals", href: "/meals", icon: UtensilsCrossed },
-  { key: "nav.recipes", href: "/recipes", icon: UtensilsCrossed },
-  { key: "nav.body", href: "/body", icon: Ruler },
-  { key: "nav.training", href: "/training", icon: Dumbbell },
-  { key: "nav.water", href: "/water", icon: Droplets },
-  { key: "nav.analytics", href: "/analytics", icon: BarChart3 },
-  { key: "nav.fasting", href: "/fasting", icon: Moon },
-  { key: "nav.medical", href: "/medical", icon: Heart },
-  { key: "nav.notifications", href: "/notifications", icon: Bell },
+  { key: "nav.dashboard", href: "/dashboard", Icon: HomeIcon },
+  { key: "nav.meals", href: "/meals", Icon: MealsIcon },
+  { key: "nav.recipes", href: "/recipes", Icon: RecipesIcon },
+  { key: "nav.body", href: "/body", Icon: ProfileIcon },
+  { key: "nav.training", href: "/training", Icon: TrainingIcon },
+  { key: "nav.water", href: "/water", Icon: WaterIcon },
+  { key: "nav.analytics", href: "/analytics", Icon: AnalyticsIcon },
+  { key: "nav.streak", href: "/dashboard", Icon: StreakIcon },
+  { key: "nav.notifications", href: "/notifications", Icon: WaterIcon },
 ];
 
 export function MainNav() {
@@ -57,13 +54,13 @@ export function MainNav() {
     >
       <div className="flex justify-around items-center h-16">
         {navItems.map((item) => {
-          const Icon = item.icon;
           const isActive = pathname.includes(item.href);
+          const Icon = item.Icon;
 
           return (
             <Link
               key={item.href}
-              href={`/${locale}${item.href}`}
+              href={"/" + locale + item.href}
               className={cn(
                 "relative flex flex-col items-center justify-center gap-1 px-3 py-2 text-xs transition-colors",
                 isActive
@@ -72,7 +69,7 @@ export function MainNav() {
               )}
               aria-current={isActive ? "page" : undefined}
             >
-              <Icon className="h-5 w-5" />
+              <Icon className="h-5 w-5" activeColor={isActive ? "var(--sidebar-primary)" : "var(--sidebar-foreground)"} />
               <span>{t(item.key)}</span>
               {isActive && (
                 <span className="absolute -bottom-1 start-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-sidebar-primary" />
@@ -111,13 +108,13 @@ export function DesktopSidebar() {
         <div className="flex-1 flex flex-col pt-4 pb-4 overflow-y-auto">
           <nav className="flex-1 px-2 space-y-0.5" aria-label={t("nav.sidebarNavigation")}>
             {sidebarItems.map((item) => {
-              const Icon = item.icon;
               const isActive = pathname.includes(item.href);
+              const Icon = item.Icon;
 
               return (
                 <Link
-                  key={item.href}
-                  href={`/${locale}${item.href}`}
+                  key={item.key}
+                  href={"/" + locale + item.href}
                   className={cn(
                     "flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg transition-all",
                     isActive
@@ -126,7 +123,7 @@ export function DesktopSidebar() {
                   )}
                   aria-current={isActive ? "page" : undefined}
                 >
-                  <Icon className="h-5 w-5 shrink-0" />
+                  <Icon className="h-5 w-5 shrink-0" activeColor={isActive ? "var(--sidebar-primary)" : "var(--sidebar-foreground)"} />
                   {t(item.key)}
                 </Link>
               );
@@ -145,7 +142,7 @@ export function DesktopSidebar() {
               )}
               aria-current={pathname.includes("/settings") ? "page" : undefined}
             >
-              <Settings className="h-5 w-5 shrink-0" />
+              <SettingsIcon className="h-5 w-5 shrink-0" activeColor={pathname.includes("/settings") ? "var(--sidebar-primary)" : "var(--sidebar-foreground)"} />
               {t("nav.settings")}
             </Link>
             <div className="flex items-center justify-between px-3 py-2">

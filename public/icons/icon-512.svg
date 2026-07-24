@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <!-- Background cream tile -->
+  <rect width="512" height="512" fill="#EBE2D0"/>
+  <!-- Subtle border -->
+  <rect x="8" y="8" width="496" height="496" rx="64" fill="none" stroke="#DCC9A8" stroke-width="2"/>
+  
+  <!-- Laurel branches -->
+  <g stroke="#B8934A" stroke-width="3" fill="none" stroke-linecap="round">
+    <!-- Left branch -->
+    <path d="M180 345 C190 315 208 288 235 268"/>
+    <path d="M180 345 C186 325 189 310 193 295"/>
+    <ellipse cx="196" cy="302" rx="10" ry="18" transform="rotate(-20 196 302)" stroke="#B8934A" stroke-width="2.5"/>
+    <ellipse cx="206" cy="285" rx="9" ry="16" transform="rotate(-15 206 285)" stroke="#B8934A" stroke-width="2.5"/>
+    <ellipse cx="218" cy="271" rx="8" ry="14" transform="rotate(-10 218 271)" stroke="#B8934A" stroke-width="2.5"/>
+    
+    <!-- Right branch -->
+    <path d="M332 345 C322 315 304 288 277 268"/>
+    <path d="M332 345 C326 325 323 310 319 295"/>
+    <ellipse cx="316" cy="302" rx="10" ry="18" transform="rotate(20 316 302)" stroke="#B8934A" stroke-width="2.5"/>
+    <ellipse cx="306" cy="285" rx="9" ry="16" transform="rotate(15 306 285)" stroke="#B8934A" stroke-width="2.5"/>
+    <ellipse cx="294" cy="271" rx="8" ry="14" transform="rotate(10 294 271)" stroke="#B8934A" stroke-width="2.5"/>
+  </g>
+  
+  <!-- Burgundy accent dot at branch junction -->
+  <circle cx="256" cy="350" r="10" fill="#6B1F2A"/>
+  
+  <!-- Sun ring (RAdiaeta single thin ring) -->
+  <circle cx="256" cy="218" r="58" fill="none" stroke="#B8934A" stroke-width="3"/>
+  
+  <!-- Sun disk -->
+  <circle cx="256" cy="218" r="42" fill="#B8934A"/>
+  
+  <!-- Sun rays -->
+  <g stroke="#B8934A" stroke-width="4" stroke-linecap="round">
+    <line x1="256" y1="158" x2="256" y2="168"/>
+    <line x1="256" y1="268" x2="256" y2="278"/>
+    <line x1="196" y1="218" x2="186" y2="218"/>
+    <line x1="316" y1="218" x2="326" y2="218"/>
+    <line x1="213" y1="175" x2="206" y2="168"/>
+    <line x1="299" y1="175" x2="306" y2="168"/>
+    <line x1="213" y1="261" x2="206" y2="268"/>
+    <line x1="299" y1="261" x2="306" y2="268"/>
+    <line x1="200" y1="200" x2="194" y2="196"/>
+    <line x1="312" y1="200" x2="318" y2="196"/>
+    <line x1="200" y1="236" x2="194" y2="240"/>
+    <line x1="312" y1="236" x2="318" y2="240"/>
+  </g>
+</svg>

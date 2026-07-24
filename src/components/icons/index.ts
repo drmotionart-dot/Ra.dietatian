@@ -1,0 +1,10 @@
+export { HomeIcon } from "./HomeIcon";
+export { MealsIcon } from "./MealsIcon";
+export { TrainingIcon } from "./TrainingIcon";
+export { AnalyticsIcon } from "./AnalyticsIcon";
+export { ProfileIcon } from "./ProfileIcon";
+export { WaterIcon } from "./WaterIcon";
+export { RecipesIcon } from "./RecipesIcon";
+export { StreakIcon } from "./StreakIcon";
+export { PRIcon } from "./PRIcon";
+export { SettingsIcon } from "./SettingsIcon";
