@@ -133,10 +133,16 @@ export default function SettingsPage() {
   const handleUpgrade = async () => {
     setUpgrading(true);
     try {
-      const res = await fetch("/api/user/upgrade", { method: "POST" });
-      if (res.ok) {
-        await updateSession();
-        window.location.reload();
+      const res = await fetch("/api/user/checkout", { method: "POST" });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        const fallback = await fetch("/api/user/upgrade", { method: "POST" });
+        if (fallback.ok) {
+          await updateSession();
+          window.location.reload();
+        }
       }
     } catch (err) {
       console.error("Upgrade error:", err);
