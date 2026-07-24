@@ -517,6 +517,7 @@
     "gainWeight": "Gain Weight",
     "male": "Male",
     "female": "Female",
+    "maintain": "Maintain Weight",
     "lose": "Lose Weight",
     "gain": "Gain Weight",
     "activityLevel": "Activity Level",
@@ -524,7 +525,10 @@
     "light": "Lightly Active",
     "moderate": "Moderately Active",
     "active": "Active",
-    "veryActive": "Very Active"
+    "veryActive": "Very Active",
+    "darkMode": "Dark Mode",
+    "lightMode": "Light Mode",
+    "systemMode": "System"
   },
   "onboarding": {
     "welcome": "Welcome to FitTracker",

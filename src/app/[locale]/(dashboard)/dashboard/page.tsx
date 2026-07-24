@@ -75,7 +75,7 @@ export default function DashboardPage() {
           <p className="text-muted-foreground">{t("dashboard.todaysSummary")}</p>
         </div>
         <div className="flex items-center gap-2">
-          <Flame className="h-5 w-5 text-orange-500" />
+          <Flame className="h-5 w-5 text-primary" />
           <span className="font-semibold">{data?.streak || 0} {t("dashboard.streak")}</span>
         </div>
       </div>
@@ -122,7 +122,7 @@ export default function DashboardPage() {
             <Card>
               <CardContent className="pt-6">
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-blue-500">
+                  <div className="text-2xl font-bold text-primary">
                     {remaining.protein}g
                   </div>
                   <div className="text-xs text-muted-foreground">
@@ -138,7 +138,7 @@ export default function DashboardPage() {
             <Card>
               <CardContent className="pt-6">
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-yellow-500">
+                  <div className="text-2xl font-bold text-muted-foreground">
                     {remaining.carbs}g
                   </div>
                   <div className="text-xs text-muted-foreground">
@@ -154,7 +154,7 @@ export default function DashboardPage() {
             <Card>
               <CardContent className="pt-6">
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-red-500">
+                  <div className="text-2xl font-bold text-accent">
                     {remaining.fat}g
                   </div>
                   <div className="text-xs text-muted-foreground">

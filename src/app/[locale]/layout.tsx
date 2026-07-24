@@ -13,12 +13,15 @@ const cairo = Cairo({
 });
 
 export const viewport: Viewport = {
-  themeColor: "#000000",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#EBE2D0" },
+    { media: "(prefers-color-scheme: dark)", color: "#1D1712" },
+  ],
 };
 
 export const metadata: Metadata = {
-  title: "FitTracker - Nutrition & Fitness Tracking",
-  description: "Track your nutrition, body measurements, and reach your fitness goals",
+  title: "RA · Diaeta — Nutrition & Fitness",
+  description: "Premium Egyptian nutrition tracking, body measurement, and wellness platform",
   manifest: "/manifest.json",
 };
 
@@ -38,7 +41,7 @@ export default async function LocaleLayout({
   const dir = locale === "ar" ? "rtl" : "ltr";
 
   return (
-    <html lang={locale} dir={dir} className={cairo.variable}>
+    <html lang={locale} dir={dir} className={cairo.variable} suppressHydrationWarning>
       <body className="font-cairo antialiased">
         <Providers>
           <TooltipProvider>

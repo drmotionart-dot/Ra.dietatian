@@ -87,9 +87,9 @@ export default function AnalyticsPage() {
       const total = totalProtein + totalCarbs + totalFat;
       if (total > 0) {
         setMacroData([
-          { name: t("meals.proteinLabel"), value: Math.round((totalProtein / total) * 100), color: "#3B82F6" },
-          { name: t("meals.carbsLabel"), value: Math.round((totalCarbs / total) * 100), color: "#EAB308" },
-          { name: t("meals.fatLabel"), value: Math.round((totalFat / total) * 100), color: "#EF4444" },
+          { name: t("meals.proteinLabel"), value: Math.round((totalProtein / total) * 100), color: "#B8934A" },
+          { name: t("meals.carbsLabel"), value: Math.round((totalCarbs / total) * 100), color: "#CBB78E" },
+          { name: t("meals.fatLabel"), value: Math.round((totalFat / total) * 100), color: "#6B1F2A" },
         ]);
       } else {
         setMacroData([]);
@@ -155,8 +155,8 @@ export default function AnalyticsPage() {
                     <XAxis dataKey="day" />
                     <YAxis />
                     <Tooltip />
-                    <Line type="monotone" dataKey="calories" stroke="#3B82F6" strokeWidth={2} dot={{ fill: "#3B82F6" }} />
-                    <Line type="monotone" dataKey="target" stroke="#9CA3AF" strokeDasharray="5 5" />
+                    <Line type="monotone" dataKey="calories" stroke="#B8934A" strokeWidth={2} dot={{ fill: "#B8934A" }} />
+                    <Line type="monotone" dataKey="target" stroke="#6B5D4F" strokeDasharray="5 5" />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
@@ -185,7 +185,7 @@ export default function AnalyticsPage() {
                       <XAxis dataKey="week" />
                       <YAxis domain={["dataMin - 1", "dataMax + 1"]} />
                       <Tooltip />
-                      <Line type="monotone" dataKey="weight" stroke="#10B981" strokeWidth={2} dot={{ fill: "#10B981" }} />
+                      <Line type="monotone" dataKey="weight" stroke="#B8934A" strokeWidth={2} dot={{ fill: "#B8934A" }} />
                     </LineChart>
                   </ResponsiveContainer>
                 )}

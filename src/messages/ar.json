@@ -517,6 +517,7 @@
     "gainWeight": "زيادة الوزن",
     "male": "ذكر",
     "female": "أنثى",
+    "maintain": "الحفاظ على الوزن",
     "lose": "إنقاص الوزن",
     "gain": "زيادة الوزن",
     "activityLevel": "مستوى النشاط",
@@ -524,7 +525,10 @@
     "light": "نشط قليلاً",
     "moderate": "نشط بشكل معتدل",
     "active": "نشط",
-    "veryActive": "نشط جداً"
+    "veryActive": "نشط جداً",
+    "darkMode": "الوضع الداكن",
+    "lightMode": "الوضع الفاتح",
+    "systemMode": "النظام"
   },
   "onboarding": {
     "welcome": "مرحباً بك في فيت تراكر",
