@@ -12,10 +12,12 @@ import { Globe, User, Target, Download, Droplets, Moon, Crown } from "lucide-rea
 import { PRIcon } from "@/components/icons";
 import { PageSkeleton } from "@/components/ui/skeleton";
 import { useSession } from "next-auth/react";
+import { AvatarUpload } from "@/components/AvatarUpload";
 
 interface UserProfile {
   name: string;
   email: string;
+  image?: string;
   sex: string;
   heightCm: number;
   activityLevel: number;
@@ -175,6 +177,23 @@ export default function SettingsPage() {
               </Button>
             )}
           </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <User className="h-5 w-5" />
+            {t("settings.profile") || "Profile"}
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="flex justify-center py-4">
+          <AvatarUpload
+            src={profile?.image as string}
+            name={profile?.name}
+            onUpload={(img) => setProfile((prev) => prev ? { ...prev, image: img } as UserProfile : prev)}
+            onDelete={() => setProfile((prev) => prev ? { ...prev, image: "" } as UserProfile : prev)}
+          />
         </CardContent>
       </Card>
 
