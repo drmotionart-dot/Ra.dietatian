@@ -63,10 +63,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (user) {
         token.id = user.id;
       }
-      if (account?.provider === "google" && token.id) {
+      if (token.id) {
         await connectDB();
-        const dbUser = await User.findById(token.id).lean<{ isOnboarded?: boolean }>();
+        const dbUser = await User.findById(token.id).lean<{ isOnboarded?: boolean; tier?: string }>();
         token.isOnboarded = dbUser?.isOnboarded ?? false;
+        token.tier = dbUser?.tier ?? "free";
       }
       return token;
     },
@@ -74,6 +75,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (session.user) {
         session.user.id = token.id as string;
         session.user.isOnboarded = token.isOnboarded as boolean;
+        session.user.tier = (token.tier as string) ?? "free";
       }
       return session;
     },

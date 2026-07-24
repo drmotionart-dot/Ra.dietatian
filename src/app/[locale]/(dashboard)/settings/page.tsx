@@ -8,8 +8,10 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Globe, User, Target, Download, Droplets, Moon } from "lucide-react";
+import { Globe, User, Target, Download, Droplets, Moon, Crown } from "lucide-react";
+import { PRIcon } from "@/components/icons";
 import { PageSkeleton } from "@/components/ui/skeleton";
+import { useSession } from "next-auth/react";
 
 interface UserProfile {
   name: string;
@@ -38,10 +40,12 @@ export default function SettingsPage() {
 
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [editing, setEditing] = useState(false);
-  const [form, setForm] = useState({ name: "", sex: "", heightCm: 0, activityLevel: 1.55, goal: "maintain", targetWeightKg: 0, units: "metric", customCalorieTarget: 0, waterGoalMl: 2500, fastingCity: "Cairo", fastingCountry: "Egypt", suhoorTime: "03:30", iftarTime: "19:00" });
+  const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [exporting, setExporting] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [upgrading, setUpgrading] = useState(false);
+  const { data: session, update: updateSession } = useSession();
+  const [form, setForm] = useState({ name: "", sex: "", heightCm: 0, activityLevel: 1.55, goal: "maintain", targetWeightKg: 0, units: "metric", customCalorieTarget: 0, waterGoalMl: 2500, fastingCity: "Cairo", fastingCountry: "Egypt", suhoorTime: "03:30", iftarTime: "19:00" });
 
   useEffect(() => {
     fetch("/api/user/profile")
@@ -126,11 +130,47 @@ export default function SettingsPage() {
     }
   };
 
+  const handleUpgrade = async () => {
+    setUpgrading(true);
+    try {
+      const res = await fetch("/api/user/upgrade", { method: "POST" });
+      if (res.ok) {
+        await updateSession();
+        window.location.reload();
+      }
+    } catch (err) {
+      console.error("Upgrade error:", err);
+    } finally {
+      setUpgrading(false);
+    }
+  };
+
+  const tier = session?.user?.tier;
+
   if (loading) return <PageSkeleton />;
 
   return (
     <div className="container mx-auto p-4 space-y-6">
       <h1 className="text-2xl font-bold">{t("settings.settings")}</h1>
+
+      <Card className={tier === "premium" ? "border-[var(--accent)]" : "border-dashed"}>
+        <CardContent className="pt-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              {tier === "premium" ? <Crown className="h-5 w-5 text-[var(--accent)]" /> : <PRIcon className="h-5 w-5" />}
+              <div>
+                <p className="font-bold">{tier === "premium" ? "RAvictus" : "RAdiaeta"} <span className="text-xs text-muted-foreground">({t("tier.free") || "Free"})</span></p>
+                <p className="text-xs text-muted-foreground">{tier === "premium" ? (t("tier.premiumActive") || "Premium active") : (t("tier.freeDescription") || "Upgrade for premium themes & features")}</p>
+              </div>
+            </div>
+            {tier !== "premium" && (
+              <Button onClick={handleUpgrade} disabled={upgrading} size="sm" className="gold-shimmer text-black font-bold">
+                {upgrading ? t("common.loading") : (t("tier.upgradeNow") || "Upgrade")}
+              </Button>
+            )}
+          </div>
+        </CardContent>
+      </Card>
 
       <Card>
         <CardHeader>

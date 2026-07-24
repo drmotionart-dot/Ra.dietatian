@@ -788,5 +788,15 @@
     "goalReached": "تم تحقيق الهدف!",
     "almostThere": "تقريباً!",
     "keepGoing": "استمر في الشرب!"
+  },
+  "tier": {
+    "free": "مجاني",
+    "premium": "مميز",
+    "upgradeTitle": "افتح RAvictus",
+    "upgradeDescription": "ترقية إلى RAvictus للتحليلات المتقدمة والميزات المميزة والمزيد",
+    "upgradeNow": "ترقية إلى RAvictus",
+    "featureLocked": "هذه ميزة مميزة",
+    "freeDescription": "ترقية للمواضيع والميزات المميزة",
+    "premiumActive": "الاشتراك المميز نشط"
   }
 }

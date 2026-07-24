@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { SessionProvider } from "next-auth/react";
 import { ThemeProvider } from "next-themes";
+import { TierProvider } from "@/components/TierProvider";
 
 function ServiceWorkerRegistration() {
   useEffect(() => {
@@ -17,8 +18,10 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
       <SessionProvider>
-        <ServiceWorkerRegistration />
-        {children}
+        <TierProvider>
+          <ServiceWorkerRegistration />
+          {children}
+        </TierProvider>
       </SessionProvider>
     </ThemeProvider>
   );

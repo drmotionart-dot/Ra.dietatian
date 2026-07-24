@@ -24,6 +24,8 @@ const UserSchema = new Schema(
     iftarTime: { type: String, default: "19:00" },
     dietaryPreferences: [{ type: String }],
     interests: [{ type: String }],
+    tier: { type: String, enum: ["free", "premium"], default: "free" },
+    premiumExpiresAt: Date,
   },
   { timestamps: true, collection: "users" }
 );

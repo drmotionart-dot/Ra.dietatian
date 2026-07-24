@@ -788,5 +788,15 @@
     "goalReached": "Goal reached!",
     "almostThere": "Almost there!",
     "keepGoing": "Keep drinking!"
+  },
+  "tier": {
+    "free": "Free",
+    "premium": "Premium",
+    "upgradeTitle": "Unlock RAvictus",
+    "upgradeDescription": "Upgrade to RAvictus for advanced analytics, premium themes, and more",
+    "upgradeNow": "Upgrade to RAvictus",
+    "featureLocked": "This is a premium feature",
+    "freeDescription": "Upgrade for premium themes & features",
+    "premiumActive": "Premium active"
   }
 }
