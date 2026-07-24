@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
-import { User, BodyMeasurement, MealLog } from "@/models";
+import { User, BodyMeasurement, MealLog, WaterLog } from "@/models";
 import { auth } from "@/lib/auth";
 
 export async function GET() {
@@ -62,6 +62,13 @@ export async function GET() {
       userId,
       date: { $gte: today, $lt: tomorrow },
     }).sort({ createdAt: 1 }).lean();
+
+    const todayWaterLogs = await WaterLog.find({
+      userId,
+      date: { $gte: today, $lt: tomorrow },
+    }).lean();
+
+    const totalWaterMl = todayWaterLogs.reduce((sum, log) => sum + (log.amountMl || 0), 0);
 
     const consumed = todayMeals.reduce(
       (acc, log) => ({
@@ -128,6 +135,11 @@ export async function GET() {
       recentMeals,
       streak,
       todayMeals,
+      water: {
+        totalMl: totalWaterMl,
+        goalMl: 2500,
+        logs: todayWaterLogs,
+      },
     });
   } catch (error) {
     console.error("Dashboard error:", error);

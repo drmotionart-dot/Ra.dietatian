@@ -15,6 +15,8 @@ import {
   Heart,
   Ruler,
   Bell,
+  Dumbbell,
+  Droplets,
 } from "lucide-react";
 
 function getLocaleFromPathname(pathname: string): string {
@@ -26,7 +28,7 @@ const navItems = [
   { key: "nav.dashboard", href: "/dashboard", icon: LayoutDashboard },
   { key: "nav.meals", href: "/meals", icon: UtensilsCrossed },
   { key: "nav.body", href: "/body", icon: Ruler },
-  { key: "nav.analytics", href: "/analytics", icon: BarChart3 },
+  { key: "nav.training", href: "/training", icon: Dumbbell },
   { key: "nav.fasting", href: "/fasting", icon: Moon },
 ];
 
@@ -35,6 +37,8 @@ const sidebarItems = [
   { key: "nav.meals", href: "/meals", icon: UtensilsCrossed },
   { key: "nav.recipes", href: "/recipes", icon: UtensilsCrossed },
   { key: "nav.body", href: "/body", icon: Ruler },
+  { key: "nav.training", href: "/training", icon: Dumbbell },
+  { key: "nav.water", href: "/water", icon: Droplets },
   { key: "nav.analytics", href: "/analytics", icon: BarChart3 },
   { key: "nav.fasting", href: "/fasting", icon: Moon },
   { key: "nav.medical", href: "/medical", icon: Heart },

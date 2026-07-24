@@ -8,3 +8,6 @@ export { NotificationPreference } from "./NotificationPreference";
 export { FastingPreference } from "./FastingPreference";
 export { FastingLog } from "./FastingLog";
 export { Account, Session, VerificationToken } from "./Auth";
+export { Exercise } from "./Exercise";
+export { WorkoutSession } from "./WorkoutSession";
+export { WaterLog } from "./WaterLog";

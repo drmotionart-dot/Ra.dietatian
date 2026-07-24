@@ -6,7 +6,7 @@ import { useParams } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { Flame, Target, TrendingUp, Utensils, Scale, Moon, ChefHat } from "lucide-react";
+import { Flame, Target, TrendingUp, Utensils, Scale, Moon, ChefHat, Dumbbell, Droplets, Plus } from "lucide-react";
 import BodyVisualization from "@/components/body/BodyVisualization";
 import Link from "next/link";
 
@@ -27,6 +27,7 @@ interface DashboardData {
     neckCm?: number;
   } | null;
   todayMeals: Array<{ mealType: string; totalCalories: number; totalProtein: number; totalCarbs: number; totalFat: number }>;
+  water?: { totalMl: number; goalMl: number };
 }
 
 export default function DashboardPage() {
@@ -174,6 +175,31 @@ export default function DashboardPage() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
+            <Droplets className="h-5 w-5" />
+            {t("water.title")}
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="text-2xl font-bold text-primary">
+                {data?.water?.totalMl || 0}
+                <span className="text-sm font-normal text-muted-foreground">{t("units.ml")}</span>
+              </div>
+              <span className="text-muted-foreground">/ {(data?.water?.goalMl || 2500).toLocaleString()}{t("units.ml")}</span>
+            </div>
+            <Link href={`/${locale}/water`}>
+              <Button variant="outline" size="sm">
+                <Plus className="h-4 w-4 me-1" />{t("water.logWater")}
+              </Button>
+            </Link>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
             <Utensils className="h-5 w-5" />
             {t("dashboard.quickActions")}
           </CardTitle>
@@ -192,16 +218,16 @@ export default function DashboardPage() {
                 <span>{t("dashboard.logWeight")}</span>
               </Button>
             </Link>
-            <Link href={`/${locale}/fasting`}>
+            <Link href={`/${locale}/training`}>
               <Button className="h-20 w-full flex flex-col gap-2" variant="outline">
-                <Moon className="h-6 w-6" />
-                <span>{t("fasting.fasting")}</span>
+                <Dumbbell className="h-6 w-6" />
+                <span>{t("training.title")}</span>
               </Button>
             </Link>
-            <Link href={`/${locale}/recipes`}>
+            <Link href={`/${locale}/water`}>
               <Button className="h-20 w-full flex flex-col gap-2" variant="outline">
-                <ChefHat className="h-6 w-6" />
-                <span>{t("recipes.recipes")}</span>
+                <Droplets className="h-6 w-6" />
+                <span>{t("water.title")}</span>
               </Button>
             </Link>
           </div>

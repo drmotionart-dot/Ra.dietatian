@@ -66,7 +66,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async session({ session, token }) {
       if (session.user) {
         session.user.id = token.id as string;
-        (session.user as Record<string, unknown>).isOnboarded = token.isOnboarded;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (session.user as any).isOnboarded = token.isOnboarded;
       }
       return session;
     },

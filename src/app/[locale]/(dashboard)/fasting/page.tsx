@@ -146,14 +146,20 @@ export default function FastingPage() {
               <p className="text-muted-foreground">
                 {times.isFasting
                   ? t("fasting.elapsed", { hours: times.fastingHours, minutes: times.fastingMinutes })
-                  : `${t("fasting.nextMeal")}: ${times.nextMeal === "iftar" ? t("fasting.iftarTime") : t("fasting.suhoorTime")}`}
+                  : prefs.ramadanEnabled
+                    ? `${t("fasting.nextMeal")}: ${times.nextMeal === "iftar" ? t("fasting.iftarTime") : t("fasting.suhoorTime")}`
+                    : `${t("fasting.nextMeal")}: ${t("fasting.fastingEnd")}`
+                }
               </p>
             </div>
             <div className="text-4xl font-bold text-primary">
               {String(times.remainH).padStart(2, "0")}:{String(times.remainM).padStart(2, "0")}
             </div>
             <div className="text-sm text-muted-foreground">
-              {times.nextMeal === "iftar" ? t("fasting.iftarTime") : t("fasting.suhoorTime")}
+              {prefs.ramadanEnabled
+                ? (times.nextMeal === "iftar" ? t("fasting.iftarTime") : t("fasting.suhoorTime"))
+                : t("fasting.fastingEnd")
+              }
             </div>
           </div>
         </CardContent>
@@ -276,7 +282,7 @@ export default function FastingPage() {
                   await fetch("/api/fasting", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ type: "log", fastingType: "ramadan", completed: true }),
+                    body: JSON.stringify({ type: "log", fastingType: prefs.ramadanEnabled ? "ramadan" : "sunnah", completed: true }),
                   });
                   const r = await fetch("/api/fasting");
                   const d = await r.json();
@@ -297,7 +303,7 @@ export default function FastingPage() {
                   await fetch("/api/fasting", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ type: "log", fastingType: "ramadan", completed: false }),
+                    body: JSON.stringify({ type: "log", fastingType: prefs.ramadanEnabled ? "ramadan" : "sunnah", completed: false }),
                   });
                   const r = await fetch("/api/fasting");
                   const d = await r.json();

@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Globe, User } from "lucide-react";
+import { Globe, User, Target, Download, Trash2 } from "lucide-react";
 
 interface UserProfile {
   name: string;
@@ -19,6 +19,8 @@ interface UserProfile {
   goal: string;
   targetWeightKg: number;
   units: string;
+  locale: string;
+  customCalorieTarget?: number;
 }
 
 export default function SettingsPage() {
@@ -30,8 +32,9 @@ export default function SettingsPage() {
 
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [editing, setEditing] = useState(false);
-  const [form, setForm] = useState({ name: "", sex: "", heightCm: 0, activityLevel: 1.55, goal: "maintain", targetWeightKg: 0, units: "metric" });
+  const [form, setForm] = useState({ name: "", sex: "", heightCm: 0, activityLevel: 1.55, goal: "maintain", targetWeightKg: 0, units: "metric", customCalorieTarget: 0 });
   const [saving, setSaving] = useState(false);
+  const [exporting, setExporting] = useState(false);
 
   useEffect(() => {
     fetch("/api/user/profile")
@@ -47,6 +50,7 @@ export default function SettingsPage() {
             goal: d.user.goal || "maintain",
             targetWeightKg: d.user.targetWeightKg || 0,
             units: d.user.units || "metric",
+            customCalorieTarget: d.user.customCalorieTarget || 0,
           });
         }
       })
@@ -75,6 +79,37 @@ export default function SettingsPage() {
       console.error("Save error:", err);
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleExport = async () => {
+    setExporting(true);
+    try {
+      const [mealsRes, bodyRes, waterRes, workoutsRes] = await Promise.all([
+        fetch("/api/meals?startDate=2020-01-01").then((r) => r.json()),
+        fetch("/api/body-measurements").then((r) => r.json()),
+        fetch("/api/water").then((r) => r.json()),
+        fetch("/api/workouts?limit=500").then((r) => r.json()),
+      ]);
+      const exportData = {
+        profile,
+        meals: mealsRes.mealLogs || [],
+        bodyMeasurements: bodyRes.measurements || [],
+        waterLogs: waterRes.logs || [],
+        workouts: workoutsRes.sessions || [],
+        exportedAt: new Date().toISOString(),
+      };
+      const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `ra-diet-export-${new Date().toISOString().split("T")[0]}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error("Export error:", err);
+    } finally {
+      setExporting(false);
     }
   };
 
@@ -187,6 +222,22 @@ export default function SettingsPage() {
               <Button variant="outline" onClick={() => setEditing(true)}>{t("settings.editProfile")}</Button>
             )}
           </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Download className="h-5 w-5" />
+            {t("settings.exportData")}
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-muted-foreground mb-3">{t("settings.exportDataDesc")}</p>
+          <Button variant="outline" onClick={handleExport} disabled={exporting}>
+            <Download className="h-4 w-4 me-2" />
+            {exporting ? t("common.loading") : t("settings.exportData")}
+          </Button>
         </CardContent>
       </Card>
     </div>

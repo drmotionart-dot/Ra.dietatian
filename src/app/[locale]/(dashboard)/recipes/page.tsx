@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Search, Plus, Clock, Users, ChefHat, Trash2, X } from "lucide-react";
+import { Search, Plus, Clock, Users, ChefHat, Trash2, X, ChevronDown, ChevronUp, Edit } from "lucide-react";
 
 interface Recipe {
   _id: string;
@@ -21,9 +21,14 @@ interface Recipe {
   servingsCount?: number;
   difficulty?: string;
   nutritionPerServing?: { calories?: number; protein?: number; carbs?: number; fat?: number };
+  instructions?: string[];
+  instructionsAr?: string[];
+  tips?: string[];
+  tipsAr?: string[];
+  cuisineStyle?: string;
 }
 
-const emptyForm = { name: "", nameAr: "", category: "breakfast", cookingMethod: "", prepTimeMinutes: 0, cookTimeMinutes: 0, servingsCount: 2, difficulty: "easy", nutritionPerServing: { calories: 0, protein: 0, carbs: 0, fat: 0 } };
+const emptyForm = { name: "", nameAr: "", category: "breakfast", cookingMethod: "", prepTimeMinutes: 0, cookTimeMinutes: 0, servingsCount: 2, difficulty: "easy", nutritionPerServing: { calories: 0, protein: 0, carbs: 0, fat: 0 }, instructions: "", instructionsAr: "", tips: "", tipsAr: "" };
 
 export default function RecipesPage() {
   const t = useTranslations();
@@ -33,6 +38,8 @@ export default function RecipesPage() {
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState(emptyForm);
   const [saving, setSaving] = useState(false);
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
 
   const fetchRecipes = () => {
     const params = new URLSearchParams();
@@ -50,22 +57,56 @@ export default function RecipesPage() {
     e.preventDefault();
     setSaving(true);
     try {
-      const res = await fetch("/api/recipes", {
-        method: "POST",
+      const payload = {
+        ...form,
+        instructions: form.instructions ? form.instructions.split("\n").filter((s: string) => s.trim()) : [],
+        instructionsAr: form.instructionsAr ? form.instructionsAr.split("\n").filter((s: string) => s.trim()) : [],
+        tips: form.tips ? form.tips.split("\n").filter((s: string) => s.trim()) : [],
+        tipsAr: form.tipsAr ? form.tipsAr.split("\n").filter((s: string) => s.trim()) : [],
+      };
+      const url = editingId ? `/api/recipes?id=${editingId}` : "/api/recipes";
+      const method = editingId ? "PUT" : "POST";
+      const res = await fetch(url, {
+        method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify(payload),
       });
       if (res.ok) {
         const data = await res.json();
-        setRecipes([data.recipe, ...recipes]);
+        if (editingId) {
+          setRecipes(recipes.map((r) => r._id === editingId ? { ...r, ...data.recipe } : r));
+        } else {
+          setRecipes([data.recipe, ...recipes]);
+        }
         setForm(emptyForm);
         setShowForm(false);
+        setEditingId(null);
       }
     } catch (err) {
-      console.error("Create error:", err);
+      console.error("Save error:", err);
     } finally {
       setSaving(false);
     }
+  };
+
+  const startEdit = (recipe: Recipe) => {
+    setForm({
+      name: recipe.name,
+      nameAr: recipe.nameAr || "",
+      category: recipe.category || "breakfast",
+      cookingMethod: recipe.cookingMethod || "",
+      prepTimeMinutes: recipe.prepTimeMinutes || 0,
+      cookTimeMinutes: recipe.cookTimeMinutes || 0,
+      servingsCount: recipe.servingsCount || 2,
+      difficulty: recipe.difficulty || "easy",
+      nutritionPerServing: { calories: recipe.nutritionPerServing?.calories || 0, protein: recipe.nutritionPerServing?.protein || 0, carbs: recipe.nutritionPerServing?.carbs || 0, fat: recipe.nutritionPerServing?.fat || 0 },
+      instructions: recipe.instructions?.join("\n") || "",
+      instructionsAr: recipe.instructionsAr?.join("\n") || "",
+      tips: recipe.tips?.join("\n") || "",
+      tipsAr: recipe.tipsAr?.join("\n") || "",
+    });
+    setEditingId(recipe._id);
+    setShowForm(true);
   };
 
   const handleDelete = async (id: string) => {
@@ -90,7 +131,7 @@ export default function RecipesPage() {
           <ChefHat className="h-6 w-6 text-primary" />
           <h1 className="text-2xl font-bold">{t("recipes.recipes")}</h1>
         </div>
-        <Button onClick={() => setShowForm(!showForm)}>
+        <Button onClick={() => { setShowForm(!showForm); setEditingId(null); setForm(emptyForm); }}>
           {showForm ? <X className="h-4 w-4 me-2" /> : <Plus className="h-4 w-4 me-2" />}
           {showForm ? t("common.cancel") : t("recipes.createRecipe")}
         </Button>
@@ -99,7 +140,7 @@ export default function RecipesPage() {
       {showForm && (
         <Card>
           <CardHeader>
-            <CardTitle>{t("recipes.createRecipe")}</CardTitle>
+            <CardTitle>{editingId ? t("recipes.editRecipe") : t("recipes.createRecipe")}</CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleCreate} className="space-y-4">
@@ -163,6 +204,33 @@ export default function RecipesPage() {
                   <Input type="number" value={form.nutritionPerServing?.fat || 0} onChange={(e) => setForm({ ...form, nutritionPerServing: { ...form.nutritionPerServing, fat: parseInt(e.target.value) || 0 } })} />
                 </div>
               </div>
+              <div className="space-y-2">
+                <Label>{t("recipes.instructions")} ({t("food.foodNameArabic")})</Label>
+                <textarea
+                  value={form.instructionsAr}
+                  onChange={(e) => setForm({ ...form, instructionsAr: e.target.value })}
+                  placeholder={t("recipes.instructionsPlaceholder")}
+                  className="w-full border rounded-md p-2 bg-background min-h-[80px]"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>{t("recipes.instructions")} (English)</Label>
+                <textarea
+                  value={form.instructions}
+                  onChange={(e) => setForm({ ...form, instructions: e.target.value })}
+                  placeholder="One step per line..."
+                  className="w-full border rounded-md p-2 bg-background min-h-[80px]"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>{t("recipes.tips")} ({t("food.foodNameArabic")})</Label>
+                <textarea
+                  value={form.tipsAr}
+                  onChange={(e) => setForm({ ...form, tipsAr: e.target.value })}
+                  placeholder={t("recipes.tipsPlaceholder")}
+                  className="w-full border rounded-md p-2 bg-background min-h-[60px]"
+                />
+              </div>
               <Button type="submit" disabled={saving}>{saving ? t("common.loading") : t("common.save")}</Button>
             </form>
           </CardContent>
@@ -201,6 +269,9 @@ export default function RecipesPage() {
                         <Badge className={getDifficultyColor(recipe.difficulty)}>
                           {t(`recipes.${recipe.difficulty}`)}
                         </Badge>
+                        <Button variant="ghost" size="sm" onClick={() => startEdit(recipe)} aria-label={t("recipes.editRecipe")}>
+                          <Edit className="h-4 w-4 text-muted-foreground" />
+                        </Button>
                         <Button variant="ghost" size="sm" onClick={() => handleDelete(recipe._id)} aria-label={t("recipes.deleteRecipe")}>
                           <Trash2 className="h-4 w-4 text-destructive" />
                         </Button>
@@ -236,6 +307,47 @@ export default function RecipesPage() {
                         </div>
                       </div>
                     )}
+                    {(recipe.instructionsAr?.length || recipe.instructions?.length || recipe.tipsAr?.length) ? (
+                      <div className="border-t pt-3">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="w-full justify-between"
+                          onClick={() => setExpandedId(expandedId === recipe._id ? null : recipe._id)}
+                        >
+                          <span className="text-sm">{expandedId === recipe._id ? t("common.close") : t("recipes.steps")}</span>
+                          {expandedId === recipe._id ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                        </Button>
+                        {expandedId === recipe._id && (
+                          <div className="mt-3 space-y-3 text-sm">
+                            {recipe.instructionsAr && recipe.instructionsAr.length > 0 && (
+                              <div>
+                                <h4 className="font-medium mb-1">{t("recipes.instructions")}</h4>
+                                <ol className="list-decimal list-inside space-y-1 text-muted-foreground">
+                                  {recipe.instructionsAr.map((step, i) => <li key={i}>{step}</li>)}
+                                </ol>
+                              </div>
+                            )}
+                            {recipe.instructions && recipe.instructions.length > 0 && !recipe.instructionsAr?.length && (
+                              <div>
+                                <h4 className="font-medium mb-1">{t("recipes.instructions")}</h4>
+                                <ol className="list-decimal list-inside space-y-1 text-muted-foreground">
+                                  {recipe.instructions.map((step, i) => <li key={i}>{step}</li>)}
+                                </ol>
+                              </div>
+                            )}
+                            {recipe.tipsAr && recipe.tipsAr.length > 0 && (
+                              <div>
+                                <h4 className="font-medium mb-1">{t("recipes.tips")}</h4>
+                                <ul className="list-disc list-inside space-y-1 text-muted-foreground">
+                                  {recipe.tipsAr.map((tip, i) => <li key={i}>{tip}</li>)}
+                                </ul>
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    ) : null}
                   </div>
                 </CardContent>
               </Card>

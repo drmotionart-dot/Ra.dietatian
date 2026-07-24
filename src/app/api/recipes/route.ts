@@ -91,6 +91,58 @@ export async function POST(req: Request) {
   }
 }
 
+export async function PUT(req: Request) {
+  try {
+    const session = await auth();
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    await connectDB();
+    const body = await req.json();
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get("id");
+    if (!id) {
+      return NextResponse.json({ error: "Recipe ID is required" }, { status: 400 });
+    }
+
+    const validCategories = ["breakfast", "lunch", "dinner", "snack", "dessert", "appetizer", "soup", "salad", "beverage"];
+    const validDifficulties = ["easy", "medium", "hard"];
+
+    const updates: Record<string, unknown> = {};
+    if (body.name) updates.name = body.name.trim();
+    if (body.nameAr !== undefined) updates.nameAr = body.nameAr;
+    if (body.description !== undefined) updates.description = body.description;
+    if (body.category && validCategories.includes(body.category)) updates.category = body.category;
+    if (body.cuisineStyle !== undefined) updates.cuisineStyle = body.cuisineStyle;
+    if (body.cookingMethod !== undefined) updates.cookingMethod = body.cookingMethod;
+    if (Array.isArray(body.instructions)) updates.instructions = body.instructions;
+    if (Array.isArray(body.instructionsAr)) updates.instructionsAr = body.instructionsAr;
+    if (Array.isArray(body.tips)) updates.tips = body.tips;
+    if (Array.isArray(body.tipsAr)) updates.tipsAr = body.tipsAr;
+    if (typeof body.prepTimeMinutes === "number") updates.prepTimeMinutes = body.prepTimeMinutes;
+    if (typeof body.cookTimeMinutes === "number") updates.cookTimeMinutes = body.cookTimeMinutes;
+    if (body.difficulty && validDifficulties.includes(body.difficulty)) updates.difficulty = body.difficulty;
+    if (typeof body.nutritionPerServing === "object") updates.nutritionPerServing = body.nutritionPerServing;
+    if (typeof body.servingsCount === "number") updates.servingsCount = body.servingsCount;
+
+    const recipe = await Recipe.findOneAndUpdate(
+      { _id: id, userId: session.user.id },
+      { $set: updates },
+      { new: true }
+    ).lean();
+
+    if (!recipe) {
+      return NextResponse.json({ error: "Recipe not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({ recipe });
+  } catch (error) {
+    console.error("Update recipe error:", error);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+  }
+}
+
 export async function DELETE(req: Request) {
   try {
     const session = await auth();

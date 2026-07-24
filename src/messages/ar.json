@@ -49,6 +49,8 @@
     "recipes": "الوصفات",
     "body": "الجسم",
     "notifications": "الإشعارات",
+    "training": "التمارين",
+    "water": "الماء",
     "mainNavigation": "التنقل الرئيسي",
     "sidebarNavigation": "التنقل الجانبي"
   },
@@ -139,7 +141,10 @@
     "macroBalance": "توازن المغذيات",
     "proteinLabel": "بروتين",
     "carbsLabel": "كربوهيدرات",
-    "fatLabel": "دهون"
+    "fatLabel": "دهون",
+    "recentFoods": "الأطعمة الأخيرة",
+    "favorites": "المفضلة",
+    "todayHistory": "سجل وجبات اليوم"
   },
   "food": {
     "foodSearch": "بحث عن طعام",
@@ -443,7 +448,13 @@
     "appetizer": "مقبلات",
     "soup": "شوربة",
     "salad": "سلطة",
-    "beverage": "مشروبات"
+    "beverage": "مشروبات",
+    "instructionsPlaceholder": "الخطوة ١...\nالخطوة ٢...\nالخطوة ٣...",
+    "tipsPlaceholder": "نصيحة ١...\nنصيحة ٢...",
+    "tips": "نصائح",
+    "editRecipe": "تعديل الوصفة",
+    "addIngredients": "إضافة مكونات",
+    "steps": "الخطوات"
   },
   "fasting": {
     "fastingMode": "وضع الصيام",
@@ -476,6 +487,7 @@
     "noHistory": "لا يوجد سجل صيام بعد",
     "dayCompleted": "مكتمل",
     "dayMissed": "فائت",
+    "fastingEnd": "نهاية الصيام",
     "disclaimer": "الصيام في رمضان عبادة دينية. هذا التطبيق يتتبع صيامك لأغراض تعليمية فقط. استشر طبيبك قبل الصيام، خاصة إذا كنت حاملًا أو مرضعًا أو مصابًا بأي حالة طبية."
   },
   "notifications": {
@@ -549,7 +561,11 @@
     "lightMode": "الوضع الفاتح",
     "systemMode": "النظام",
     "switchToLightMode": "التبديل للوضع الفاتح",
-    "switchToDarkMode": "التبديل للوضع الداكن"
+    "switchToDarkMode": "التبديل للوضع الداكن",
+    "exportData": "تصدير البيانات",
+    "exportDataDesc": "تحميل جميع بياناتك كملف JSON (الوجبات، قياسات الجسم، سجلات الماء، التمارين).",
+    "customCalorieTarget": "هدف سعرات مخصص",
+    "customCalorieTargetDesc": "تجاوز الهدف المحسوب تلقائياً"
   },
   "onboarding": {
     "welcome": "مرحباً بك في فيت تراكر",
@@ -660,5 +676,66 @@
   "brand": {
     "sustainedVitality": "حياة مستمرة",
     "dailyRegimen": "نظام يومي"
+  },
+  "training": {
+    "title": "التمارين",
+    "startWorkout": "بدء تمرين",
+    "activeWorkout": "تمرين نشط",
+    "workoutName": "اسم التمرين",
+    "workoutNamePlaceholder": "مثال: يوم الصدر",
+    "feeling": "كيف تشعر؟",
+    "feelingGreat": "رائع",
+    "feelingGood": "جيد",
+    "feelingOkay": "مقبول",
+    "feelingBad": "سيء",
+    "addExercise": "إضافة تمرين",
+    "searchExercise": "بحث عن تمارين...",
+    "noExercises": "لم يتم العثور على تمارين",
+    "addSet": "إضافة ست",
+    "set": "ست",
+    "weight": "الوزن",
+    "reps": "التكرارات",
+    "saveWorkout": "حفظ التمرين",
+    "totalWorkouts": "إجمالي التمارين",
+    "totalVolume": "الحجم الكلي",
+    "totalSets": "إجمالي الستات",
+    "history": "سجل التمارين",
+    "noWorkouts": "لم يتم تسجيل تمارين بعد. ابدأ أول تمرين!",
+    "workout": "تمرين",
+    "minutes": "دقيقة",
+    "sets": "ستات",
+    "exercises": "تمارين",
+    "exerciseCategories": {
+      "strength": "قوة",
+      "cardio": "قلب",
+      "core": "جذع",
+      "flexibility": "مرونة",
+      "full_body": "كامل الجسم"
+    },
+    "muscleGroups": {
+      "chest": "الصدر",
+      "back": "الظهر",
+      "legs": "الساقين",
+      "shoulders": "الكتفين",
+      "arms": "الذراعين",
+      "core": "الجذع",
+      "glutes": "الأرداف",
+      "cardio": "القلب",
+      "full_body": "كامل الجسم"
+    }
+  },
+  "water": {
+    "title": "شرب الماء",
+    "logWater": "تسجيل الماء",
+    "quickAdd": "إضافة سريعة",
+    "todayLog": "سجل اليوم",
+    "noLogs": "لم يتم تسجيل ماء اليوم",
+    "of": "من",
+    "glasses": "كوب",
+    "customPlaceholder": "مل",
+    "dailyGoal": "الهدف اليومي",
+    "goalReached": "تم تحقيق الهدف!",
+    "almostThere": "تقريباً!",
+    "keepGoing": "استمر في الشرب!"
   }
 }

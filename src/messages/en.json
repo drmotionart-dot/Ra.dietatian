@@ -49,6 +49,8 @@
     "recipes": "Recipes",
     "body": "Body",
     "notifications": "Notifications",
+    "training": "Training",
+    "water": "Water",
     "mainNavigation": "Main navigation",
     "sidebarNavigation": "Sidebar navigation"
   },
@@ -139,7 +141,10 @@
     "macroBalance": "Macro Balance",
     "proteinLabel": "Protein",
     "carbsLabel": "Carbs",
-    "fatLabel": "Fat"
+    "fatLabel": "Fat",
+    "recentFoods": "Recent Foods",
+    "favorites": "Favorites",
+    "todayHistory": "Today's Meal History"
   },
   "food": {
     "foodSearch": "Food Search",
@@ -443,7 +448,13 @@
     "appetizer": "Appetizer",
     "soup": "Soup",
     "salad": "Salad",
-    "beverage": "Beverage"
+    "beverage": "Beverage",
+    "instructionsPlaceholder": "Step 1...\nStep 2...\nStep 3...",
+    "tipsPlaceholder": "Tip 1...\nTip 2...",
+    "tips": "Tips",
+    "editRecipe": "Edit Recipe",
+    "addIngredients": "Add Ingredients",
+    "steps": "Steps"
   },
   "fasting": {
     "fastingMode": "Fasting Mode",
@@ -476,6 +487,7 @@
     "noHistory": "No fasting history yet",
     "dayCompleted": "Completed",
     "dayMissed": "Missed",
+    "fastingEnd": "Fasting End",
     "disclaimer": "Ramadan fasting is a religious worship. This app tracks your fasting for educational purposes only. Consult your doctor before fasting, especially if pregnant, nursing, or with any medical condition."
   },
   "notifications": {
@@ -549,7 +561,11 @@
     "lightMode": "Light Mode",
     "systemMode": "System",
     "switchToLightMode": "Switch to light mode",
-    "switchToDarkMode": "Switch to dark mode"
+    "switchToDarkMode": "Switch to dark mode",
+    "exportData": "Export Data",
+    "exportDataDesc": "Download all your data as a JSON file (meals, body measurements, water logs, workouts).",
+    "customCalorieTarget": "Custom Calorie Target",
+    "customCalorieTargetDesc": "Override auto-calculated calorie target"
   },
   "onboarding": {
     "welcome": "Welcome to FitTracker",
@@ -660,5 +676,66 @@
   "brand": {
     "sustainedVitality": "Sustained Vitality",
     "dailyRegimen": "Daily Regimen"
+  },
+  "training": {
+    "title": "Training",
+    "startWorkout": "Start Workout",
+    "activeWorkout": "Active Workout",
+    "workoutName": "Workout Name",
+    "workoutNamePlaceholder": "e.g. Push Day",
+    "feeling": "How do you feel?",
+    "feelingGreat": "Great",
+    "feelingGood": "Good",
+    "feelingOkay": "Okay",
+    "feelingBad": "Bad",
+    "addExercise": "Add Exercise",
+    "searchExercise": "Search exercises...",
+    "noExercises": "No exercises found",
+    "addSet": "Add Set",
+    "set": "Set",
+    "weight": "Weight",
+    "reps": "Reps",
+    "saveWorkout": "Save Workout",
+    "totalWorkouts": "Total Workouts",
+    "totalVolume": "Total Volume",
+    "totalSets": "Total Sets",
+    "history": "Workout History",
+    "noWorkouts": "No workouts logged yet. Start your first workout!",
+    "workout": "Workout",
+    "minutes": "min",
+    "sets": "sets",
+    "exercises": "exercises",
+    "exerciseCategories": {
+      "strength": "Strength",
+      "cardio": "Cardio",
+      "core": "Core",
+      "flexibility": "Flexibility",
+      "full_body": "Full Body"
+    },
+    "muscleGroups": {
+      "chest": "Chest",
+      "back": "Back",
+      "legs": "Legs",
+      "shoulders": "Shoulders",
+      "arms": "Arms",
+      "core": "Core",
+      "glutes": "Glutes",
+      "cardio": "Cardio",
+      "full_body": "Full Body"
+    }
+  },
+  "water": {
+    "title": "Water Intake",
+    "logWater": "Log Water",
+    "quickAdd": "Quick Add",
+    "todayLog": "Today's Log",
+    "noLogs": "No water logged today",
+    "of": "of",
+    "glasses": "glasses",
+    "customPlaceholder": "ml",
+    "dailyGoal": "Daily Goal",
+    "goalReached": "Goal reached!",
+    "almostThere": "Almost there!",
+    "keepGoing": "Keep drinking!"
   }
 }
