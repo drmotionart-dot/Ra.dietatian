@@ -157,7 +157,7 @@ export default function NotificationsPage() {
         </CardContent>
       </Card>
 
-      {"Notification" in window && (
+      {typeof window !== "undefined" && "Notification" in window && (
         <Card>
           <CardContent className="pt-6 space-y-4">
             <div className="flex items-center justify-between">
@@ -172,8 +172,12 @@ export default function NotificationsPage() {
                 size="sm"
                 disabled={permission === "denied"}
                 onClick={async () => {
-                  const p = await Notification.requestPermission();
-                  setPermission(p);
+                  try {
+                    const p = await Notification.requestPermission();
+                    setPermission(p);
+                  } catch (err) {
+                    console.error("Notification permission error:", err);
+                  }
                 }}
               >
                 {t("notifications.requestPermission")}

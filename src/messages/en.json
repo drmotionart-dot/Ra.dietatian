@@ -33,7 +33,9 @@
     "decrease": "Decrease",
     "all": "All",
     "noData": "No data available",
-    "success": "Success"
+    "success": "Success",
+    "notFound": "Page not found",
+    "goHome": "Go to home"
   },
   "nav": {
     "dashboard": "Dashboard",
@@ -118,6 +120,8 @@
     "commonPortions": "Common Portions",
     "logFood": "Log Food",
     "removeFood": "Remove Food",
+    "addFoodToMeal": "Add {name} to meal",
+    "removeFoodFromMeal": "Remove {name} from meal",
     "dailySummary": "Daily Summary",
     "weeklySummary": "Weekly Summary",
     "monthlySummary": "Monthly Summary",
@@ -203,6 +207,7 @@
     "perServing": "Per Serving",
     "dailyValue": "Daily Value",
     "dailyValuePercent": "% Daily Value",
+    "dailyValueAbbr": "DV",
     "highIn": "High in {nutrient}",
     "goodSourceOf": "Good source of {nutrient}",
     "lowIn": "Low in {nutrient}",
@@ -232,6 +237,8 @@
     "addMeasurement": "Add Measurement",
     "measurementGuide": "Measurement Guide",
     "bodyVisualization": "Body Visualization",
+    "frontView": "Front View",
+    "backView": "Back View",
     "cartoonView": "Cartoon View",
     "realisticView": "Realistic View",
     "waistToHipRatio": "Waist to Hip Ratio",
@@ -241,6 +248,9 @@
     "obese": "Obese",
     "noMeasurements": "No measurements logged",
     "addFirstMeasurement": "Add your first measurement to track progress",
+    "steps": "Steps",
+    "commonMistakes": "Common Mistakes",
+    "tipsForConsistentResults": "Tips for Consistent Results",
     "measurements": {
       "waist": {
         "title": "Waist Circumference",
@@ -423,6 +433,7 @@
     "hard": "Hard",
     "servings": "Servings",
     "noRecipes": "No recipes yet",
+    "deleteRecipe": "Delete recipe",
     "category": "Category",
     "prepMinutes": "Prep (min)",
     "cookMinutes": "Cook (min)",
@@ -498,7 +509,13 @@
     "sendTest": "Send Test Notification",
     "testSent": "Test notification sent!",
     "testFailed": "Failed to send test notification",
-    "activeCount": "{active} of {total} active"
+    "activeCount": "{active} of {total} active",
+    "timeMeals": "Daily at 7am, 12pm, 7pm",
+    "timeExercise": "Daily at 6pm",
+    "weightWeekly": "Weekly on Monday",
+    "measurementMonthly": "Monthly on the 1st",
+    "enabled": "Enabled",
+    "disabled": "Disabled"
   },
   "settings": {
     "settings": "Settings",
@@ -530,7 +547,9 @@
     "veryActive": "Very Active",
     "darkMode": "Dark Mode",
     "lightMode": "Light Mode",
-    "systemMode": "System"
+    "systemMode": "System",
+    "switchToLightMode": "Switch to light mode",
+    "switchToDarkMode": "Switch to dark mode"
   },
   "onboarding": {
     "welcome": "Welcome to FitTracker",
@@ -637,5 +656,9 @@
     "snack": "Snack",
     "suhoor": "Suhoor",
     "iftar": "Iftar"
+  },
+  "brand": {
+    "sustainedVitality": "Sustained Vitality",
+    "dailyRegimen": "Daily Regimen"
   }
 }

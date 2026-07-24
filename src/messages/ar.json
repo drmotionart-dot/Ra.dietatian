@@ -33,7 +33,9 @@
     "decrease": "نقصان",
     "all": "الكل",
     "noData": "لا توجد بيانات",
-    "success": "نجاح"
+    "success": "نجاح",
+    "notFound": "الصفحة غير موجودة",
+    "goHome": "الذهاب إلى الصفحة الرئيسية"
   },
   "nav": {
     "dashboard": "لوحة التحكم",
@@ -118,6 +120,8 @@
     "commonPortions": "حصص شائعة",
     "logFood": "تسجيل الطعام",
     "removeFood": "إزالة الطعام",
+    "addFoodToMeal": "إضافة {name} للوجبة",
+    "removeFoodFromMeal": "إزالة {name} من الوجبة",
     "dailySummary": "ملخص يومي",
     "weeklySummary": "ملخص أسبوعي",
     "monthlySummary": "ملخص شهري",
@@ -203,6 +207,7 @@
     "perServing": "لكل حصة",
     "dailyValue": "القيمة اليومية",
     "dailyValuePercent": "% القيمة اليومية",
+    "dailyValueAbbr": "ق.ي",
     "highIn": "غني بـ {nutrient}",
     "goodSourceOf": "مصدر جيد لـ {nutrient}",
     "lowIn": "قليل في {nutrient}",
@@ -232,6 +237,8 @@
     "addMeasurement": "إضافة قياس",
     "measurementGuide": "دليل القياس",
     "bodyVisualization": "تصور الجسم",
+    "frontView": "العرض الأمامي",
+    "backView": "العرض الخلفي",
     "cartoonView": "عرض كرتوني",
     "realisticView": "عرض واقعي",
     "waistToHipRatio": "نسبة الخصر إلى الأرداف",
@@ -241,6 +248,9 @@
     "obese": "سمنة",
     "noMeasurements": "لم يتم تسجيل قياسات",
     "addFirstMeasurement": "أضف قياسك الأول لتتبع التقدم",
+    "steps": "الخطوات",
+    "commonMistakes": "الأخطاء الشائعة",
+    "tipsForConsistentResults": "نصائح للحصول على نتائج متسقة",
     "measurements": {
       "waist": {
         "title": "محيط الخصر",
@@ -423,6 +433,7 @@
     "hard": "صعب",
     "servings": "عدد الحصص",
     "noRecipes": "لا توجد وصفات بعد",
+    "deleteRecipe": "حذف الوصفة",
     "category": "الفئة",
     "prepMinutes": "تحضير (دقيقة)",
     "cookMinutes": "طبخ (دقيقة)",
@@ -498,7 +509,13 @@
     "sendTest": "إرسال إشعار تجريبي",
     "testSent": "تم إرسال الإشعار التجريبي!",
     "testFailed": "فشل في إرسال الإشعار التجريبي",
-    "activeCount": "{active} من {total} مفعّل"
+    "activeCount": "{active} من {total} مفعّل",
+    "timeMeals": "يومياً في 7 صباحاً، 12 ظهراً، 7 مساءً",
+    "timeExercise": "يومياً في 6 مساءً",
+    "weightWeekly": "أسبوعياً يوم الاثنين",
+    "measurementMonthly": "شهرياً في اليوم الأول",
+    "enabled": "مفعّل",
+    "disabled": "معطّل"
   },
   "settings": {
     "settings": "الإعدادات",
@@ -530,7 +547,9 @@
     "veryActive": "نشط جداً",
     "darkMode": "الوضع الداكن",
     "lightMode": "الوضع الفاتح",
-    "systemMode": "النظام"
+    "systemMode": "النظام",
+    "switchToLightMode": "التبديل للوضع الفاتح",
+    "switchToDarkMode": "التبديل للوضع الداكن"
   },
   "onboarding": {
     "welcome": "مرحباً بك في فيت تراكر",
@@ -637,5 +656,9 @@
     "snack": "وجبة خفيفة",
     "suhoor": "سحور",
     "iftar": "إفطار"
+  },
+  "brand": {
+    "sustainedVitality": "حياة مستمرة",
+    "dailyRegimen": "نظام يومي"
   }
 }

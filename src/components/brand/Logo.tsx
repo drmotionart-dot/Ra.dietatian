@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "next-intl";
+
 interface LogoProps {
   variant?: "free" | "premium";
   size?: "sm" | "md" | "lg";
@@ -12,6 +14,7 @@ const sizes = { sm: 40, md: 56, lg: 72 };
 export function Logo({ variant = "free", size = "md", showText = true, className }: LogoProps) {
   const s = sizes[size];
   const isPremium = variant === "premium";
+  const t = useTranslations();
 
   return (
     <div className={`flex flex-col items-center gap-1 ${className ?? ""}`}>
@@ -66,7 +69,7 @@ export function Logo({ variant = "free", size = "md", showText = true, className
             {isPremium ? "RAvictus" : "RAdiaeta"}
           </div>
           <div className="text-[9px] tracking-[2px] text-muted-foreground mt-0.5 uppercase">
-            {isPremium ? "Sustained Vitality" : "Daily Regimen"}
+            {isPremium ? t("brand.sustainedVitality") : t("brand.dailyRegimen")}
           </div>
         </div>
       )}

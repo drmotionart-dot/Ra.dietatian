@@ -123,7 +123,7 @@ export default function DashboardPage() {
               <CardContent className="pt-6">
                 <div className="text-center">
                   <div className="text-2xl font-bold text-primary">
-                    {remaining.protein}g
+                    {remaining.protein}{t("units.g")}
                   </div>
                   <div className="text-xs text-muted-foreground">
                     {t("meals.proteinLabel")}
@@ -139,7 +139,7 @@ export default function DashboardPage() {
               <CardContent className="pt-6">
                 <div className="text-center">
                   <div className="text-2xl font-bold text-muted-foreground">
-                    {remaining.carbs}g
+                    {remaining.carbs}{t("units.g")}
                   </div>
                   <div className="text-xs text-muted-foreground">
                     {t("meals.carbsLabel")}
@@ -155,7 +155,7 @@ export default function DashboardPage() {
               <CardContent className="pt-6">
                 <div className="text-center">
                   <div className="text-2xl font-bold text-accent">
-                    {remaining.fat}g
+                    {remaining.fat}{t("units.g")}
                   </div>
                   <div className="text-xs text-muted-foreground">
                     {t("meals.fatLabel")}
@@ -224,7 +224,7 @@ export default function DashboardPage() {
                   <div>
                     <div className="font-medium">{t(`mealTypes.${meal.mealType}`)}</div>
                     <div className="text-sm text-muted-foreground">
-                      {t("dashboard.proteinAbbr")}: {meal.totalProtein}g | {t("dashboard.carbsAbbr")}: {meal.totalCarbs}g | {t("dashboard.fatAbbr")}: {meal.totalFat}g
+                      {t("dashboard.proteinAbbr")}: {meal.totalProtein}{t("units.g")} | {t("dashboard.carbsAbbr")}: {meal.totalCarbs}{t("units.g")} | {t("dashboard.fatAbbr")}: {meal.totalFat}{t("units.g")}
                     </div>
                   </div>
                   <div className="font-semibold">{meal.totalCalories} {t("units.kcal")}</div>

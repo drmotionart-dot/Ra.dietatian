@@ -272,15 +272,19 @@ export default function FastingPage() {
             <Button
               className="flex-1"
               onClick={async () => {
-                await fetch("/api/fasting", {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({ type: "log", fastingType: "ramadan", completed: true }),
-                });
-                const r = await fetch("/api/fasting");
-                const d = await r.json();
-                if (d.logs) setLogs(d.logs);
-                if (d.stats) setStats(d.stats);
+                try {
+                  await fetch("/api/fasting", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ type: "log", fastingType: "ramadan", completed: true }),
+                  });
+                  const r = await fetch("/api/fasting");
+                  const d = await r.json();
+                  if (d.logs) setLogs(d.logs);
+                  if (d.stats) setStats(d.stats);
+                } catch (err) {
+                  console.error("Log fasting error:", err);
+                }
               }}
             >
               {t("fasting.logCompleted")}
@@ -289,15 +293,19 @@ export default function FastingPage() {
               variant="outline"
               className="flex-1"
               onClick={async () => {
-                await fetch("/api/fasting", {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({ type: "log", fastingType: "ramadan", completed: false }),
-                });
-                const r = await fetch("/api/fasting");
-                const d = await r.json();
-                if (d.logs) setLogs(d.logs);
-                if (d.stats) setStats(d.stats);
+                try {
+                  await fetch("/api/fasting", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ type: "log", fastingType: "ramadan", completed: false }),
+                  });
+                  const r = await fetch("/api/fasting");
+                  const d = await r.json();
+                  if (d.logs) setLogs(d.logs);
+                  if (d.stats) setStats(d.stats);
+                } catch (err) {
+                  console.error("Log fasting error:", err);
+                }
               }}
             >
               {t("fasting.logMissed")}

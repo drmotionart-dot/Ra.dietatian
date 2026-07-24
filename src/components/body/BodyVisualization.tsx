@@ -356,7 +356,7 @@ export default function BodyVisualization({
         <Card>
           <CardContent className="pt-6">
             <div className="text-center">
-              <div className="text-lg font-bold">{metrics.bodyFatPercent}%</div>
+              <div className="text-lg font-bold">{metrics.bodyFatPercent}{t("units.percent")}</div>
               <div className="text-xs text-muted-foreground">{t("body.bodyFat")}</div>
             </div>
           </CardContent>

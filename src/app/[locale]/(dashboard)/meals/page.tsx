@@ -183,10 +183,10 @@ export default function MealsPage() {
                       <div className="flex-1">
                         <div className="font-medium">{food.nameAr || food.name}</div>
                         <div className="text-sm text-muted-foreground">
-                          {food.nutrientProfile?.calories || 0} {t("units.kcal")} | {t("dashboard.proteinAbbr")}: {food.nutrientProfile?.protein || 0}g | {t("dashboard.carbsAbbr")}: {food.nutrientProfile?.carbs || 0}g | {t("dashboard.fatAbbr")}: {food.nutrientProfile?.fat || 0}g
+                          {food.nutrientProfile?.calories || 0} {t("units.kcal")} | {t("dashboard.proteinAbbr")}: {food.nutrientProfile?.protein || 0}{t("units.g")} | {t("dashboard.carbsAbbr")}: {food.nutrientProfile?.carbs || 0}{t("units.g")} | {t("dashboard.fatAbbr")}: {food.nutrientProfile?.fat || 0}{t("units.g")}
                         </div>
                       </div>
-                      <Button size="sm" variant="ghost" onClick={() => addFoodToMeal(food)}>
+                      <Button size="sm" variant="ghost" onClick={() => addFoodToMeal(food)} aria-label={t("meals.addFoodToMeal", { name: food.nameAr || food.name })}>
                         <Plus className="h-4 w-4" />
                       </Button>
                     </div>
@@ -214,7 +214,7 @@ export default function MealsPage() {
                         <div className="flex-1">
                           <div className="font-medium">{item.name}</div>
                           <div className="text-sm text-muted-foreground">
-                            {Math.round(item.calories * qty)} {t("units.kcal")} | {t("dashboard.proteinAbbr")}: {Math.round(item.protein * qty)}g | {t("dashboard.carbsAbbr")}: {Math.round(item.carbs * qty)}g | {t("dashboard.fatAbbr")}: {Math.round(item.fat * qty)}g
+                            {Math.round(item.calories * qty)} {t("units.kcal")} | {t("dashboard.proteinAbbr")}: {Math.round(item.protein * qty)}{t("units.g")} | {t("dashboard.carbsAbbr")}: {Math.round(item.carbs * qty)}{t("units.g")} | {t("dashboard.fatAbbr")}: {Math.round(item.fat * qty)}{t("units.g")}
                           </div>
                         </div>
                         <div className="flex items-center gap-2">
@@ -232,7 +232,7 @@ export default function MealsPage() {
                             className="w-20 text-center border rounded p-1 text-sm"
                           />
                           <span className="text-xs text-muted-foreground">{t("units.g")}</span>
-                          <Button size="sm" variant="ghost" onClick={() => removeFoodFromMeal(item.id)}>
+                          <Button size="sm" variant="ghost" onClick={() => removeFoodFromMeal(item.id)} aria-label={t("meals.removeFoodFromMeal", { name: item.name })}>
                             <Trash2 className="h-4 w-4 text-destructive" />
                           </Button>
                         </div>
@@ -245,9 +245,9 @@ export default function MealsPage() {
                       <span>{mealTotals.calories} {t("units.kcal")}</span>
                     </div>
                     <div className="flex justify-between text-sm text-muted-foreground">
-                      <span>{t("meals.proteinLabel")}: {mealTotals.protein}g</span>
-                      <span>{t("meals.carbsLabel")}: {mealTotals.carbs}g</span>
-                      <span>{t("meals.fatLabel")}: {mealTotals.fat}g</span>
+                      <span>{t("meals.proteinLabel")}: {mealTotals.protein}{t("units.g")}</span>
+                      <span>{t("meals.carbsLabel")}: {mealTotals.carbs}{t("units.g")}</span>
+                      <span>{t("meals.fatLabel")}: {mealTotals.fat}{t("units.g")}</span>
                     </div>
                     <Button className="w-full mt-4" onClick={saveMeal} disabled={saving}>
                       <Save className="h-4 w-4 me-2" />

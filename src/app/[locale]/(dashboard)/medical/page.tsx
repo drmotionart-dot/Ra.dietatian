@@ -151,7 +151,7 @@ export default function MedicalPage() {
                             {nutrient.amount}{nutrient.unit}
                           </span>
                           <span className="text-sm text-muted-foreground">
-                            ({nutrient.dailyValue}% DV)
+                            ({nutrient.dailyValue}{t("units.percent")} {t("medical.dailyValueAbbr")})
                           </span>
                         </div>
                       </div>

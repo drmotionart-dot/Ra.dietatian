@@ -103,7 +103,7 @@ export async function GET(req: Request) {
       { calories: 0, protein: 0, carbs: 0, fat: 0, fiber: 0 }
     );
 
-    return NextResponse.json({ mealLogs: mealLogsWithItems, totals });
+    return NextResponse.json({ mealLogs: mealLogsWithItems, totals, isRange: false });
   } catch (error) {
     console.error("Get meal logs error:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
@@ -126,6 +126,18 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Meal type and items are required" }, { status: 400 });
     }
 
+    const validMealTypes = ["breakfast", "lunch", "dinner", "snack"];
+    if (!validMealTypes.includes(mealType)) {
+      return NextResponse.json({ error: "Invalid meal type" }, { status: 400 });
+    }
+
+    const validItems = items.filter(
+      (item: Record<string, unknown>) => item.refId && typeof item.quantity === "number" && item.quantity > 0
+    );
+    if (validItems.length === 0) {
+      return NextResponse.json({ error: "At least one valid item with refId and quantity is required" }, { status: 400 });
+    }
+
     const logDate = date ? new Date(date) : new Date();
     if (isNaN(logDate.getTime())) {
       return NextResponse.json({ error: "Invalid date" }, { status: 400 });
@@ -136,7 +148,7 @@ export async function POST(req: Request) {
     const endOfDay = new Date(logDate);
     endOfDay.setHours(23, 59, 59, 999);
 
-    const newItems = items.map((item: Record<string, unknown>) => ({
+    const newItems = validItems.map((item: Record<string, unknown>) => ({
       refType: (item.refType as string) || "food",
       refId: item.refId as string,
       foodId: item.foodId as string | undefined,

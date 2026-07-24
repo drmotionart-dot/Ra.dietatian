@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Globe, Moon, Sun, Ruler, User, Database } from "lucide-react";
+import { Globe, User } from "lucide-react";
 
 interface UserProfile {
   name: string;

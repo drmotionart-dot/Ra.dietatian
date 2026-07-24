@@ -6,9 +6,6 @@ import { auth } from "@/lib/auth";
 export async function GET(req: Request) {
   try {
     const session = await auth();
-    if (!session?.user?.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
 
     await connectDB();
 
@@ -17,9 +14,9 @@ export async function GET(req: Request) {
     const category = searchParams.get("category");
     const limit = Math.min(parseInt(searchParams.get("limit") || "50") || 50, 200);
 
-    const filter: Record<string, unknown> = {
-      $or: [{ userId: session.user.id }, { userId: { $exists: false } }],
-    };
+    const filter: Record<string, unknown> = session?.user?.id
+      ? { $or: [{ userId: session.user.id }, { userId: { $exists: false } }] }
+      : { userId: { $exists: false } };
 
     const conditions: unknown[] = [];
 
@@ -63,21 +60,28 @@ export async function POST(req: Request) {
     await connectDB();
     const body = await req.json();
 
+    if (!body.name || typeof body.name !== "string" || body.name.trim().length === 0) {
+      return NextResponse.json({ error: "Recipe name is required" }, { status: 400 });
+    }
+
+    const validCategories = ["breakfast", "lunch", "dinner", "snack", "dessert", "appetizer", "soup", "salad", "beverage"];
+    const validDifficulties = ["easy", "medium", "hard"];
+
     const recipe = await Recipe.create({
       userId: session.user.id,
-      name: body.name,
+      name: body.name.trim(),
       nameAr: body.nameAr,
       description: body.description,
-      category: body.category,
+      category: validCategories.includes(body.category) ? body.category : "lunch",
       cuisineStyle: body.cuisineStyle,
       cookingMethod: body.cookingMethod,
-      instructions: body.instructions || [],
-      instructionsAr: body.instructionsAr || [],
-      prepTimeMinutes: body.prepTimeMinutes,
-      cookTimeMinutes: body.cookTimeMinutes,
-      difficulty: body.difficulty || "easy",
-      nutritionPerServing: body.nutritionPerServing || {},
-      servingsCount: body.servingsCount || 1,
+      instructions: Array.isArray(body.instructions) ? body.instructions : [],
+      instructionsAr: Array.isArray(body.instructionsAr) ? body.instructionsAr : [],
+      prepTimeMinutes: typeof body.prepTimeMinutes === "number" ? body.prepTimeMinutes : 0,
+      cookTimeMinutes: typeof body.cookTimeMinutes === "number" ? body.cookTimeMinutes : 0,
+      difficulty: validDifficulties.includes(body.difficulty) ? body.difficulty : "easy",
+      nutritionPerServing: typeof body.nutritionPerServing === "object" ? body.nutritionPerServing : {},
+      servingsCount: typeof body.servingsCount === "number" ? body.servingsCount : 1,
     });
 
     return NextResponse.json({ recipe }, { status: 201 });

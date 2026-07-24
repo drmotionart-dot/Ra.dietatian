@@ -71,7 +71,7 @@ export function MainNav() {
               <Icon className="h-5 w-5" />
               <span>{t(item.key)}</span>
               {isActive && (
-                <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-sidebar-primary" />
+                <span className="absolute -bottom-1 start-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-sidebar-primary" />
               )}
             </Link>
           );

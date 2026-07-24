@@ -151,15 +151,15 @@ export default function RecipesPage() {
                   <Input type="number" value={form.nutritionPerServing?.calories || 0} onChange={(e) => setForm({ ...form, nutritionPerServing: { ...form.nutritionPerServing, calories: parseInt(e.target.value) || 0 } })} />
                 </div>
                 <div className="space-y-2">
-                  <Label>{t("food.protein")} (g)</Label>
+                  <Label>{t("food.protein")} ({t("units.g")})</Label>
                   <Input type="number" value={form.nutritionPerServing?.protein || 0} onChange={(e) => setForm({ ...form, nutritionPerServing: { ...form.nutritionPerServing, protein: parseInt(e.target.value) || 0 } })} />
                 </div>
                 <div className="space-y-2">
-                  <Label>{t("food.carbohydrates")} (g)</Label>
+                  <Label>{t("food.carbohydrates")} ({t("units.g")})</Label>
                   <Input type="number" value={form.nutritionPerServing?.carbs || 0} onChange={(e) => setForm({ ...form, nutritionPerServing: { ...form.nutritionPerServing, carbs: parseInt(e.target.value) || 0 } })} />
                 </div>
                 <div className="space-y-2">
-                  <Label>{t("food.totalFat")} (g)</Label>
+                  <Label>{t("food.totalFat")} ({t("units.g")})</Label>
                   <Input type="number" value={form.nutritionPerServing?.fat || 0} onChange={(e) => setForm({ ...form, nutritionPerServing: { ...form.nutritionPerServing, fat: parseInt(e.target.value) || 0 } })} />
                 </div>
               </div>
@@ -201,7 +201,7 @@ export default function RecipesPage() {
                         <Badge className={getDifficultyColor(recipe.difficulty)}>
                           {t(`recipes.${recipe.difficulty}`)}
                         </Badge>
-                        <Button variant="ghost" size="sm" onClick={() => handleDelete(recipe._id)}>
+                        <Button variant="ghost" size="sm" onClick={() => handleDelete(recipe._id)} aria-label={t("recipes.deleteRecipe")}>
                           <Trash2 className="h-4 w-4 text-destructive" />
                         </Button>
                       </div>
@@ -223,15 +223,15 @@ export default function RecipesPage() {
                           <div className="text-muted-foreground">{t("units.kcal")}</div>
                         </div>
                         <div>
-                          <div className="font-bold text-primary">{recipe.nutritionPerServing.protein || 0}g</div>
+                          <div className="font-bold text-primary">{recipe.nutritionPerServing.protein || 0}{t("units.g")}</div>
                           <div className="text-muted-foreground">{t("dashboard.proteinAbbr")}</div>
                         </div>
                         <div>
-                          <div className="font-bold text-muted-foreground">{recipe.nutritionPerServing.carbs || 0}g</div>
+                          <div className="font-bold text-muted-foreground">{recipe.nutritionPerServing.carbs || 0}{t("units.g")}</div>
                           <div className="text-muted-foreground">{t("dashboard.carbsAbbr")}</div>
                         </div>
                         <div>
-                          <div className="font-bold text-accent">{recipe.nutritionPerServing.fat || 0}g</div>
+                          <div className="font-bold text-accent">{recipe.nutritionPerServing.fat || 0}{t("units.g")}</div>
                           <div className="text-muted-foreground">{t("dashboard.fatAbbr")}</div>
                         </div>
                       </div>

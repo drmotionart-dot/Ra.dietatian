@@ -87,14 +87,14 @@ export default function AnalyticsPage() {
       const total = totalProtein + totalCarbs + totalFat;
       if (total > 0) {
         setMacroData([
-          { name: t("meals.proteinLabel"), value: Math.round((totalProtein / total) * 100), color: "#B8934A" },
-          { name: t("meals.carbsLabel"), value: Math.round((totalCarbs / total) * 100), color: "#CBB78E" },
-          { name: t("meals.fatLabel"), value: Math.round((totalFat / total) * 100), color: "#6B1F2A" },
+          { name: t("meals.proteinLabel"), value: Math.round((totalProtein / total) * 100), color: "var(--chart-1)" },
+          { name: t("meals.carbsLabel"), value: Math.round((totalCarbs / total) * 100), color: "var(--chart-3)" },
+          { name: t("meals.fatLabel"), value: Math.round((totalFat / total) * 100), color: "var(--chart-2)" },
         ]);
       } else {
         setMacroData([]);
       }
-    });
+    }).catch(console.error);
   }, [dateRange]);
 
   const totalCalories = weeklyData.reduce((sum, day) => sum + day.calories, 0);
@@ -122,7 +122,7 @@ export default function AnalyticsPage() {
         <CardContent className="pt-6">
           <div className="text-center">
             <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-primary/10">
-              <span className="text-3xl font-bold text-primary">{adherenceScore}%</span>
+              <span className="text-3xl font-bold text-primary">{adherenceScore}{t("units.percent")}</span>
             </div>
             <h3 className="mt-4 text-lg font-medium">{t("analytics.adherenceScore")}</h3>
             <p className="text-sm text-muted-foreground">
@@ -155,8 +155,8 @@ export default function AnalyticsPage() {
                     <XAxis dataKey="day" />
                     <YAxis />
                     <Tooltip />
-                    <Line type="monotone" dataKey="calories" stroke="#B8934A" strokeWidth={2} dot={{ fill: "#B8934A" }} />
-                    <Line type="monotone" dataKey="target" stroke="#6B5D4F" strokeDasharray="5 5" />
+                    <Line type="monotone" dataKey="calories" stroke="var(--chart-1)" strokeWidth={2} dot={{ fill: "var(--chart-1)" }} />
+                    <Line type="monotone" dataKey="target" stroke="var(--chart-4)" strokeDasharray="5 5" />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
@@ -185,7 +185,7 @@ export default function AnalyticsPage() {
                       <XAxis dataKey="week" />
                       <YAxis domain={["dataMin - 1", "dataMax + 1"]} />
                       <Tooltip />
-                      <Line type="monotone" dataKey="weight" stroke="#B8934A" strokeWidth={2} dot={{ fill: "#B8934A" }} />
+                      <Line type="monotone" dataKey="weight" stroke="var(--chart-1)" strokeWidth={2} dot={{ fill: "var(--chart-1)" }} />
                     </LineChart>
                   </ResponsiveContainer>
                 )}
@@ -222,7 +222,7 @@ export default function AnalyticsPage() {
                 {macroData.map((macro, index) => (
                   <div key={index} className="flex items-center gap-2">
                     <div className="w-3 h-3 rounded-full" style={{ backgroundColor: macro.color }} />
-                    <span className="text-sm">{macro.name} ({macro.value}%)</span>
+                    <span className="text-sm">{macro.name} ({macro.value}{t("units.percent")})</span>
                   </div>
                 ))}
               </div>
