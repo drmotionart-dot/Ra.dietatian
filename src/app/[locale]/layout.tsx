@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Cairo } from "next/font/google";
+import { Cairo, Fraunces } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -9,6 +9,12 @@ import "../globals.css";
 const cairo = Cairo({
   subsets: ["arabic", "latin"],
   variable: "--font-cairo",
+  display: "swap",
+});
+
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  variable: "--font-fraunces",
   display: "swap",
 });
 
@@ -51,7 +57,7 @@ export default async function LocaleLayout({
   const dir = locale === "ar" ? "rtl" : "ltr";
 
   return (
-    <html lang={locale} dir={dir} className={cairo.variable} suppressHydrationWarning>
+    <html lang={locale} dir={dir} className={`${cairo.variable} ${fraunces.variable}`} suppressHydrationWarning>
       <head>
         <link rel="apple-touch-icon" href="/icons/icon-192.svg" />
         <meta name="theme-color" content="#EBE2D0" media="(prefers-color-scheme: light)" />
