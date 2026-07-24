@@ -17,6 +17,7 @@ import {
   Search,
 } from "lucide-react";
 import { PageSkeleton } from "@/components/ui/skeleton";
+import { PageTransition } from "@/components/PageTransition";
 
 interface MedicalEntry {
   _id: string;
@@ -69,10 +70,12 @@ export default function MedicalPage() {
 
   return (
     <div className="container mx-auto p-4 space-y-6">
+      <PageTransition>
       <div className="flex items-center gap-2">
         <Activity className="h-6 w-6 text-primary" />
         <h1 className="text-2xl font-bold">{t("medical.medicalKnowledge")}</h1>
       </div>
+      </PageTransition>
 
       <Card>
         <CardContent className="pt-6">

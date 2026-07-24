@@ -10,6 +10,8 @@ import { Badge } from "@/components/ui/badge";
 import { Plus, Trash2, Search, Dumbbell, Clock, Flame } from "lucide-react";
 import { PageSkeleton } from "@/components/ui/skeleton";
 import { PRIcon } from "@/components/icons";
+import { CountUp } from "@/components/CountUp";
+import { PageTransition } from "@/components/PageTransition";
 
 interface Exercise {
   _id: string;
@@ -166,6 +168,7 @@ export default function TrainingPage() {
 
   return (
     <div className="container mx-auto p-4 space-y-6">
+      <PageTransition>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Dumbbell className="h-6 w-6 text-primary" />
@@ -175,23 +178,24 @@ export default function TrainingPage() {
           {isLogging ? t("common.cancel") : <><Plus className="h-4 w-4 me-2" />{t("training.startWorkout")}</>}
         </Button>
       </div>
+      </PageTransition>
 
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-3 gap-4 stagger-enter">
         <Card>
           <CardContent className="pt-6 text-center">
-            <div className="text-2xl font-bold text-primary">{stats.totalSessions}</div>
+            <div className="text-2xl font-bold text-primary"><CountUp to={stats.totalSessions} /></div>
             <div className="text-xs text-muted-foreground">{t("training.totalWorkouts")}</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="pt-6 text-center">
-            <div className="text-2xl font-bold text-primary">{Math.round(stats.totalVolume).toLocaleString()}</div>
+            <div className="text-2xl font-bold text-primary"><CountUp to={Math.round(stats.totalVolume)} /></div>
             <div className="text-xs text-muted-foreground">{t("training.totalVolume")} (kg)</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="pt-6 text-center">
-            <div className="text-2xl font-bold text-primary">{stats.totalSets}</div>
+            <div className="text-2xl font-bold text-primary"><CountUp to={stats.totalSets} /></div>
             <div className="text-xs text-muted-foreground">{t("training.totalSets")}</div>
           </CardContent>
         </Card>

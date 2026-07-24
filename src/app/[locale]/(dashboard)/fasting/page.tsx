@@ -9,6 +9,9 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Moon, Sun, Clock, Calendar, TrendingUp } from "lucide-react";
 import { PageSkeleton } from "@/components/ui/skeleton";
+import { ProgressRing } from "@/components/ProgressRing";
+import { CountUp } from "@/components/CountUp";
+import { PageTransition } from "@/components/PageTransition";
 
 interface FastingPrefs {
   ramadanEnabled: boolean;
@@ -127,28 +130,48 @@ export default function FastingPage() {
 
   if (loading) return <PageSkeleton />;
 
+  const totalFastMin = times.isFasting
+    ? ((times.fastingHours || 0) * 60 + (times.fastingMinutes || 0))
+    : 0;
+  const totalFastTarget = 14 * 60;
+  const fastingProgress = Math.min(totalFastMin / totalFastTarget, 1);
+
   return (
     <div className="container mx-auto p-4 space-y-6">
+      <PageTransition>
       <div className="flex items-center gap-2">
         <Moon className="h-6 w-6 text-primary" />
         <h1 className="text-2xl font-bold">{t("fasting.fastingMode")}</h1>
       </div>
+      </PageTransition>
 
+      <div className="stagger-enter">
       <Card className={times.isFasting ? "border-primary" : ""}>
         <CardContent className="pt-6">
-          <div className="text-center space-y-4">
-            <motion.div
-              className={`inline-flex items-center justify-center w-20 h-20 rounded-full ${times.isFasting ? "bg-primary" : "bg-muted"}`}
-              animate={{ scale: times.isFasting ? [1, 1.05, 1] : 1 }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          <div className="flex flex-col items-center space-y-4">
+            <ProgressRing
+              value={times.isFasting ? fastingProgress * 100 : 100}
+              max={100}
+              size={160}
+              strokeWidth={10}
+              color={times.isFasting ? "var(--primary)" : "var(--muted)"}
             >
-              {times.isFasting ? <Moon className="h-10 w-10 text-primary-foreground" /> : <Sun className="h-10 w-10 text-muted-foreground" />}
-            </motion.div>
+              <motion.div
+                animate={{ scale: times.isFasting ? [1, 1.08, 1] : 1 }}
+                transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+                className="flex flex-col items-center"
+              >
+                {times.isFasting ? <Moon className="h-8 w-8 text-primary" /> : <Sun className="h-8 w-8 text-muted-foreground" />}
+                <div className="text-2xl font-bold text-primary mt-1">
+                  {String(times.remainH).padStart(2, "0")}:{String(times.remainM).padStart(2, "0")}
+                </div>
+              </motion.div>
+            </ProgressRing>
             <div>
-              <h2 className="text-2xl font-bold">
+              <h2 className="text-lg font-bold">
                 {times.isFasting ? t("fasting.fasting") : t("fasting.eating")}
               </h2>
-              <p className="text-muted-foreground">
+              <p className="text-sm text-muted-foreground">
                 {times.isFasting
                   ? t("fasting.elapsed", { hours: times.fastingHours, minutes: times.fastingMinutes })
                   : prefs.ramadanEnabled
@@ -156,15 +179,6 @@ export default function FastingPage() {
                     : `${t("fasting.nextMeal")}: ${t("fasting.fastingEnd")}`
                 }
               </p>
-            </div>
-            <div className="text-4xl font-bold text-primary">
-              {String(times.remainH).padStart(2, "0")}:{String(times.remainM).padStart(2, "0")}
-            </div>
-            <div className="text-sm text-muted-foreground">
-              {prefs.ramadanEnabled
-                ? (times.nextMeal === "iftar" ? t("fasting.iftarTime") : t("fasting.suhoorTime"))
-                : t("fasting.fastingEnd")
-              }
             </div>
           </div>
         </CardContent>
@@ -256,15 +270,15 @@ export default function FastingPage() {
         <CardContent>
           <div className="grid grid-cols-3 gap-4 text-center">
             <div>
-              <div className="text-2xl font-bold text-primary">{stats.streak}</div>
+              <div className="text-2xl font-bold text-primary"><CountUp to={stats.streak} /></div>
               <div className="text-xs text-muted-foreground">{t("fasting.currentStreak")}</div>
             </div>
             <div>
-              <div className="text-2xl font-bold text-primary">{stats.totalDays}</div>
+              <div className="text-2xl font-bold text-primary"><CountUp to={stats.totalDays} /></div>
               <div className="text-xs text-muted-foreground">{t("fasting.totalDays")}</div>
             </div>
             <div>
-              <div className="text-2xl font-bold text-primary">{stats.completedDays}</div>
+              <div className="text-2xl font-bold text-primary"><CountUp to={stats.completedDays} /></div>
               <div className="text-xs text-muted-foreground">{t("fasting.completed")}</div>
             </div>
           </div>
@@ -359,6 +373,7 @@ export default function FastingPage() {
           </p>
         </CardContent>
       </Card>
+      </div>
     </div>
   );
 }
