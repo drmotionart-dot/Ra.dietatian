@@ -565,7 +565,13 @@
     "exportData": "Export Data",
     "exportDataDesc": "Download all your data as a JSON file (meals, body measurements, water logs, workouts).",
     "customCalorieTarget": "Custom Calorie Target",
-    "customCalorieTargetDesc": "Override auto-calculated calorie target"
+    "customCalorieTargetDesc": "Override auto-calculated calorie target",
+    "waterGoal": "Daily Water Goal",
+    "fastingTimes": "Fasting Times",
+    "suhoorTime": "Suhoor Time",
+    "iftarTime": "Iftar Time",
+    "fastingCity": "City",
+    "day": "day"
   },
   "onboarding": {
     "welcome": "Welcome to FitTracker",

@@ -19,6 +19,7 @@ export default function OnboardingPage() {
   const locale = params.locale as string;
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const [form, setForm] = useState({
     sex: "male" as string,
     dateOfBirth: "",
@@ -33,17 +34,21 @@ export default function OnboardingPage() {
 
   const handleComplete = async () => {
     setLoading(true);
+    setError("");
     try {
       const res = await fetch("/api/onboarding", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
+      const data = await res.json();
       if (res.ok) {
         router.push(`/${locale}/dashboard`);
+      } else {
+        setError(data.error || t("common.error"));
       }
     } catch {
-      console.error("Onboarding failed");
+      setError(t("common.error"));
     } finally {
       setLoading(false);
     }
@@ -190,7 +195,18 @@ export default function OnboardingPage() {
               </Button>
             )}
             {step < totalSteps ? (
-              <Button onClick={() => setStep(step + 1)} className="flex-1">
+              <Button onClick={() => {
+                if (step === 1 && (!form.dateOfBirth || parseInt(form.dateOfBirth) < 10 || parseInt(form.dateOfBirth) > 120)) {
+                  setError(t("onboarding.age") + " (10-120)");
+                  return;
+                }
+                if (step === 2 && (!form.heightCm || !form.weightKg)) {
+                  setError(t("onboarding.height") + " & " + t("onboarding.weight") + " required");
+                  return;
+                }
+                setError("");
+                setStep(step + 1);
+              }} className="flex-1">
                 {t("common.next")}
               </Button>
             ) : (
@@ -199,6 +215,9 @@ export default function OnboardingPage() {
               </Button>
             )}
           </div>
+          {error && (
+            <p className="text-sm text-destructive text-center mt-2">{error}</p>
+          )}
         </CardContent>
       </Card>
     </div>

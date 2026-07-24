@@ -8,7 +8,8 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Globe, User, Target, Download, Trash2 } from "lucide-react";
+import { Globe, User, Target, Download, Droplets, Moon } from "lucide-react";
+import { PageSkeleton } from "@/components/ui/skeleton";
 
 interface UserProfile {
   name: string;
@@ -21,6 +22,11 @@ interface UserProfile {
   units: string;
   locale: string;
   customCalorieTarget?: number;
+  waterGoalMl?: number;
+  fastingCity?: string;
+  fastingCountry?: string;
+  suhoorTime?: string;
+  iftarTime?: string;
 }
 
 export default function SettingsPage() {
@@ -32,9 +38,10 @@ export default function SettingsPage() {
 
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [editing, setEditing] = useState(false);
-  const [form, setForm] = useState({ name: "", sex: "", heightCm: 0, activityLevel: 1.55, goal: "maintain", targetWeightKg: 0, units: "metric", customCalorieTarget: 0 });
+  const [form, setForm] = useState({ name: "", sex: "", heightCm: 0, activityLevel: 1.55, goal: "maintain", targetWeightKg: 0, units: "metric", customCalorieTarget: 0, waterGoalMl: 2500, fastingCity: "Cairo", fastingCountry: "Egypt", suhoorTime: "03:30", iftarTime: "19:00" });
   const [saving, setSaving] = useState(false);
   const [exporting, setExporting] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch("/api/user/profile")
@@ -51,10 +58,16 @@ export default function SettingsPage() {
             targetWeightKg: d.user.targetWeightKg || 0,
             units: d.user.units || "metric",
             customCalorieTarget: d.user.customCalorieTarget || 0,
+            waterGoalMl: d.user.waterGoalMl || 2500,
+            fastingCity: d.user.fastingCity || "Cairo",
+            fastingCountry: d.user.fastingCountry || "Egypt",
+            suhoorTime: d.user.suhoorTime || "03:30",
+            iftarTime: d.user.iftarTime || "19:00",
           });
         }
       })
-      .catch(console.error);
+      .catch(console.error)
+      .finally(() => setLoading(false));
   }, []);
 
   const toggleLanguage = () => {
@@ -112,6 +125,8 @@ export default function SettingsPage() {
       setExporting(false);
     }
   };
+
+  if (loading) return <PageSkeleton />;
 
   return (
     <div className="container mx-auto p-4 space-y-6">
@@ -222,6 +237,76 @@ export default function SettingsPage() {
               <Button variant="outline" onClick={() => setEditing(true)}>{t("settings.editProfile")}</Button>
             )}
           </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Droplets className="h-5 w-5" />
+            {t("settings.waterGoal")}
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          {editing ? (
+            <div className="space-y-2">
+              <Label>{t("settings.waterGoal")} ({t("units.ml")})</Label>
+              <Input
+                type="number"
+                min="500"
+                max="10000"
+                step="250"
+                value={form.waterGoalMl}
+                onChange={(e) => setForm({ ...form, waterGoalMl: parseInt(e.target.value) || 2500 })}
+              />
+            </div>
+          ) : (
+            <p className="text-sm">{profile?.waterGoalMl || 2500} {t("units.ml")} / {t("common.day")}</p>
+          )}
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Moon className="h-5 w-5" />
+            {t("settings.fastingTimes")}
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {editing ? (
+            <>
+              <div className="space-y-2">
+                <Label>{t("settings.suhoorTime")}</Label>
+                <Input
+                  type="time"
+                  value={form.suhoorTime}
+                  onChange={(e) => setForm({ ...form, suhoorTime: e.target.value })}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>{t("settings.iftarTime")}</Label>
+                <Input
+                  type="time"
+                  value={form.iftarTime}
+                  onChange={(e) => setForm({ ...form, iftarTime: e.target.value })}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>{t("settings.fastingCity")}</Label>
+                <Input
+                  value={form.fastingCity}
+                  onChange={(e) => setForm({ ...form, fastingCity: e.target.value })}
+                />
+              </div>
+            </>
+          ) : (
+            <div className="space-y-1 text-sm">
+              <p>{t("settings.suhoorTime")}: {profile?.suhoorTime || "03:30"}</p>
+              <p>{t("settings.iftarTime")}: {profile?.iftarTime || "19:00"}</p>
+              <p>{t("settings.fastingCity")}: {profile?.fastingCity || "Cairo"}</p>
+            </div>
+          )}
         </CardContent>
       </Card>
 

@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Moon, Sun, Clock, Calendar, TrendingUp } from "lucide-react";
+import { PageSkeleton } from "@/components/ui/skeleton";
 
 interface FastingPrefs {
   ramadanEnabled: boolean;
@@ -82,6 +83,7 @@ export default function FastingPage() {
   const [stats, setStats] = useState<FastingStats>({ totalDays: 0, completedDays: 0, streak: 0 });
   const [logs, setLogs] = useState<FastingLogEntry[]>([]);
   const [times, setTimes] = useState(getFastingTimes(defaultPrefs.suhoorTime!, defaultPrefs.iftarTime!));
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch("/api/fasting")
@@ -104,7 +106,8 @@ export default function FastingPage() {
         if (d.stats) setStats(d.stats);
         if (d.logs) setLogs(d.logs);
       })
-      .catch(console.error);
+      .catch(console.error)
+      .finally(() => setLoading(false));
   }, []);
 
   useEffect(() => {
@@ -121,6 +124,8 @@ export default function FastingPage() {
       body: JSON.stringify({ type: "preferences", ...updated }),
     }).catch(console.error);
   };
+
+  if (loading) return <PageSkeleton />;
 
   return (
     <div className="container mx-auto p-4 space-y-6">

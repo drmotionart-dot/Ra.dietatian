@@ -18,7 +18,7 @@ export default function WaterPage() {
   const t = useTranslations();
   const [logs, setLogs] = useState<WaterLogEntry[]>([]);
   const [totalMl, setTotalMl] = useState(0);
-  const [goalMl] = useState(2500);
+  const [goalMl, setGoalMl] = useState(2500);
   const [customAmount, setCustomAmount] = useState("");
   const [loading, setLoading] = useState(true);
 
@@ -33,6 +33,7 @@ export default function WaterPage() {
       const data = await res.json();
       setLogs(data.logs || []);
       setTotalMl(data.totalMl || 0);
+      if (data.goalMl) setGoalMl(data.goalMl);
     } catch (err) {
       console.error("Fetch water error:", err);
     } finally {

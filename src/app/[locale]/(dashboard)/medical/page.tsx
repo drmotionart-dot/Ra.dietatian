@@ -16,6 +16,7 @@ import {
   Info,
   Search,
 } from "lucide-react";
+import { PageSkeleton } from "@/components/ui/skeleton";
 
 interface MedicalEntry {
   _id: string;
@@ -35,6 +36,7 @@ export default function MedicalPage() {
   const [selected, setSelected] = useState<MedicalEntry | null>(null);
   const [query, setQuery] = useState("");
   const [selectedNutrient, setSelectedNutrient] = useState<number | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const params = query ? `?q=${encodeURIComponent(query)}` : "";
@@ -45,7 +47,8 @@ export default function MedicalPage() {
         setEntries(list);
         if (!selected && list.length > 0) setSelected(list[0]);
       })
-      .catch(console.error);
+      .catch(console.error)
+      .finally(() => setLoading(false));
   }, [query]);
 
   const getCategoryIcon = (category: string) => {
@@ -61,6 +64,8 @@ export default function MedicalPage() {
   const allNutrients = selected
     ? [...(selected.micronutrients || []), ...(selected.vitamins || [])]
     : [];
+
+  if (loading) return <PageSkeleton />;
 
   return (
     <div className="container mx-auto p-4 space-y-6">

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
-import { FastingPreference, FastingLog } from "@/models";
+import { FastingPreference, FastingLog, User } from "@/models";
 import { auth } from "@/lib/auth";
 
 export async function GET() {
@@ -14,7 +14,16 @@ export async function GET() {
 
     let prefs = await FastingPreference.findOne({ userId: session.user.id }).lean();
     if (!prefs) {
-      prefs = await FastingPreference.create({ userId: session.user.id });
+      const user = await User.findOne({ _id: session.user.id })
+        .select("fastingCity fastingCountry suhoorTime iftarTime")
+        .lean();
+      prefs = await FastingPreference.create({
+        userId: session.user.id,
+        city: user?.fastingCity || "Cairo",
+        country: user?.fastingCountry || "Egypt",
+        suhoorTime: user?.suhoorTime || "03:30",
+        iftarTime: user?.iftarTime || "19:00",
+      });
     }
 
     const logs = await FastingLog.find({ userId: session.user.id })

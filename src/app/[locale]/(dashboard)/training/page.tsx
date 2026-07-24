@@ -7,7 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Trash2, Search, Dumbbell, TrendingUp, Clock, Flame } from "lucide-react";
+import { Plus, Trash2, Search, Dumbbell, Clock, Flame } from "lucide-react";
+import { PageSkeleton } from "@/components/ui/skeleton";
 
 interface Exercise {
   _id: string;
@@ -54,6 +55,7 @@ export default function TrainingPage() {
   const [isLogging, setIsLogging] = useState(false);
   const [saving, setSaving] = useState(false);
   const [stats, setStats] = useState({ totalSessions: 0, totalVolume: 0, totalSets: 0 });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch("/api/exercises?q=")
@@ -72,7 +74,8 @@ export default function TrainingPage() {
           totalSets: allSessions.reduce((s: number, ws: WorkoutSession) => s + (ws.totalSets || 0), 0),
         });
       })
-      .catch(console.error);
+      .catch(console.error)
+      .finally(() => setLoading(false));
   }, []);
 
   const filteredExercises = exercises.filter((e) => {
@@ -142,6 +145,8 @@ export default function TrainingPage() {
   };
 
   const totalVolume = currentSets.reduce((sum, s) => sum + ((s.weight || 0) * (s.reps || 0)), 0);
+
+  if (loading) return <PageSkeleton />;
 
   return (
     <div className="container mx-auto p-4 space-y-6">

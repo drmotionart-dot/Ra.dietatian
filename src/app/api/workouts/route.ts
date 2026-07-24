@@ -3,6 +3,7 @@ import { connectDB } from "@/lib/mongodb";
 import { WorkoutSession } from "@/models";
 import { auth } from "@/lib/auth";
 import { seedExercises } from "../exercises/route";
+import { sanitizeString } from "@/lib/sanitize";
 
 export async function GET(req: Request) {
   try {
@@ -73,7 +74,7 @@ export async function POST(req: Request) {
         weightUnit: (s.weightUnit as string) || "kg",
         duration: s.duration as number | undefined,
         rpe: s.rpe as number | undefined,
-        notes: s.notes as string | undefined,
+        notes: s.notes ? sanitizeString(s.notes as string) : undefined,
         isWarmup: (s.isWarmup as boolean) || false,
         isDropset: (s.isDropset as boolean) || false,
       };
@@ -81,13 +82,13 @@ export async function POST(req: Request) {
 
     const workout = await WorkoutSession.create({
       userId: session.user.id,
-      name: name || "Workout",
+      name: name ? sanitizeString(name) : "Workout",
       date: date ? new Date(date) : new Date(),
       duration,
       totalVolume,
       totalSets,
       totalReps,
-      notes,
+      notes: notes ? sanitizeString(notes) : undefined,
       feeling: feeling || "good",
       sets: validSets,
     });
@@ -113,7 +114,10 @@ export async function DELETE(req: Request) {
       return NextResponse.json({ error: "Workout ID is required" }, { status: 400 });
     }
 
-    await WorkoutSession.deleteOne({ _id: id, userId: session.user.id });
+    const result = await WorkoutSession.deleteOne({ _id: id, userId: session.user.id });
+    if (result.deletedCount === 0) {
+      return NextResponse.json({ error: "Workout not found" }, { status: 404 });
+    }
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Delete workout error:", error);

@@ -565,7 +565,13 @@
     "exportData": "تصدير البيانات",
     "exportDataDesc": "تحميل جميع بياناتك كملف JSON (الوجبات، قياسات الجسم، سجلات الماء، التمارين).",
     "customCalorieTarget": "هدف سعرات مخصص",
-    "customCalorieTargetDesc": "تجاوز الهدف المحسوب تلقائياً"
+    "customCalorieTargetDesc": "تجاوز الهدف المحسوب تلقائياً",
+    "waterGoal": "هدف الماء اليومي",
+    "fastingTimes": "أوقات الصيام",
+    "suhoorTime": "وقت السحور",
+    "iftarTime": "وقت الإفطار",
+    "fastingCity": "المدينة",
+    "day": "يوم"
   },
   "onboarding": {
     "welcome": "مرحباً بك في فيت تراكر",

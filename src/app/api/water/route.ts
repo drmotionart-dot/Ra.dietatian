@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
-import { WaterLog } from "@/models";
+import { WaterLog, User } from "@/models";
 import { auth } from "@/lib/auth";
+import { sanitizeString } from "@/lib/sanitize";
 
 export async function GET(req: Request) {
   try {
@@ -21,14 +22,17 @@ export async function GET(req: Request) {
     const endOfDay = new Date(date);
     endOfDay.setHours(23, 59, 59, 999);
 
-    const logs = await WaterLog.find({
-      userId: session.user.id,
-      date: { $gte: startOfDay, $lte: endOfDay },
-    }).sort({ createdAt: 1 }).lean();
+    const [logs, user] = await Promise.all([
+      WaterLog.find({
+        userId: session.user.id,
+        date: { $gte: startOfDay, $lte: endOfDay },
+      }).sort({ createdAt: 1 }).lean(),
+      User.findOne({ _id: session.user.id }).select("waterGoalMl").lean(),
+    ]);
 
     const totalMl = logs.reduce((sum, log) => sum + (log.amountMl || 0), 0);
 
-    return NextResponse.json({ logs, totalMl, goalMl: 2500 });
+    return NextResponse.json({ logs, totalMl, goalMl: user?.waterGoalMl || 2500 });
   } catch (error) {
     console.error("Get water error:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
@@ -56,7 +60,7 @@ export async function POST(req: Request) {
       userId: session.user.id,
       date: logDate,
       amountMl,
-      note,
+      note: note ? sanitizeString(note) : undefined,
     });
 
     return NextResponse.json({ log }, { status: 201 });
@@ -80,7 +84,10 @@ export async function DELETE(req: Request) {
       return NextResponse.json({ error: "Water log ID is required" }, { status: 400 });
     }
 
-    await WaterLog.deleteOne({ _id: id, userId: session.user.id });
+    const result = await WaterLog.deleteOne({ _id: id, userId: session.user.id });
+    if (result.deletedCount === 0) {
+      return NextResponse.json({ error: "Water log not found" }, { status: 404 });
+    }
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Delete water error:", error);

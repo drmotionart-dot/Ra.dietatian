@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BarChart3, TrendingUp, Activity } from "lucide-react";
+import { PageSkeleton } from "@/components/ui/skeleton";
 import {
   LineChart,
   Line,
@@ -25,6 +26,7 @@ export default function AnalyticsPage() {
   const [weeklyData, setWeeklyData] = useState<Array<{ day: string; calories: number; target: number }>>([]);
   const [weightData, setWeightData] = useState<Array<{ week: string; weight: number }>>([]);
   const [macroData, setMacroData] = useState<Array<{ name: string; value: number; color: string }>>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const days = dateRange === "7d" ? 7 : 30;
@@ -94,12 +96,15 @@ export default function AnalyticsPage() {
       } else {
         setMacroData([]);
       }
-    }).catch(console.error);
+    }).catch(console.error)
+      .finally(() => setLoading(false));
   }, [dateRange]);
 
   const totalCalories = weeklyData.reduce((sum, day) => sum + day.calories, 0);
   const totalTarget = weeklyData.reduce((sum, day) => sum + day.target, 0);
   const adherenceScore = totalTarget > 0 ? Math.round((1 - Math.abs(totalCalories - totalTarget) / totalTarget) * 100) : 0;
+
+  if (loading) return <PageSkeleton />;
 
   return (
     <div className="container mx-auto p-4 space-y-6">

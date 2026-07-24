@@ -4,12 +4,10 @@ import Google from "next-auth/providers/google";
 import bcrypt from "bcryptjs";
 import { connectDB } from "@/lib/mongodb";
 import { User } from "@/models";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   session: { strategy: "jwt" },
-  pages: {
-    signIn: "/en/login",
-  },
   providers: [
     Google({
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -26,8 +24,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           return null;
         }
 
+        const email = credentials.email as string;
+        const { allowed } = checkRateLimit(`signin:${email}`, {
+          windowMs: 15 * 60 * 1000,
+          maxRequests: 5,
+        });
+        if (!allowed) {
+          throw new Error("Too many sign-in attempts. Please try again later.");
+        }
+
         await connectDB();
-        const user = await User.findOne({ email: credentials.email as string }).lean();
+        const user = await User.findOne({ email }).lean();
 
         if (!user || !user.passwordHash) {
           return null;
@@ -66,8 +73,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async session({ session, token }) {
       if (session.user) {
         session.user.id = token.id as string;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (session.user as any).isOnboarded = token.isOnboarded;
+        session.user.isOnboarded = token.isOnboarded as boolean;
       }
       return session;
     },
@@ -83,7 +89,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             isOnboarded: false,
           });
         }
-        (user as Record<string, unknown>).id = dbUser._id.toString();
+        user.id = dbUser._id.toString();
       }
       return true;
     },

@@ -2,6 +2,26 @@ import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import { BodyMeasurement, User } from "@/models";
 import { auth } from "@/lib/auth";
+import { sanitizeString } from "@/lib/sanitize";
+
+const BOUNDS = {
+  weightKg: [20, 400],
+  bodyFatPercent: [3, 70],
+  waistCm: [30, 200],
+  hipCm: [30, 200],
+  bicepCm: [10, 100],
+  chestCm: [30, 200],
+  thighCm: [10, 120],
+  neckCm: [15, 80],
+} as const;
+
+function validateBounds(key: string, value: number): string | null {
+  const bounds = BOUNDS[key as keyof typeof BOUNDS];
+  if (bounds && (value < bounds[0] || value > bounds[1])) {
+    return `${key} must be between ${bounds[0]} and ${bounds[1]}`;
+  }
+  return null;
+}
 
 export async function GET(req: Request) {
   try {
@@ -51,6 +71,23 @@ export async function POST(req: Request) {
       return isNaN(n) ? undefined : n;
     };
 
+    const errors: string[] = [];
+    for (const key of Object.keys(BOUNDS)) {
+      const val = body[key];
+      if (val !== undefined && val !== null && val !== "") {
+        const n = parseFloat(val);
+        if (isNaN(n)) {
+          errors.push(`${key} must be a valid number`);
+        } else {
+          const err = validateBounds(key, n);
+          if (err) errors.push(err);
+        }
+      }
+    }
+    if (errors.length > 0) {
+      return NextResponse.json({ error: errors.join("; ") }, { status: 400 });
+    }
+
     const user = await User.findOne({ _id: session.user.id }).select("heightCm").lean();
 
     const wKg = num(weightKg);
@@ -82,7 +119,7 @@ export async function POST(req: Request) {
       neckCm: num(neckCm),
       bmi,
       waistToHipRatio,
-      notes,
+      notes: notes ? sanitizeString(notes) : undefined,
     });
 
     return NextResponse.json({ measurement }, { status: 201 });

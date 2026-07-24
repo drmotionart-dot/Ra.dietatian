@@ -18,6 +18,7 @@ import {
   Trophy,
   Ruler,
 } from "lucide-react";
+import { PageSkeleton } from "@/components/ui/skeleton";
 
 interface NotifPrefs {
   mealRemindersEnabled: boolean;
@@ -50,6 +51,7 @@ export default function NotificationsPage() {
   const [prefs, setPrefs] = useState<NotifPrefs>(defaults);
   const [saving, setSaving] = useState(false);
   const [permission, setPermission] = useState<NotificationPermission>("default");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if ("Notification" in window) {
@@ -73,7 +75,8 @@ export default function NotificationsPage() {
           });
         }
       })
-      .catch(console.error);
+      .catch(console.error)
+      .finally(() => setLoading(false));
   }, []);
 
   const toggle = (key: keyof NotifPrefs) => {
@@ -129,6 +132,8 @@ export default function NotificationsPage() {
     { key: "milestoneCelebrations" as const, icon: <Trophy className="h-5 w-5" />, title: t("notifications.milestoneCelebrations") },
     { key: "measurementRemindersEnabled" as const, icon: <Ruler className="h-5 w-5" />, title: t("notifications.measurementReminders"), time: t("notifications.measurementMonthly") },
   ];
+
+  if (loading) return <PageSkeleton />;
 
   return (
     <div className="container mx-auto p-4 space-y-6">

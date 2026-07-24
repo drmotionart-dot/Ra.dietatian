@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import { Recipe } from "@/models";
 import { auth } from "@/lib/auth";
+import { sanitizeString, sanitizeArray } from "@/lib/sanitize";
 
 export async function GET(req: Request) {
   try {
@@ -69,14 +70,16 @@ export async function POST(req: Request) {
 
     const recipe = await Recipe.create({
       userId: session.user.id,
-      name: body.name.trim(),
-      nameAr: body.nameAr,
-      description: body.description,
+      name: sanitizeString(body.name),
+      nameAr: sanitizeString(body.nameAr),
+      description: sanitizeString(body.description),
       category: validCategories.includes(body.category) ? body.category : "lunch",
-      cuisineStyle: body.cuisineStyle,
-      cookingMethod: body.cookingMethod,
-      instructions: Array.isArray(body.instructions) ? body.instructions : [],
-      instructionsAr: Array.isArray(body.instructionsAr) ? body.instructionsAr : [],
+      cuisineStyle: sanitizeString(body.cuisineStyle),
+      cookingMethod: sanitizeString(body.cookingMethod),
+      instructions: sanitizeArray(body.instructions),
+      instructionsAr: sanitizeArray(body.instructionsAr),
+      tips: sanitizeArray(body.tips),
+      tipsAr: sanitizeArray(body.tipsAr),
       prepTimeMinutes: typeof body.prepTimeMinutes === "number" ? body.prepTimeMinutes : 0,
       cookTimeMinutes: typeof body.cookTimeMinutes === "number" ? body.cookTimeMinutes : 0,
       difficulty: validDifficulties.includes(body.difficulty) ? body.difficulty : "easy",
@@ -110,16 +113,16 @@ export async function PUT(req: Request) {
     const validDifficulties = ["easy", "medium", "hard"];
 
     const updates: Record<string, unknown> = {};
-    if (body.name) updates.name = body.name.trim();
-    if (body.nameAr !== undefined) updates.nameAr = body.nameAr;
-    if (body.description !== undefined) updates.description = body.description;
+    if (body.name) updates.name = sanitizeString(body.name);
+    if (body.nameAr !== undefined) updates.nameAr = sanitizeString(body.nameAr);
+    if (body.description !== undefined) updates.description = sanitizeString(body.description);
     if (body.category && validCategories.includes(body.category)) updates.category = body.category;
-    if (body.cuisineStyle !== undefined) updates.cuisineStyle = body.cuisineStyle;
-    if (body.cookingMethod !== undefined) updates.cookingMethod = body.cookingMethod;
-    if (Array.isArray(body.instructions)) updates.instructions = body.instructions;
-    if (Array.isArray(body.instructionsAr)) updates.instructionsAr = body.instructionsAr;
-    if (Array.isArray(body.tips)) updates.tips = body.tips;
-    if (Array.isArray(body.tipsAr)) updates.tipsAr = body.tipsAr;
+    if (body.cuisineStyle !== undefined) updates.cuisineStyle = sanitizeString(body.cuisineStyle);
+    if (body.cookingMethod !== undefined) updates.cookingMethod = sanitizeString(body.cookingMethod);
+    if (Array.isArray(body.instructions)) updates.instructions = sanitizeArray(body.instructions);
+    if (Array.isArray(body.instructionsAr)) updates.instructionsAr = sanitizeArray(body.instructionsAr);
+    if (Array.isArray(body.tips)) updates.tips = sanitizeArray(body.tips);
+    if (Array.isArray(body.tipsAr)) updates.tipsAr = sanitizeArray(body.tipsAr);
     if (typeof body.prepTimeMinutes === "number") updates.prepTimeMinutes = body.prepTimeMinutes;
     if (typeof body.cookTimeMinutes === "number") updates.cookTimeMinutes = body.cookTimeMinutes;
     if (body.difficulty && validDifficulties.includes(body.difficulty)) updates.difficulty = body.difficulty;
@@ -157,7 +160,10 @@ export async function DELETE(req: Request) {
       return NextResponse.json({ error: "Recipe ID is required" }, { status: 400 });
     }
 
-    await Recipe.deleteOne({ _id: id, userId: session.user.id });
+    const result = await Recipe.deleteOne({ _id: id, userId: session.user.id });
+    if (result.deletedCount === 0) {
+      return NextResponse.json({ error: "Recipe not found" }, { status: 404 });
+    }
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Delete recipe error:", error);

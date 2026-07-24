@@ -19,7 +19,7 @@ export async function GET() {
     tomorrow.setDate(tomorrow.getDate() + 1);
 
     const user = await User.findOne({ _id: userId })
-      .select("name sex dateOfBirth heightCm activityLevel goal targetWeightKg")
+      .select("name sex dateOfBirth heightCm activityLevel goal targetWeightKg waterGoalMl fastingCity fastingCountry suhoorTime iftarTime")
       .lean();
 
     let dailyCalorieTarget = 2000;
@@ -137,7 +137,7 @@ export async function GET() {
       todayMeals,
       water: {
         totalMl: totalWaterMl,
-        goalMl: 2500,
+        goalMl: user?.waterGoalMl || 2500,
         logs: todayWaterLogs,
       },
     });

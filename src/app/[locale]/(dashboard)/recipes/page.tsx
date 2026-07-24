@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Search, Plus, Clock, Users, ChefHat, Trash2, X, ChevronDown, ChevronUp, Edit } from "lucide-react";
+import { PageSkeleton } from "@/components/ui/skeleton";
 
 interface Recipe {
   _id: string;
@@ -40,15 +41,18 @@ export default function RecipesPage() {
   const [saving, setSaving] = useState(false);
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
   const fetchRecipes = () => {
+    setLoading(true);
     const params = new URLSearchParams();
     if (searchQuery) params.set("q", searchQuery);
     if (selectedCategory !== "all") params.set("category", selectedCategory);
     fetch(`/api/recipes?${params}`)
       .then((r) => r.json())
       .then((d) => setRecipes(d.recipes || []))
-      .catch(console.error);
+      .catch(console.error)
+      .finally(() => setLoading(false));
   };
 
   useEffect(() => { fetchRecipes(); }, [searchQuery, selectedCategory]);
@@ -123,6 +127,8 @@ export default function RecipesPage() {
       default: return "bg-muted text-muted-foreground";
     }
   };
+
+  if (loading) return <PageSkeleton />;
 
   return (
     <div className="container mx-auto p-4 space-y-6">

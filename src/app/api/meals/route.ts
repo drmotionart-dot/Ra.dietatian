@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
 import { MealLog, MealLogItem } from "@/models";
 import { auth } from "@/lib/auth";
+import { sanitizeString } from "@/lib/sanitize";
 
 export async function GET(req: Request) {
   try {

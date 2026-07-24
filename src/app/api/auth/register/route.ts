@@ -2,9 +2,26 @@ import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { connectDB } from "@/lib/mongodb";
 import { User } from "@/models";
+import { checkRateLimit } from "@/lib/rate-limit";
+
+function getClientIp(req: Request): string {
+  return req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+}
 
 export async function POST(req: Request) {
   try {
+    const ip = getClientIp(req);
+    const { allowed, retryAfterMs } = checkRateLimit(`register:${ip}`, {
+      windowMs: 15 * 60 * 1000,
+      maxRequests: 5,
+    });
+    if (!allowed) {
+      return NextResponse.json(
+        { error: `Too many registration attempts. Try again in ${Math.ceil(retryAfterMs / 60000)} minutes.` },
+        { status: 429 }
+      );
+    }
+
     await connectDB();
     const { name, email, password, sex, dateOfBirth, heightCm, weightKg, goal, activityLevel } = await req.json();
 

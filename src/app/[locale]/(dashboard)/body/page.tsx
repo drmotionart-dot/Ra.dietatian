@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Ruler, Plus, TrendingUp } from "lucide-react";
 import BodyVisualization from "@/components/body/BodyVisualization";
+import { PageSkeleton } from "@/components/ui/skeleton";
 
 interface Measurement {
   _id: string;
@@ -31,6 +32,7 @@ export default function BodyPage() {
   const [userHeight, setUserHeight] = useState<number>(170);
   const [userSex, setUserSex] = useState<"male" | "female">("male");
   const [saving, setSaving] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [form, setForm] = useState({
     weightKg: "",
     waistCm: "",
@@ -56,7 +58,8 @@ export default function BodyPage() {
           setUserSex(dashData.user.sex as "male" | "female");
         }
       })
-      .catch(console.error);
+      .catch(console.error)
+      .finally(() => setLoading(false));
   }, []);
 
   const latest = measurements[0];
@@ -105,6 +108,8 @@ export default function BodyPage() {
       setSaving(false);
     }
   };
+
+  if (loading) return <PageSkeleton />;
 
   return (
     <div className="container mx-auto p-4 space-y-6">

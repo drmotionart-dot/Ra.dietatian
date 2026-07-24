@@ -17,6 +17,11 @@ const UserSchema = new Schema(
     targetWeightKg: Number,
     locale: { type: String, default: "ar" },
     units: { type: String, enum: ["metric", "imperial"], default: "metric" },
+    waterGoalMl: { type: Number, default: 2500, min: 500, max: 10000 },
+    fastingCity: { type: String, default: "Cairo" },
+    fastingCountry: { type: String, default: "Egypt" },
+    suhoorTime: { type: String, default: "03:30" },
+    iftarTime: { type: String, default: "19:00" },
   },
   { timestamps: true, collection: "users" }
 );
