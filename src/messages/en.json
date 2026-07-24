@@ -420,7 +420,16 @@
     "greatOnTrack": "Great! You're on track",
     "tryToStickCloser": "Try to stick closer to your target",
     "noWeightData": "No weight data yet. Log measurements in Body page.",
-    "noMealData": "No meal data yet. Start logging meals to see macro distribution."
+    "noMealData": "No meal data yet. Start logging meals to see macro distribution.",
+    "currentStreak": "Current Streak",
+    "longestStreak": "Longest Streak",
+    "activeDays": "Active Days",
+    "trainingTrend": "Training",
+    "trainingVolume": "Training Volume",
+    "noTrainingData": "No training data yet",
+    "topExercises": "Top Exercises",
+    "monthlyCompare": "Monthly Compare",
+    "totalCalories": "Total Calories"
   },
   "recipes": {
     "recipes": "Recipes",
@@ -734,7 +743,12 @@
       "glutes": "Glutes",
       "cardio": "Cardio",
       "full_body": "Full Body"
-    }
+    },
+    "newPR": "New Personal Record!",
+    "personalRecords": "Personal Records",
+    "maxWeight": "Max Weight",
+    "maxReps": "Max Reps",
+    "maxVolume": "Max Volume"
   },
   "water": {
     "title": "Water Intake",

@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Plus, Trash2, Search, Dumbbell, Clock, Flame } from "lucide-react";
 import { PageSkeleton } from "@/components/ui/skeleton";
+import { PRIcon } from "@/components/icons";
 
 interface Exercise {
   _id: string;
@@ -56,6 +57,8 @@ export default function TrainingPage() {
   const [saving, setSaving] = useState(false);
   const [stats, setStats] = useState({ totalSessions: 0, totalVolume: 0, totalSets: 0 });
   const [loading, setLoading] = useState(true);
+  const [personalRecords, setPersonalRecords] = useState<Record<string, Record<string, { value: number; date: string; exerciseName: string }>>>({});
+  const [newPRs, setNewPRs] = useState<Array<{ exerciseName: string; type: string; value: number }>>([]);
 
   useEffect(() => {
     fetch("/api/exercises?q=")
@@ -74,6 +77,11 @@ export default function TrainingPage() {
           totalSets: allSessions.reduce((s: number, ws: WorkoutSession) => s + (ws.totalSets || 0), 0),
         });
       })
+      .catch(console.error);
+
+    fetch("/api/personal-records")
+      .then((r) => r.json())
+      .then((d) => setPersonalRecords(d.records || {}))
       .catch(console.error)
       .finally(() => setLoading(false));
   }, []);
@@ -130,6 +138,14 @@ export default function TrainingPage() {
         setSelectedExercise(null);
         setWorkoutName("");
         setIsLogging(false);
+        if (data.newPRs?.length) {
+          setNewPRs(data.newPRs);
+          fetch("/api/personal-records")
+            .then((r) => r.json())
+            .then((d) => setPersonalRecords(d.records || {}))
+            .catch(console.error);
+          setTimeout(() => setNewPRs([]), 5000);
+        }
       }
     } catch (err) {
       console.error("Save workout error:", err);
@@ -180,6 +196,26 @@ export default function TrainingPage() {
           </CardContent>
         </Card>
       </div>
+
+      {newPRs.length > 0 && (
+        <Card className="border-[var(--accent)] bg-[var(--accent)]/5">
+          <CardContent className="pt-6">
+            <div className="flex items-center gap-3">
+              <PRIcon className="h-8 w-8" />
+              <div>
+                <p className="font-bold text-[var(--accent)]">
+                  {t("training.newPR") || "New Personal Record!"}
+                </p>
+                {newPRs.map((pr, i) => (
+                  <p key={i} className="text-sm text-muted-foreground">
+                    {pr.exerciseName}: {pr.type === "maxWeight" ? `${pr.value} kg` : pr.type === "maxReps" ? `${pr.value} reps` : `${pr.value} vol`}
+                  </p>
+                ))}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {isLogging && (
         <Card>
@@ -354,6 +390,48 @@ export default function TrainingPage() {
           )}
         </CardContent>
       </Card>
+
+      {Object.keys(personalRecords).length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <PRIcon className="h-5 w-5" />
+              {t("training.personalRecords") || "Personal Records"}
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {Object.entries(personalRecords).map(([exerciseId, types]) => (
+                <div key={exerciseId} className="p-3 rounded-lg border">
+                  <div className="font-medium text-sm mb-1">
+                    {types.maxWeight?.exerciseName || types.maxReps?.exerciseName || exerciseId}
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {types.maxWeight && (
+                      <Badge variant="outline" className="text-xs">
+                        {t("training.maxWeight") || "Weight"}: {types.maxWeight.value} kg
+                      </Badge>
+                    )}
+                    {types.maxReps && (
+                      <Badge variant="outline" className="text-xs">
+                        {t("training.maxReps") || "Reps"}: {types.maxReps.value}
+                      </Badge>
+                    )}
+                    {types.maxVolume && (
+                      <Badge variant="outline" className="text-xs">
+                        {t("training.maxVolume") || "Volume"}: {types.maxVolume.value.toLocaleString()} kg
+                      </Badge>
+                    )}
+                  </div>
+                  <div className="text-xs text-muted-foreground mt-1">
+                    {new Date(types.maxWeight?.date || types.maxReps?.date || types.maxVolume?.date || "").toLocaleDateString()}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }

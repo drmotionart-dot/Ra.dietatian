@@ -420,7 +420,16 @@
     "greatOnTrack": "رائع! أنت على المسار الصحيح",
     "tryToStickCloser": "حاول الالتزام أكثر بهدفك",
     "noWeightData": "لا توجد بيانات وزن بعد. سجّل قياساتك في صفحة الجسم.",
-    "noMealData": "لا توجد بيانات وجبات بعد. ابدأ بتسجيل الوجبات لرؤية توزيع المغذيات."
+    "noMealData": "لا توجد بيانات وجبات بعد. ابدأ بتسجيل الوجبات لرؤية توزيع المغذيات.",
+    "currentStreak": "السلسلة الحالية",
+    "longestStreak": "أطول سلسلة",
+    "activeDays": "أيام نشطة",
+    "trainingTrend": "التمارين",
+    "trainingVolume": "حجم التمارين",
+    "noTrainingData": "لا توجد بيانات تمارين بعد",
+    "topExercises": "أفضل التمارين",
+    "monthlyCompare": "مقارنة شهرية",
+    "totalCalories": "إجمالي السعرات"
   },
   "recipes": {
     "recipes": "الوصفات",
@@ -734,7 +743,12 @@
       "glutes": "الأرداف",
       "cardio": "القلب",
       "full_body": "كامل الجسم"
-    }
+    },
+    "newPR": "رقم قياسي جديد!",
+    "personalRecords": "الأرقام القياسية",
+    "maxWeight": "أقصى وزن",
+    "maxReps": "أقصى تكرار",
+    "maxVolume": "أقصى حجم"
   },
   "water": {
     "title": "شرب الماء",

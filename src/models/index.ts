@@ -11,3 +11,4 @@ export { Account, Session, VerificationToken } from "./Auth";
 export { Exercise } from "./Exercise";
 export { WorkoutSession } from "./WorkoutSession";
 export { WaterLog } from "./WaterLog";
+export { PersonalRecord } from "./PersonalRecord";

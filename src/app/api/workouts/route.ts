@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
-import { WorkoutSession } from "@/models";
+import { WorkoutSession, PersonalRecord } from "@/models";
 import { auth } from "@/lib/auth";
 import { seedExercises } from "../exercises/route";
 import { sanitizeString } from "@/lib/sanitize";
@@ -93,7 +93,91 @@ export async function POST(req: Request) {
       sets: validSets,
     });
 
-    return NextResponse.json({ workout }, { status: 201 });
+    const newPRs: Array<{ exerciseName: string; type: string; value: number }> = [];
+
+    const exercisesByMaxWeight: Record<string, number> = {};
+    const exercisesByMaxReps: Record<string, number> = {};
+    const exercisesByMaxVolume: Record<string, number> = {};
+
+    for (const s of validSets) {
+      if (s.isWarmup) continue;
+      const eid = s.exerciseId;
+      if (s.weight > (exercisesByMaxWeight[eid] || 0)) exercisesByMaxWeight[eid] = s.weight;
+      if (s.reps > (exercisesByMaxReps[eid] || 0)) exercisesByMaxReps[eid] = s.reps;
+      const vol = s.weight * s.reps;
+      if (vol > (exercisesByMaxVolume[eid] || 0)) exercisesByMaxVolume[eid] = vol;
+    }
+
+    for (const [exerciseId, maxWeight] of Object.entries(exercisesByMaxWeight)) {
+      if (maxWeight <= 0) continue;
+      const existing = await PersonalRecord.findOne({
+        userId: session.user.id,
+        exerciseId,
+        type: "maxWeight",
+      }).sort({ date: -1 }).lean();
+
+      if (!existing || maxWeight > existing.value) {
+        const exName = validSets.find((s: { exerciseId: string; exerciseName: string }) => s.exerciseId === exerciseId)?.exerciseName || exerciseId;
+        await PersonalRecord.create({
+          userId: session.user.id,
+          exerciseId,
+          exerciseName: exName,
+          type: "maxWeight",
+          value: maxWeight,
+          date: workout.date,
+          workoutSessionId: workout._id.toString(),
+        });
+        newPRs.push({ exerciseName: exName, type: "maxWeight", value: maxWeight });
+      }
+    }
+
+    for (const [exerciseId, maxReps] of Object.entries(exercisesByMaxReps)) {
+      if (maxReps <= 0) continue;
+      const existing = await PersonalRecord.findOne({
+        userId: session.user.id,
+        exerciseId,
+        type: "maxReps",
+      }).sort({ date: -1 }).lean();
+
+      if (!existing || maxReps > existing.value) {
+        const exName = validSets.find((s: { exerciseId: string; exerciseName: string }) => s.exerciseId === exerciseId)?.exerciseName || exerciseId;
+        await PersonalRecord.create({
+          userId: session.user.id,
+          exerciseId,
+          exerciseName: exName,
+          type: "maxReps",
+          value: maxReps,
+          date: workout.date,
+          workoutSessionId: workout._id.toString(),
+        });
+        newPRs.push({ exerciseName: exName, type: "maxReps", value: maxReps });
+      }
+    }
+
+    for (const [exerciseId, maxVolume] of Object.entries(exercisesByMaxVolume)) {
+      if (maxVolume <= 0) continue;
+      const existing = await PersonalRecord.findOne({
+        userId: session.user.id,
+        exerciseId,
+        type: "maxVolume",
+      }).sort({ date: -1 }).lean();
+
+      if (!existing || maxVolume > existing.value) {
+        const exName = validSets.find((s: { exerciseId: string; exerciseName: string }) => s.exerciseId === exerciseId)?.exerciseName || exerciseId;
+        await PersonalRecord.create({
+          userId: session.user.id,
+          exerciseId,
+          exerciseName: exName,
+          type: "maxVolume",
+          value: maxVolume,
+          date: workout.date,
+          workoutSessionId: workout._id.toString(),
+        });
+        newPRs.push({ exerciseName: exName, type: "maxVolume", value: maxVolume });
+      }
+    }
+
+    return NextResponse.json({ workout, newPRs }, { status: 201 });
   } catch (error) {
     console.error("Create workout error:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
