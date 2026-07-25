@@ -1,4 +1,4 @@
-const CACHE_NAME = "ra-diaeta-v1";
+const CACHE_NAME = "ra-diaeta-v2";
 const STATIC_ASSETS = [
   "/",
   "/en/dashboard",
@@ -25,9 +25,21 @@ self.addEventListener("activate", (event) => {
   self.clients.claim();
 });
 
+self.addEventListener("message", (event) => {
+  if (event.data && event.data.type === "SKIP_WAITING") {
+    self.skipWaiting();
+  }
+});
+
 self.addEventListener("fetch", (event) => {
   const { request } = event;
   if (request.method !== "GET") return;
+
+  // Let navigation requests pass through to the browser untouched.
+  // Next.js uses redirects for locale routing (/ -> /en/dashboard) and
+  // Safari rejects redirected responses for navigation fetches.
+  if (request.mode === "navigate") return;
+
   if (request.url.includes("/api/")) {
     event.respondWith(
       fetch(request).catch(() =>
@@ -39,6 +51,7 @@ self.addEventListener("fetch", (event) => {
     );
     return;
   }
+
   event.respondWith(
     caches.match(request).then((cached) => {
       const fetched = fetch(request).then((response) => {
