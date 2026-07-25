@@ -804,14 +804,22 @@
       "tagline": "Premium nutrition & fitness tracking, built for Egyptian food culture",
       "subline": "Track koshary, ful, molokhia and every meal you love. Log workouts, measure your body, and hit your goals with insights that actually understand your plate.",
       "login": "Log In",
-      "getStarted": "Get Started Free"
+      "getStarted": "Get Started Free",
+      "trust": "Free to start. No credit card required."
+    },
+    "howItWorks": {
+      "heading": "How it works",
+      "subheading": "Three steps to a healthier, stronger you.",
+      "step1": { "title": "Log your meals", "desc": "Search our Egyptian food database or add your own. Every calorie and macro tracked in seconds." },
+      "step2": { "title": "Track your progress", "desc": "Workouts, body measurements, water intake — all in one place with visual charts." },
+      "step3": { "title": "Hit your goals", "desc": "See streaks build, records break, and your physique transform over time." }
     },
     "features": {
       "heading": "Everything you need to transform",
       "subheading": "From fuul taameya to deadlifts — every calorie, every rep, every measurement.",
       "meals": { "title": "Egyptian Food Logging", "desc": "Search thousands of foods including traditional Egyptian dishes. Log meals in seconds with smart calorie and macro tracking." },
       "training": { "title": "Training Log", "desc": "Track every workout, every set, every rep. See your total volume climb and your strength improve over time." },
-      "body": { "title": "Body Tracking", "desc": "Log weight, body fat, and 8 circumference measurements. Watch your physique evolve with visual body diagrams." },
+      "body": { "title": "Body Tracking", "desc": "Log weight, body fat, and 6 key body measurements. Watch your physique evolve with visual body diagrams." },
       "analytics": { "title": "Deep Analytics", "desc": "Calorie trends, macro breakdowns, weight progress, training volume, monthly comparisons, and streak tracking." },
       "water": { "title": "Water Tracking", "desc": "Stay hydrated with quick-add buttons and a visual ring that fills up as you hit your daily goal." },
       "recipes": { "title": "Recipe Database", "desc": "Browse curated recipes with full nutrition breakdowns. Discover meals that fit your goals and taste." }
@@ -841,12 +849,28 @@
         "cta": "Upgrade to RAvictus"
       }
     },
+    "faq": {
+      "heading": "Frequently asked questions",
+      "subheading": "Everything you need to know before signing up.",
+      "q1": "Is my data private?",
+      "a1": "Yes. Your data is stored securely in your private account and is never shared with third parties. We do not sell or use your personal information for advertising.",
+      "q2": "Can I switch between free and premium?",
+      "a2": "Absolutely. You can start with RAdiaeta (free) and upgrade to RAvictus at any time. Your data stays intact through the transition.",
+      "q3": "Do I need a subscription to start?",
+      "a3": "No. RAdiaeta is completely free and includes meal logging, water tracking, fasting, workout logging, body tracking, and recipes. You only pay if you want the advanced analytics and premium features in RAvictus.",
+      "q4": "Does it work offline?",
+      "a4": "The app is designed as a web application, so you need an internet connection to log and sync data. However, the interface is fast and lightweight even on slower connections."
+    },
     "footer": {
       "login": "Log In",
       "signup": "Sign Up",
       "privacy": "Privacy Policy",
       "terms": "Terms of Service",
-      "copy": "RAdiaeta. Built in Cairo."
+      "copy": "RAdiaeta. All rights reserved.",
+      "blurb": "The nutrition and fitness tracker designed for Egyptian food culture. Free and premium plans for every goal.",
+      "productLabel": "Product",
+      "connectLabel": "Connect",
+      "madeIn": "Made with care in Cairo, Egypt"
     }
   }
 }
