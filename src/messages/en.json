@@ -798,5 +798,55 @@
     "featureLocked": "This is a premium feature",
     "freeDescription": "Upgrade for premium themes & features",
     "premiumActive": "Premium active"
+  },
+  "landing": {
+    "hero": {
+      "tagline": "Premium nutrition & fitness tracking, built for Egyptian food culture",
+      "subline": "Track koshary, ful, molokhia and every meal you love. Log workouts, measure your body, and hit your goals with insights that actually understand your plate.",
+      "login": "Log In",
+      "getStarted": "Get Started Free"
+    },
+    "features": {
+      "heading": "Everything you need to transform",
+      "subheading": "From fuul taameya to deadlifts — every calorie, every rep, every measurement.",
+      "meals": { "title": "Egyptian Food Logging", "desc": "Search thousands of foods including traditional Egyptian dishes. Log meals in seconds with smart calorie and macro tracking." },
+      "training": { "title": "Training Log", "desc": "Track every workout, every set, every rep. See your total volume climb and your strength improve over time." },
+      "body": { "title": "Body Tracking", "desc": "Log weight, body fat, and 8 circumference measurements. Watch your physique evolve with visual body diagrams." },
+      "analytics": { "title": "Deep Analytics", "desc": "Calorie trends, macro breakdowns, weight progress, training volume, monthly comparisons, and streak tracking." },
+      "water": { "title": "Water Tracking", "desc": "Stay hydrated with quick-add buttons and a visual ring that fills up as you hit your daily goal." },
+      "recipes": { "title": "Recipe Database", "desc": "Browse curated recipes with full nutrition breakdowns. Discover meals that fit your goals and taste." }
+    },
+    "tierList": {
+      "heading": "Choose your path",
+      "subheading": "Start free, upgrade when you are ready for more.",
+      "free": {
+        "label": "Free forever",
+        "meals": "Full meal logging with Egyptian food database",
+        "water": "Daily water tracking with goals",
+        "fasting": "Ramadan & Sunnah fasting tracker",
+        "training": "Workout logging with exercise library",
+        "body": "Body measurements & visualization",
+        "recipes": "Recipe browsing & nutrition info",
+        "cta": "Start Free"
+      },
+      "pro": {
+        "label": "For serious athletes",
+        "allFree": "Everything in RAdiaeta, plus:",
+        "analytics": "Advanced analytics & charts",
+        "personalRecords": "Automatic personal record detection",
+        "streaks": "Streak tracking & active-day heatmaps",
+        "premiumThemes": "Premium espresso-gold theme",
+        "notifications": "Smart meal & workout reminders",
+        "export": "Full data export (JSON)",
+        "cta": "Upgrade to RAvictus"
+      }
+    },
+    "footer": {
+      "login": "Log In",
+      "signup": "Sign Up",
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service",
+      "copy": "RAdiaeta. Built in Cairo."
+    }
   }
 }

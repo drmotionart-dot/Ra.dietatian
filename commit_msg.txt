@@ -1,11 +1,8 @@
-Remove service worker entirely to fix site-breaking bug
+Add marketing landing page at root route
 
-The SW intercepted navigation requests and mishandled next-intl 307 redirects,
-breaking page loads for all users in all browsers. Two prior patch attempts failed.
-
-Changes:
-- Gutted public/sw.js (now empty, no fetch/push handlers)
-- Removed SW registration from providers.tsx
-- Added force-unregister inline script in layout head (runs before React hydration)
-- Added ClearBrokenServiceWorker React component as belt-and-suspenders
-- Both unregister all SWs and delete all caches on every page load
+- New LandingPage component: hero, feature cards, tier comparison, footer
+- Locale-aware with full EN + AR translations
+- [locale]/page.tsx: checks auth server-side, shows landing for guests, redirects to dashboard for users
+- Root / still redirects to /en, which now shows landing page instead of forcing login
+- Uses existing design system: ceramic surface, custom icons, gold shimmer, serif headers
+- No auth-based redirects for unauthenticated visitors
