@@ -1,0 +1,11 @@
+Remove service worker entirely to fix site-breaking bug
+
+The SW intercepted navigation requests and mishandled next-intl 307 redirects,
+breaking page loads for all users in all browsers. Two prior patch attempts failed.
+
+Changes:
+- Gutted public/sw.js (now empty, no fetch/push handlers)
+- Removed SW registration from providers.tsx
+- Added force-unregister inline script in layout head (runs before React hydration)
+- Added ClearBrokenServiceWorker React component as belt-and-suspenders
+- Both unregister all SWs and delete all caches on every page load

@@ -59,6 +59,11 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} dir={dir} className={`${cairo.variable} ${fraunces.variable}`} suppressHydrationWarning>
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then(function(r){r.forEach(function(x){x.unregister()})});}if('caches' in window){caches.keys().then(function(n){n.forEach(function(k){caches.delete(k)})});}`,
+          }}
+        />
         <link rel="apple-touch-icon" href="/icons/icon-192.svg" />
         <meta name="theme-color" content="#EBE2D0" media="(prefers-color-scheme: light)" />
         <meta name="theme-color" content="#1D1712" media="(prefers-color-scheme: dark)" />
